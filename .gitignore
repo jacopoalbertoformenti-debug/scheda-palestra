@@ -1,0 +1,6 @@
+# questo repo contiene SOLO la pagina pubblicabile.
+# schede di anamnesi, pesi, plicometrie e piani alimentari restano fuori.
+*.md
+*.csv
+*.txt
+!robots.txt

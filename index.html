@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- pagina personale: fuori dai motori di ricerca -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Scheda di allenamento A/B/C, blocco 1.">
+<meta name="theme-color" content="#EBEEEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1A24" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127947;</text></svg>">
+<style>
+  :root { color-scheme: light dark; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Scheda Jacopo &amp; Elisa</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+  /* ---- tokens: light (bare :root defines the complete palette) ---- */
+  :root {
+    --ground:    #EBEEEA;
+    --surface:   #FBFCFA;
+    --surface-2: #E2E7E1;
+    --ink:       #15283A;
+    --ink-2:     #4A5F70;
+    --ink-3:     #7C8C97;
+    --line:      #C7D0CB;
+    --line-2:    #DDE3DE;
+    --accent:    #9E5B0D;
+    --accent-2:  #C2761A;
+    --accent-bg: #F3E6D3;
+    --done:      #2F6E60;
+    --done-bg:   #DCE8E3;
+    --shadow:    0 1px 2px rgba(21,40,58,.07), 0 6px 18px -12px rgba(21,40,58,.22);
+    --radius:    10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #0E1A24;
+      --surface:   #162836;
+      --surface-2: #1E3446;
+      --ink:       #E7EBE7;
+      --ink-2:     #A3B4C0;
+      --ink-3:     #74889A;
+      --line:      #2C4356;
+      --line-2:    #223948;
+      --accent:    #E7A24A;
+      --accent-2:  #F0B368;
+      --accent-bg: #2A2318;
+      --done:      #63AE99;
+      --done-bg:   #17322D;
+      --shadow:    0 1px 2px rgba(0,0,0,.3), 0 8px 22px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #0E1A24;
+    --surface:   #162836;
+    --surface-2: #1E3446;
+    --ink:       #E7EBE7;
+    --ink-2:     #A3B4C0;
+    --ink-3:     #74889A;
+    --line:      #2C4356;
+    --line-2:    #223948;
+    --accent:    #E7A24A;
+    --accent-2:  #F0B368;
+    --accent-bg: #2A2318;
+    --done:      #63AE99;
+    --done-bg:   #17322D;
+    --shadow:    0 1px 2px rgba(0,0,0,.3), 0 8px 22px -14px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 96px;
+  }
+
+  .wrap { max-width: 660px; margin: 0 auto; padding: 0 14px; }
+
+  /* ---- header ---- */
+  header { padding: 22px 0 16px; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent);
+    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+  }
+  .eyebrow span { color: var(--ink-3); }
+  h1 {
+    font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+    font-weight: 700; font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.02; margin: 8px 0 0; letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+  .lede { color: var(--ink-2); font-size: 14px; margin: 8px 0 0; max-width: 46ch; }
+
+  /* ---- phase strip: a real sequence, so it is numbered ---- */
+  .phases { display: flex; gap: 4px; margin: 18px 0 0; }
+  .ph {
+    flex: 1; min-width: 0; padding: 7px 6px 8px;
+    background: var(--surface-2); border-radius: 6px;
+    border-top: 3px solid var(--line);
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .04em; color: var(--ink-3); text-align: center;
+    text-transform: uppercase; line-height: 1.35;
+  }
+  .ph b { display: block; font-size: 11px; color: var(--ink-2); letter-spacing: .02em; }
+  .ph.on { border-top-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+  .ph.on b { color: var(--accent); }
+  .now {
+    margin: 10px 0 0; padding: 11px 13px;
+    background: var(--accent-bg); border-radius: var(--radius);
+    font-size: 13.5px; color: var(--ink);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .now strong {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+  }
+
+  /* ---- person picker ---- */
+  .who { margin: 20px 0 0; }
+  .who-label, .sect-label {
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 7px;
+  }
+  .seg { display: flex; gap: 6px; }
+  .seg button {
+    flex: 1; min-height: 46px; padding: 0 12px;
+    background: var(--surface); color: var(--ink-2);
+    border: 1px solid var(--line); border-radius: 8px;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 17px; font-weight: 600; letter-spacing: .01em;
+    cursor: pointer; transition: background .13s, color .13s, border-color .13s;
+  }
+  .seg button[aria-pressed="true"] {
+    background: var(--ink); color: var(--ground); border-color: var(--ink);
+  }
+
+  /* ---- sticky session tabs ---- */
+  .tabbar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--ground);
+    padding: 10px 0 9px;
+    border-bottom: 1px solid var(--line-2);
+    margin-top: 20px;
+  }
+  .tabs { display: flex; gap: 6px; align-items: stretch; }
+  .tabs button {
+    flex: 1; min-height: 52px; padding: 6px 4px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; cursor: pointer; color: var(--ink-2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1px; transition: background .13s, color .13s, border-color .13s;
+  }
+  .tabs button .t-let {
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 20px; font-weight: 700; line-height: 1;
+  }
+  .tabs button .t-sub {
+    font-family: "IBM Plex Mono", monospace; font-size: 8.5px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; opacity: .8;
+  }
+  .tabs button[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--ground);
+  }
+  :root[data-theme="dark"] .tabs button[aria-pressed="true"],
+  :root[data-theme="dark"] .seg button[aria-pressed="true"] { color: #0E1A24; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .tabs button[aria-pressed="true"],
+    :root:not([data-theme="light"]) .seg button[aria-pressed="true"] { color: #0E1A24; }
+  }
+  .badge {
+    display: flex; align-items: center; padding: 0 12px;
+    background: var(--surface-2); border-radius: 8px; border: 1px solid var(--line-2);
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  /* ---- session head ---- */
+  .shead { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin: 22px 0 12px; }
+  .shead h2 {
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 23px; font-weight: 700; margin: 0; line-height: 1.1;
+  }
+  .shead p {
+    margin: 2px 0 0; font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .reset {
+    background: none; border: 1px solid var(--line); border-radius: 7px;
+    color: var(--ink-3); padding: 8px 11px; cursor: pointer; white-space: nowrap;
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+  }
+  .reset:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  /* ---- exercise cards ---- */
+  .ex-list { display: flex; flex-direction: column; gap: 9px; }
+  .ex {
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 12px 13px 11px;
+  }
+  .ex-top { display: flex; gap: 11px; align-items: flex-start; }
+  .slot {
+    flex: none; width: 30px; padding-top: 2px;
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .06em; color: var(--accent);
+  }
+  .ex-name {
+    flex: 1; min-width: 0;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 18px; font-weight: 600; line-height: 1.2;
+  }
+  .ex-alt { display: block; font-family: "IBM Plex Sans", sans-serif; font-size: 12.5px; font-weight: 400; color: var(--ink-3); margin-top: 2px; }
+  .pres {
+    flex: none; text-align: right;
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 19px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em;
+  }
+  .pres small { display: block; font-size: 9.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); margin-top: 3px; }
+  .ex-note {
+    margin: 9px 0 0 41px; font-size: 12.5px; color: var(--ink-2);
+    border-left: 2px solid var(--line); padding-left: 9px;
+  }
+  .ex-bot { display: flex; align-items: center; gap: 8px; margin: 11px 0 0 41px; flex-wrap: wrap; }
+  .pips { display: flex; gap: 6px; }
+  .pip {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1.5px solid var(--line); background: var(--surface-2);
+    color: var(--ink-3); cursor: pointer;
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .12s, color .12s, border-color .12s;
+  }
+  .pip[aria-pressed="true"] { background: var(--done); border-color: var(--done); color: var(--surface); }
+  :root[data-theme="dark"] .pip[aria-pressed="true"] { color: #0E1A24; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .pip[aria-pressed="true"] { color: #0E1A24; }
+  }
+  .spacer { flex: 1; }
+  .load {
+    width: 76px; height: 38px; padding: 0 9px;
+    background: var(--ground); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 7px;
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 14px; font-weight: 600; text-align: right;
+  }
+  .load::placeholder { color: var(--ink-3); font-weight: 500; }
+  .timer-btn {
+    height: 38px; padding: 0 12px;
+    background: var(--surface-2); color: var(--ink-2);
+    border: 1px solid var(--line); border-radius: 7px; cursor: pointer;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .timer-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---- rest timer bar ---- */
+  .rest {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    background: var(--ink); color: var(--ground);
+    padding: 11px 14px calc(11px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 -6px 22px -12px rgba(0,0,0,.5);
+  }
+  .rest[hidden] { display: none !important; }
+  .rest .clock {
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 30px; font-weight: 600; letter-spacing: -.02em; line-height: 1;
+    min-width: 92px;
+  }
+  .rest .lab {
+    flex: 1; font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: .13em; text-transform: uppercase; opacity: .65;
+  }
+  .rest button {
+    background: transparent; border: 1px solid rgba(255,255,255,.3);
+    color: var(--ground); border-radius: 7px; min-height: 40px; padding: 0 13px;
+    cursor: pointer; font-family: "IBM Plex Mono", monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: .05em;
+  }
+  .rest.done { background: var(--done); }
+  .rest.done .lab { opacity: .9; }
+
+  /* ---- reference accordions ---- */
+  .ref { margin: 34px 0 0; }
+  .ref-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 9px; }
+  details {
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  summary {
+    cursor: pointer; padding: 14px 14px; list-style: none;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 16.5px; font-weight: 600;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; font-family: "IBM Plex Mono", monospace; font-size: 19px;
+    font-weight: 500; color: var(--accent); line-height: 1;
+  }
+  details[open] summary::after { content: "\2212"; }
+  details[open] summary { border-bottom: 1px solid var(--line-2); }
+  .body { padding: 13px 14px 16px; font-size: 14px; color: var(--ink-2); }
+  .body > :first-child { margin-top: 0; }
+  .body > :last-child { margin-bottom: 0; }
+  .body p { margin: 0 0 10px; }
+  .body strong { color: var(--ink); font-weight: 600; }
+  .body ol, .body ul { margin: 0 0 10px; padding-left: 21px; }
+  .body li { margin-bottom: 6px; }
+  .body code {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--ink);
+  }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 5px 13px; align-items: baseline; margin: 0 0 12px; }
+  .kv dt {
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 12.5px; font-weight: 600; color: var(--accent); white-space: nowrap;
+  }
+  .kv dd { margin: 0; font-size: 13.5px; }
+  .step {
+    background: var(--surface-2); border-radius: 8px; padding: 11px 13px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.65;
+    color: var(--ink); overflow-x: auto; white-space: pre; margin: 0 0 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  footer {
+    margin: 30px 0 10px; padding-top: 16px; border-top: 1px solid var(--line-2);
+    font-size: 12.5px; color: var(--ink-3);
+  }
+  footer p { margin: 0 0 7px; }
+
+  button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent-2); outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media (min-width: 620px) {
+    body { font-size: 15.5px; }
+    .ref-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+  }
+</style></head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Blocco 1 <span>12 settimane</span> <span>dal 02.09.2026</span></p>
+    <h1>Scheda Jacopo &amp; Elisa</h1>
+    <p class="lede">Tre sedute a settimana in rotazione A → B → C, costruite sui macchinari. Stessa impalcatura per entrambi, carichi e volume diversi.</p>
+
+    <div class="phases" id="phases"></div>
+    <div class="now" id="now"></div>
+
+    <div class="who">
+      <p class="who-label">Sto guardando la scheda di</p>
+      <div class="seg" role="group" aria-label="Scegli persona">
+        <button type="button" data-person="j" aria-pressed="true">Jacopo</button>
+        <button type="button" data-person="e" aria-pressed="false">Elisa</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="tabbar">
+    <div class="tabs" role="group" aria-label="Scegli seduta">
+      <button type="button" data-session="A" aria-pressed="true"><span class="t-let">A</span><span class="t-sub">Spinta</span></button>
+      <button type="button" data-session="B" aria-pressed="false"><span class="t-let">B</span><span class="t-sub">Tirata</span></button>
+      <button type="button" data-session="C" aria-pressed="false"><span class="t-let">C</span><span class="t-sub">Mista</span></button>
+      <span class="badge" id="badge">Jacopo</span>
+    </div>
+  </div>
+
+  <main>
+    <div class="shead">
+      <div>
+        <h2 id="s-title">Spinta + quadricipiti</h2>
+        <p id="s-sub">macchine + panca</p>
+      </div>
+      <button type="button" class="reset" id="reset">Azzera serie</button>
+    </div>
+    <div class="ex-list" id="list"></div>
+  </main>
+
+  <section class="ref">
+    <p class="sect-label">Le regole, quando servono</p>
+    <div class="ref-grid">
+
+      <details>
+        <summary>Riscaldamento — 8 minuti, sempre</summary>
+        <div class="body">
+          <ol>
+            <li>5 min cyclette o tapis roulant a ritmo conversazionale.</li>
+            <li>Mobilità: 10 circonduzioni spalle · 10 cat-camel · 10 affondi con rotazione del busto · 15 squat a corpo libero.</li>
+            <li><strong>Serie di avvicinamento</strong> sul primo esercizio: due serie leggere, 50% ×8 e 70% ×5. Sulla panca Jacopo aggiunge bilanciere vuoto ×10 prima.</li>
+          </ol>
+          <p>Le serie di avvicinamento non si contano come serie di lavoro, e non sono opzionali: sono la differenza tra progredire per 12 settimane e fermarsi alla quarta per una spalla infiammata.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Doppia progressione</summary>
+        <div class="body">
+          <p>È l'unica regola di progressione che serve sapere, e vale per entrambi. Preso il range di ripetizioni della scheda: <strong>aggiungi ripetizioni</strong> finché non arrivi al numero alto su <strong>tutte</strong> le serie con RPE ≤ 8. Quando ci arrivi, <strong>aggiungi carico</strong> e torni al numero basso.</p>
+          <div class="step">Leg press, range 8-10
+
+sett. 1   100 kg ×  8,  8,  8,  8   → +rip
+sett. 2   100 kg × 10, 10,  9,  9   → +rip
+sett. 3   100 kg × 10, 10, 10, 10   → +carico
+sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
+          <p><strong>Incrementi:</strong> sulle macchine a piastre <strong>un foro per volta</strong> (di solito 5 kg) · +2,5 kg sulla panca · manubrio successivo sui manubri. Molte macchine hanno piastrine da 1,25-2,5 kg se il foro è un salto troppo grosso.</p>
+          <p>Elisa: partendo dai carichi più bassi delle macchine, un solo foro può valere il 20-30% in più. Se il salto è troppo, fai una settimana intermedia col peso nuovo solo sulle prime due serie.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>RPE — quanto spingere</summary>
+        <div class="body">
+          <p>RPE è quanto è stata dura la serie, su 10. In pratica: quante ripetizioni ti restavano nel serbatoio.</p>
+          <dl class="kv">
+            <dt>RPE 6</dt><dd>4 ripetizioni in riserva — settimane 1-4, Elisa quasi sempre</dd>
+            <dt>RPE 7</dt><dd>3 in riserva — lo standard di lavoro</dd>
+            <dt>RPE 8</dt><dd>2 in riserva — settimane 10-12 sui fondamentali</dd>
+            <dt>RPE 9</dt><dd>1 in riserva — solo nei test</dd>
+            <dt>RPE 10</dt><dd>cedimento — <strong>mai</strong> in questo blocco</dd>
+          </dl>
+          <p>Il cedimento è sopravvalutato: costa moltissimo in recupero e rende impossibile capire se stai progredendo. Fermarsi a due ripetizioni dal limite dà quasi la stessa crescita muscolare con metà della fatica.</p>
+          <p>Sulle macchine c'è una tentazione in più: essendo il movimento guidato, arrivare a cedimento è facile e sembra innocuo. Non lo è — vale la stessa regola.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Recuperi</summary>
+        <div class="body">
+          <dl class="kv">
+            <dt>2-3 min</dt><dd>esercizi 1 e 2 — i pesanti</dd>
+            <dt>60-90 s</dt><dd>tutto il resto</dd>
+          </dl>
+          <p>Il recupero lungo sui fondamentali non è pigrizia: serie pesanti con recuperi brevi generano fatica, non forza. Tocca il tasto col tempo su ogni esercizio per avviare il conto alla rovescia.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Perché tutto a macchine</summary>
+        <div class="body">
+          <p><strong>Fuori dal blocco: stacco da terra, squat con bilanciere, stacco rumeno con bilanciere.</strong> Sono i tre movimenti in cui una tecnica imperfetta sotto carico si paga sulla schiena, e nessuno dei due ha bisogno di correre quel rischio adesso.</p>
+          <p>Unica eccezione: la <strong>panca piana per Jacopo</strong>. Quindici anni di pratica e un massimale storico di 130 kg la rendono un movimento noto, non un rischio tecnico, ed è l'esercizio a cui è agganciato l'obiettivo di forza del blocco.</p>
+          <p><strong>Cosa si guadagna:</strong> il carico si spinge in sicurezza senza che la tecnica sia il fattore limitante, e il rischio di infortunio nelle prime 12 settimane crolla.</p>
+          <p><strong>Cosa si perde, detto onestamente:</strong> le macchine guidano il movimento, quindi non allenano stabilizzazione e coordinazione. È un prezzo accettabile per un primo blocco, non per sempre: <strong>dal Blocco 2 rientrano i pesi liberi</strong>, con una base di forza che adesso non c'è.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Le 4 cose da non sbagliare</summary>
+        <div class="body">
+          <ol>
+            <li><strong>Regolazione prima del carico.</strong> Sedile, schienale e perno si sistemano <em>prima</em> di caricare, e i numeri vanno scritti nel log (sedile 4, schienale 2, perno 3). È l'unica tecnica che le macchine richiedono, ed è quella che tutti saltano. Una macchina regolata male allena l'articolazione sbagliata.</li>
+            <li><strong>Range completo, carico ridotto.</strong> Mezza corsa alla leg press con 120 kg vale meno di una corsa completa con 70. Sulle macchine è facilissimo barare sull'escursione senza accorgersene.</li>
+            <li><strong>Discesa controllata in 2 secondi, risalita decisa in 1.</strong> La discesa è dove si costruisce il muscolo, ed è quella che tutti buttano via — sulle macchine, dove il peso torna da solo, ancora di più.</li>
+            <li><strong>Le prime 2-3 sedute fatevi seguire dal tecnico di sala</strong> su tutte le macchine della scheda. Dieci minuti del suo tempo valgono più di dieci video, perché vede <em>voi</em> su <em>quelle</em> macchine.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>Se manca una macchina</summary>
+        <div class="body">
+          <dl class="kv">
+            <dt>Hip thrust</dt><dd>hip thrust con bilanciere al multipower, o glute kickback ai cavi</dd>
+            <dt>Rematore</dt><dd>pulley basso con presa neutra</dd>
+            <dt>Pec deck</dt><dd>croci ai cavi</dd>
+            <dt>Shoulder press</dt><dd>military press con manubri, seduta con schienale</dd>
+          </dl>
+        </div>
+      </details>
+
+      <details>
+        <summary>Fuori dalla palestra</summary>
+        <div class="body">
+          <dl class="kv">
+            <dt>Proteine</dt><dd>Jacopo <strong>180 g</strong> · Elisa <strong>108 g</strong> al giorno. È il numero che decide se il lavoro fatto qui dentro diventa muscolo: sotto quella soglia l'allenamento rende una frazione di quello che potrebbe.</dd>
+            <dt>Passi</dt><dd>8.000-10.000 al giorno. Con due lavori sedentari è la leva più efficace che avete: 3.000 passi in più valgono 120-150 kcal, senza toccare il piatto.</dd>
+            <dt>Cardio</dt><dd>1-2 sessioni da 25-40 min a intensità conversazionale. La bici del sabato va benissimo, ma non il giorno prima della seduta B.</dd>
+            <dt>Sonno</dt><dd>7-8 ore. Sta alla pari della dieta, non è un dettaglio di contorno.</dd>
+          </dl>
+          <p><strong>Niente cardio intenso in questo blocco:</strong> compete col recupero dai pesi. Se serve più deficit, la leva sono i passi.</p>
+          <p>Il nuoto è un ottimo cardio ma <strong>non sostituisce</strong> una seduta di pesi: l'acqua scarica il peso dallo scheletro, il bilanciere no.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Se salti un allenamento</summary>
+        <div class="body">
+          <p>Non recuperare due sedute nello stesso giorno. Riprendi la rotazione da dove eri: se hai fatto solo A e B, la settimana dopo parti da C.</p>
+          <p>Tre sedute a settimana per 12 settimane battono cinque sedute per due settimane e poi zero, di un ordine di grandezza. La costanza <em>è</em> il programma.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Carichi e serie spuntate restano su questo telefono</strong> — i carichi in memoria, le spunte fino a mezzanotte. Ognuno vede i propri.</p>
+    <p>Consigli da preparazione atletica, non indicazioni mediche. Prima di iniziare: certificato medico non agonistico, e per gli esami del sangue di base parlatene col vostro medico.</p>
+  </footer>
+</div>
+
+<div class="rest" id="rest" hidden>
+  <span class="clock" id="clock">0:00</span>
+  <span class="lab" id="rest-lab">Recupero</span>
+  <button type="button" id="add30">+30s</button>
+  <button type="button" id="stop">Stop</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var START = new Date(2026, 8, 2); // 02/09/2026
+
+  var PHASES = [
+    { n: "1", w: "1-4",   name: "Adattamento",     lo: 1,  hi: 4,
+      note: "Carichi volutamente bassi, RPE 6-7, mai a cedimento. Si impara il movimento e si costruisce il tendine, non si inseguono i chili." },
+    { n: "2", w: "5-8",   name: "Progressione",    lo: 5,  hi: 8,
+      note: "Si applica la doppia progressione, RPE 7-8. È qui che salgono i carichi." },
+    { n: "3", w: "9",     name: "Scarico",         lo: 9,  hi: 9,
+      note: "Stessi esercizi, metà delle serie, carico −30%. Non è una settimana persa: è quando il corpo incassa il lavoro delle 8 precedenti." },
+    { n: "4", w: "10-12", name: "Intensificazione",lo: 10, hi: 12,
+      note: "RPE 8, serie principali nel range basso di ripetizioni." },
+    { n: "5", w: "13",    name: "Retest",          lo: 13, hi: 13,
+      note: "Batteria di test completa, poi si scrive il Blocco 2." }
+  ];
+
+  var SESSIONS = {
+    A: { title: "Spinta + quadricipiti", sub: "macchine + panca", ex: [
+      { id: "a1", slot: "A1", name: "Leg press",
+        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150,
+        note: "Corsa completa. Mezza corsa con tanto peso vale meno di una corsa piena con poco." },
+      { id: "a2", slot: "A2", name: { j: "Panca piana", e: "Chest press" }, alt: { j: "bilanciere", e: "macchina" },
+        sets: { j: 4, e: 3 }, reps: { j: "6-8", e: "12-15" }, rest: 150,
+        note: { j: "L'unico esercizio con bilanciere del blocco. Serie di avvicinamento obbligatorie.", e: "Maniglie all'altezza del petto, non delle spalle." } },
+      { id: "a3", slot: "A3", name: "Pulley basso", alt: "o rematore con appoggio al petto",
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
+      { id: "a4", slot: "A4", name: "Leg extension", sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 90 },
+      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri", sets: { j: 3, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
+      { id: "a6", slot: "A6", name: "Plank", sets: { j: 3, e: 3 }, reps: { j: "40-60\u2033", e: "20-30\u2033" }, rest: 60, timed: true }
+    ]},
+    B: { title: "Tirata + catena posteriore", sub: "macchine", ex: [
+      { id: "b1", slot: "B1", name: "Leg curl", alt: "macchina",
+        sets: { j: 4, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120 },
+      { id: "b2", slot: "B2", name: "Lat machine", alt: { j: "presa prona", e: "assistita, presa prona" },
+        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150 },
+      { id: "b3", slot: "B3", name: "Iperestensioni", alt: { j: "panca 45\u00b0", e: "panca 45\u00b0, corpo libero" },
+        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "10-12" }, rest: 90,
+        note: "Sostituisce lo stacco: stessa catena posteriore, zero carico sulla colonna. Si sale fino all'allineamento del busto, non oltre." },
+      { id: "b4", slot: "B4", name: "Shoulder press", alt: "macchina", sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
+      { id: "b5", slot: "B5", name: "Curl bicipiti", alt: "manubri o cavi", sets: { j: 3, e: 2 }, reps: { j: "10-12", e: "12-15" }, rest: 60 },
+      { id: "b6", slot: "B6", name: "Dead bug", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "8 / lato" }, rest: 45 }
+    ]},
+    C: { title: "Mista", sub: "glutei + parte alta", ex: [
+      { id: "c1", slot: "C1", name: "Hip thrust", alt: "macchina o glute drive",
+        sets: { j: 4, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 150 },
+      { id: "c2", slot: "C2", name: { j: "Panca inclinata manubri", e: "Pec deck" }, alt: { j: "", e: "macchina" },
+        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 120 },
+      { id: "c3", slot: "C3", name: "Rematore alla macchina", alt: "presa neutra",
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
+      { id: "c4", slot: "C4", name: "Leg press unilaterale", alt: "una gamba per volta",
+        sets: { j: 3, e: 3 }, reps: { j: "10 / gamba", e: "12 / gamba" }, rest: 90 },
+      { id: "c5", slot: "C5", name: "Pushdown tricipiti", alt: "ai cavi", sets: { j: 3, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
+      { id: "c6", slot: "C6", name: "Pallof press", alt: "ai cavi", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "10 / lato" }, rest: 45 }
+    ]}
+  };
+
+  var NAMES = { j: "Jacopo", e: "Elisa" };
+  var person = "j";
+  var session = "A";
+
+  /* ---- storage, always guarded ---- */
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function today() { return new Date().toISOString().slice(0, 10); }
+
+  function doneKey() { return "fit.done." + person + "." + session; }
+  function readDone() {
+    try {
+      var raw = JSON.parse(get(doneKey()) || "null");
+      if (!raw || raw.d !== today()) return {};
+      return raw.v || {};
+    } catch (e) { return {}; }
+  }
+  function writeDone(v) { set(doneKey(), JSON.stringify({ d: today(), v: v })); }
+
+  function pick(field, ex) {
+    var v = ex[field];
+    if (v === undefined || v === null) return "";
+    return (typeof v === "object") ? (v[person] || "") : v;
+  }
+
+  /* ---- phase strip ---- */
+  function currentWeek() {
+    var days = Math.floor((new Date() - START) / 86400000);
+    return days < 0 ? 1 : Math.floor(days / 7) + 1;
+  }
+
+  function renderPhases() {
+    var wk = currentWeek();
+    var strip = document.getElementById("phases");
+    var now = document.getElementById("now");
+    strip.innerHTML = "";
+    var active = null;
+
+    PHASES.forEach(function (p) {
+      var el = document.createElement("div");
+      el.className = "ph";
+      el.innerHTML = "<b>" + p.name.slice(0, 3).toUpperCase() + "</b>sett " + p.w;
+      el.title = p.name;
+      if (wk >= p.lo && wk <= p.hi) { el.classList.add("on"); active = p; }
+      strip.appendChild(el);
+    });
+
+    if (active) {
+      now.innerHTML = "<strong>Settimana " + wk + " · " + active.name + "</strong>";
+      now.appendChild(document.createTextNode(active.note));
+    } else {
+      now.innerHTML = "<strong>Settimana " + wk + "</strong>";
+      now.appendChild(document.createTextNode(
+        "Il Blocco 1 è chiuso. Rifai la batteria di test e riscrivi la scheda sui dati reali."));
+    }
+  }
+
+  /* ---- exercise list ---- */
+  function render() {
+    var s = SESSIONS[session];
+    var done = readDone();
+    document.getElementById("s-title").textContent = s.title;
+    document.getElementById("s-sub").textContent = s.sub;
+    document.getElementById("badge").textContent = NAMES[person];
+
+    var list = document.getElementById("list");
+    list.innerHTML = "";
+
+    s.ex.forEach(function (ex) {
+      var nSets = ex.sets[person];
+      var reps = ex.reps[person];
+      var alt = pick("alt", ex);
+      var note = pick("note", ex);
+
+      var card = document.createElement("article");
+      card.className = "ex";
+
+      var top = document.createElement("div");
+      top.className = "ex-top";
+      top.innerHTML =
+        '<div class="slot">' + ex.slot + "</div>" +
+        '<div class="ex-name">' + pick("name", ex) +
+          (alt ? '<span class="ex-alt">' + alt + "</span>" : "") + "</div>" +
+        '<div class="pres">' + nSets + " × " + reps +
+          "<small>" + (ex.timed ? "serie × tempo" : "serie × rip") + "</small></div>";
+      card.appendChild(top);
+
+      if (note) {
+        var n = document.createElement("p");
+        n.className = "ex-note";
+        n.textContent = note;
+        card.appendChild(n);
+      }
+
+      var bot = document.createElement("div");
+      bot.className = "ex-bot";
+
+      var pips = document.createElement("div");
+      pips.className = "pips";
+      for (var i = 1; i <= nSets; i++) {
+        (function (i) {
+          var key = ex.id + "." + i;
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "pip";
+          b.textContent = i;
+          b.setAttribute("aria-pressed", done[key] ? "true" : "false");
+          b.setAttribute("aria-label", "Serie " + i + " di " + nSets);
+          b.addEventListener("click", function () {
+            var d = readDone();
+            if (d[key]) { delete d[key]; b.setAttribute("aria-pressed", "false"); }
+            else { d[key] = 1; b.setAttribute("aria-pressed", "true"); startRest(ex.rest, pick("name", ex)); }
+            writeDone(d);
+          });
+          pips.appendChild(b);
+        })(i);
+      }
+      bot.appendChild(pips);
+      bot.appendChild(Object.assign(document.createElement("span"), { className: "spacer" }));
+
+      if (!ex.timed) {
+        var lk = "fit.load." + person + "." + ex.id;
+        var inp = document.createElement("input");
+        inp.className = "load";
+        inp.type = "text";
+        inp.inputMode = "decimal";
+        inp.placeholder = "kg";
+        inp.value = get(lk) || "";
+        inp.setAttribute("aria-label", "Carico usato — " + pick("name", ex));
+        inp.addEventListener("input", function () { set(lk, inp.value); });
+        bot.appendChild(inp);
+      }
+
+      var t = document.createElement("button");
+      t.type = "button";
+      t.className = "timer-btn";
+      t.textContent = fmt(ex.rest);
+      t.setAttribute("aria-label", "Avvia recupero di " + fmt(ex.rest));
+      t.addEventListener("click", function () { startRest(ex.rest, pick("name", ex)); });
+      bot.appendChild(t);
+
+      card.appendChild(bot);
+      list.appendChild(card);
+    });
+  }
+
+  /* ---- rest timer ---- */
+  var left = 0, tick = null;
+  var bar = document.getElementById("rest");
+  var clock = document.getElementById("clock");
+  var lab = document.getElementById("rest-lab");
+
+  function fmt(s) {
+    var m = Math.floor(s / 60);
+    var r = s % 60;
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  }
+
+  function paint() { clock.textContent = fmt(Math.max(0, left)); }
+
+  function startRest(secs, name) {
+    left = secs;
+    bar.hidden = false;
+    bar.classList.remove("done");
+    lab.textContent = "Recupero · " + name;
+    paint();
+    if (tick) clearInterval(tick);
+    tick = setInterval(function () {
+      left--;
+      paint();
+      if (left <= 0) {
+        clearInterval(tick); tick = null;
+        bar.classList.add("done");
+        lab.textContent = "Pronto — vai con la prossima serie";
+        try { if (navigator.vibrate) navigator.vibrate([220, 90, 220]); } catch (e) {}
+      }
+    }, 1000);
+  }
+
+  function stopRest() {
+    if (tick) clearInterval(tick);
+    tick = null;
+    bar.hidden = true;
+    bar.classList.remove("done");
+  }
+
+  document.getElementById("stop").addEventListener("click", stopRest);
+  document.getElementById("add30").addEventListener("click", function () {
+    if (bar.classList.contains("done")) { startRest(30, lab.textContent); return; }
+    left += 30; paint();
+  });
+
+  /* ---- controls ---- */
+  document.querySelectorAll("[data-person]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      person = b.dataset.person;
+      set("fit.person", person);
+      document.querySelectorAll("[data-person]").forEach(function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-session]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      session = b.dataset.session;
+      document.querySelectorAll("[data-session]").forEach(function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      render();
+      window.scrollTo({ top: document.querySelector(".tabbar").offsetTop, behavior: "smooth" });
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function () {
+    writeDone({});
+    render();
+  });
+
+  /* ---- init ---- */
+  var saved = get("fit.person");
+  if (saved === "e" || saved === "j") person = saved;
+  document.querySelectorAll("[data-person]").forEach(function (o) {
+    o.setAttribute("aria-pressed", String(o.dataset.person === person));
+  });
+
+  renderPhases();
+  render();
+})();
+</script>
+
+</body>
+</html>

@@ -271,6 +271,94 @@
   }
   .timer-btn:hover { color: var(--accent); border-color: var(--accent); }
 
+
+  /* ---- RPE + salvataggio ---- */
+  .ex-rpe {
+    display: flex; align-items: center; gap: 6px;
+    margin: 9px 0 0 41px; flex-wrap: wrap;
+  }
+  .ex-rpe .lbl {
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+    margin-right: 2px;
+  }
+  .rpe {
+    width: 36px; height: 34px; border-radius: 7px;
+    border: 1.5px solid var(--line); background: var(--surface-2);
+    color: var(--ink-3); cursor: pointer;
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
+    transition: background .12s, color .12s, border-color .12s;
+  }
+  .rpe[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+  :root[data-theme="dark"] .rpe[aria-pressed="true"] { color: #0E1A24; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .rpe[aria-pressed="true"] { color: #0E1A24; }
+  }
+
+  .savebar {
+    margin: 16px 0 0; padding: 14px;
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .savebar .info { flex: 1; min-width: 150px; font-size: 12.5px; color: var(--ink-2); }
+  .savebar .info b { color: var(--ink); }
+  .save {
+    min-height: 46px; padding: 0 18px;
+    background: var(--ink); color: var(--ground);
+    border: 1px solid var(--ink); border-radius: 8px; cursor: pointer;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    font-size: 16px; font-weight: 600;
+  }
+  .save:disabled { opacity: .45; cursor: default; }
+  .save.ok { background: var(--done); border-color: var(--done); }
+
+  .sync {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .sync::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink-3); flex: none;
+  }
+  .sync.live { color: var(--done); }
+  .sync.live::before { background: var(--done); }
+
+  .dump {
+    width: 100%; margin: 10px 0 0; min-height: 110px; resize: vertical;
+    background: var(--ground); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px; line-height: 1.55;
+    white-space: pre; overflow-x: auto;
+  }
+  .dump[hidden] { display: none !important; }
+
+
+  /* ---- configurazione sincronizzazione ---- */
+  .cfg { margin: 10px 0 0; }
+  .cfg summary {
+    padding: 10px 0; font-family: "IBM Plex Mono", monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-3);
+    justify-content: flex-start; gap: 8px;
+  }
+  .cfg summary::after { font-size: 15px; }
+  .cfg[open] summary { border-bottom: none; }
+  .cfg { background: none; border: none; border-radius: 0; }
+  .cfg .body { padding: 0 0 6px; }
+  .cfg label {
+    display: block; margin-bottom: 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .cfg input {
+    display: block; width: 100%; margin-top: 5px; min-height: 42px; padding: 0 11px;
+    background: var(--ground); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 7px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+  }
+
   /* ---- rest timer bar ---- */
   .rest {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
@@ -362,7 +450,7 @@
   <header>
     <p class="eyebrow">Blocco 1 <span>12 settimane</span> <span>dal 02.09.2026</span></p>
     <h1>Scheda Jacopo &amp; Elisa</h1>
-    <p class="lede">Tre sedute a settimana in rotazione A → B → C, costruite sui macchinari. Stessa impalcatura per entrambi, carichi e volume diversi.</p>
+    <p class="lede">Tre sedute a settimana in rotazione A → B → C, costruite sui macchinari. Stesso numero di serie per entrambi, così si alterna e nessuno aspetta.</p>
 
     <div class="phases" id="phases"></div>
     <div class="now" id="now"></div>
@@ -394,6 +482,26 @@
       <button type="button" class="reset" id="reset">Azzera serie</button>
     </div>
     <div class="ex-list" id="list"></div>
+
+    <div class="savebar">
+      <div class="info" id="save-info">Spunta le serie mentre ti alleni, poi salva.</div>
+      <span class="sync" id="sync">solo su questo telefono</span>
+      <button type="button" class="save" id="save">Salva seduta</button>
+    </div>
+    <textarea class="dump" id="dump" hidden readonly aria-label="Log della seduta da copiare"></textarea>
+
+    <details class="cfg">
+      <summary>Sincronizzazione</summary>
+      <div class="body">
+        <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px">Compilati una volta, restano su questo telefono. Con entrambi i campi pieni, &ldquo;Salva seduta&rdquo; manda i dati direttamente a Claude; se sono vuoti, ti copia il log da incollare in chat.</p>
+        <label>Endpoint
+          <input type="url" id="cfg-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://…/api/log">
+        </label>
+        <label>Passphrase
+          <input type="password" id="cfg-secret" autocomplete="off" placeholder="••••••••">
+        </label>
+      </div>
+    </details>
   </main>
 
   <section class="ref">
@@ -418,10 +526,10 @@
           <p>È l'unica regola di progressione che serve sapere, e vale per entrambi. Preso il range di ripetizioni della scheda: <strong>aggiungi ripetizioni</strong> finché non arrivi al numero alto su <strong>tutte</strong> le serie con RPE ≤ 8. Quando ci arrivi, <strong>aggiungi carico</strong> e torni al numero basso.</p>
           <div class="step">Leg press, range 8-10
 
-sett. 1   100 kg ×  8,  8,  8,  8   → +rip
-sett. 2   100 kg × 10, 10,  9,  9   → +rip
-sett. 3   100 kg × 10, 10, 10, 10   → +carico
-sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
+sett. 1   100 kg ×  8,  8,  8   → +rip
+sett. 2   100 kg × 10, 10,  9   → +rip
+sett. 3   100 kg × 10, 10, 10   → +carico
+sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           <p><strong>Incrementi:</strong> sulle macchine a piastre <strong>un foro per volta</strong> (di solito 5 kg) · +2,5 kg sulla panca · manubrio successivo sui manubri. Molte macchine hanno piastrine da 1,25-2,5 kg se il foro è un salto troppo grosso.</p>
           <p>Elisa: partendo dai carichi più bassi delle macchine, un solo foro può valere il 20-30% in più. Se il salto è troppo, fai una settimana intermedia col peso nuovo solo sulle prime due serie.</p>
         </div>
@@ -440,6 +548,15 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
           </dl>
           <p>Il cedimento è sopravvalutato: costa moltissimo in recupero e rende impossibile capire se stai progredendo. Fermarsi a due ripetizioni dal limite dà quasi la stessa crescita muscolare con metà della fatica.</p>
           <p>Sulle macchine c'è una tentazione in più: essendo il movimento guidato, arrivare a cedimento è facile e sembra innocuo. Non lo è — vale la stessa regola.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Allenarsi in coppia</summary>
+        <div class="body">
+          <p><strong>Stesso numero di serie per entrambi</strong>, così si alterna sulla stessa macchina: uno lavora, l’altro recupera, e nessuno aspetta. Cambia solo il carico — sulle macchine a piastre si sposta in cinque secondi, ed è il motivo per cui questo blocco è costruito così.</p>
+          <p>Il recupero di uno è la serie dell’altro, quindi i tempi tornano da soli: sui primi due esercizi, con una serie a testa in mezzo, il recupero effettivo è attorno ai 2-3 minuti richiesti.</p>
+          <p><strong>Nota per Jacopo:</strong> passare da 4 a 3 serie sui fondamentali toglie poco. Con 15 anni di discontinuità alle spalle il fattore limitante è la costanza, non il volume, e allenarsi in due è la leva più forte sulla costanza che esista. Se a settimana 8 i carichi sono ancora in crescita, il volume va bene com’è; se serve aggiungerlo, il posto giusto è il Blocco 2.</p>
         </div>
       </details>
 
@@ -548,39 +665,39 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
   var SESSIONS = {
     A: { title: "Spinta + quadricipiti", sub: "macchine + panca", ex: [
       { id: "a1", slot: "A1", name: "Leg press",
-        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150,
+        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150,
         note: "Corsa completa. Mezza corsa con tanto peso vale meno di una corsa piena con poco." },
       { id: "a2", slot: "A2", name: { j: "Panca piana", e: "Chest press" }, alt: { j: "bilanciere", e: "macchina" },
-        sets: { j: 4, e: 3 }, reps: { j: "6-8", e: "12-15" }, rest: 150,
+        sets: { j: 3, e: 3 }, reps: { j: "6-8", e: "12-15" }, rest: 150,
         note: { j: "L'unico esercizio con bilanciere del blocco. Serie di avvicinamento obbligatorie.", e: "Maniglie all'altezza del petto, non delle spalle." } },
       { id: "a3", slot: "A3", name: "Pulley basso", alt: "o rematore con appoggio al petto",
         sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
       { id: "a4", slot: "A4", name: "Leg extension", sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 90 },
-      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri", sets: { j: 3, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
+      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri", sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
       { id: "a6", slot: "A6", name: "Plank", sets: { j: 3, e: 3 }, reps: { j: "40-60\u2033", e: "20-30\u2033" }, rest: 60, timed: true }
     ]},
     B: { title: "Tirata + catena posteriore", sub: "macchine", ex: [
       { id: "b1", slot: "B1", name: "Leg curl", alt: "macchina",
-        sets: { j: 4, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120 },
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120 },
       { id: "b2", slot: "B2", name: "Lat machine", alt: { j: "presa prona", e: "assistita, presa prona" },
-        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150 },
+        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150 },
       { id: "b3", slot: "B3", name: "Iperestensioni", alt: { j: "panca 45\u00b0", e: "panca 45\u00b0, corpo libero" },
         sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "10-12" }, rest: 90,
         note: "Sostituisce lo stacco: stessa catena posteriore, zero carico sulla colonna. Si sale fino all'allineamento del busto, non oltre." },
       { id: "b4", slot: "B4", name: "Shoulder press", alt: "macchina", sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
-      { id: "b5", slot: "B5", name: "Curl bicipiti", alt: "manubri o cavi", sets: { j: 3, e: 2 }, reps: { j: "10-12", e: "12-15" }, rest: 60 },
+      { id: "b5", slot: "B5", name: "Curl bicipiti", alt: "manubri o cavi", sets: { j: 2, e: 2 }, reps: { j: "10-12", e: "12-15" }, rest: 60 },
       { id: "b6", slot: "B6", name: "Dead bug", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "8 / lato" }, rest: 45 }
     ]},
     C: { title: "Mista", sub: "glutei + parte alta", ex: [
       { id: "c1", slot: "C1", name: "Hip thrust", alt: "macchina o glute drive",
-        sets: { j: 4, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 150 },
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 150 },
       { id: "c2", slot: "C2", name: { j: "Panca inclinata manubri", e: "Pec deck" }, alt: { j: "", e: "macchina" },
-        sets: { j: 4, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 120 },
+        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 120 },
       { id: "c3", slot: "C3", name: "Rematore alla macchina", alt: "presa neutra",
         sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
       { id: "c4", slot: "C4", name: "Leg press unilaterale", alt: "una gamba per volta",
         sets: { j: 3, e: 3 }, reps: { j: "10 / gamba", e: "12 / gamba" }, rest: 90 },
-      { id: "c5", slot: "C5", name: "Pushdown tricipiti", alt: "ai cavi", sets: { j: 3, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
+      { id: "c5", slot: "C5", name: "Pushdown tricipiti", alt: "ai cavi", sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
       { id: "c6", slot: "C6", name: "Pallof press", alt: "ai cavi", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "10 / lato" }, rest: 45 }
     ]}
   };
@@ -589,31 +706,82 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
   var person = "j";
   var session = "A";
 
-  /* ---- storage, always guarded ---- */
-  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-  function today() { return new Date().toISOString().slice(0, 10); }
+  var DB = null;              // namespace db, quando questa vista lo concede
+  var loads = { j: {}, e: {} };
+  var rpes  = { j: {}, e: {} };
+  var unsubLoads = null;
+  var flushTimer = null;
 
+  function noop() {}
+
+  /* ---- storage locale, sempre protetto ---- */
+  function lget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function jparse(raw, fallback) {
+    try { var v = JSON.parse(raw); return (v && typeof v === "object") ? v : fallback; }
+    catch (e) { return fallback; }
+  }
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  /* ---- serie spuntate: sempre locali, per dispositivo e per giorno ---- */
   function doneKey() { return "fit.done." + person + "." + session; }
   function readDone() {
-    try {
-      var raw = JSON.parse(get(doneKey()) || "null");
-      if (!raw || raw.d !== today()) return {};
-      return raw.v || {};
-    } catch (e) { return {}; }
+    var raw = jparse(lget(doneKey()), null);
+    if (!raw || raw.d !== today()) return {};
+    return raw.v || {};
   }
-  function writeDone(v) { set(doneKey(), JSON.stringify({ d: today(), v: v })); }
+  function writeDone(v) { lset(doneKey(), JSON.stringify({ d: today(), v: v })); }
 
-  function pick(field, ex) {
-    var v = ex[field];
-    if (v === undefined || v === null) return "";
-    return (typeof v === "object") ? (v[person] || "") : v;
+  /* ---- carichi e RPE: db se c'e', altrimenti locale ---- */
+  function localLoads(p) { return jparse(lget("fit.loads." + p), {}); }
+  function localRpes(p)  { return jparse(lget("fit.rpes." + p), {}); }
+
+  function scheduleFlush() {
+    if (flushTimer) clearTimeout(flushTimer);
+    flushTimer = setTimeout(flushLoads, 800);
   }
 
-  /* ---- phase strip ---- */
+  function flushLoads() {
+    flushTimer = null;
+    var body = { carichi: loads[person], rpe: rpes[person], aggiornato: new Date().toISOString() };
+    if (DB) {
+      DB.doc("carichi/" + person).set(body).catch(noop);
+    } else {
+      lset("fit.loads." + person, JSON.stringify(loads[person]));
+      lset("fit.rpes." + person, JSON.stringify(rpes[person]));
+    }
+  }
+
+  function subscribeLoads() {
+    if (unsubLoads) { unsubLoads(); unsubLoads = null; }
+    if (!DB) return;
+    var p = person;
+    unsubLoads = DB.doc("carichi/" + p).onSnapshot(function (snap) {
+      if (!snap.exists) return;
+      var d = snap.data() || {};
+      // non sovrascrivere il campo che l'utente sta digitando in questo momento
+      var focused = document.activeElement;
+      var skip = (focused && focused.classList && focused.classList.contains("load")) ? focused.dataset.ex : null;
+      loads[p] = Object.assign({}, d.carichi || {});
+      rpes[p]  = Object.assign({}, d.rpe || {});
+      if (p === person) refreshInputs(skip);
+    }, noop);
+  }
+
+  /* ---- fase corrente ---- */
   function currentWeek() {
     var days = Math.floor((new Date() - START) / 86400000);
     return days < 0 ? 1 : Math.floor(days / 7) + 1;
+  }
+  function currentPhase() {
+    var wk = currentWeek();
+    for (var i = 0; i < PHASES.length; i++) {
+      if (wk >= PHASES[i].lo && wk <= PHASES[i].hi) return PHASES[i];
+    }
+    return null;
   }
 
   function renderPhases() {
@@ -621,41 +789,68 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
     var strip = document.getElementById("phases");
     var now = document.getElementById("now");
     strip.innerHTML = "";
-    var active = null;
+    var active = currentPhase();
 
-    PHASES.forEach(function (p) {
+    PHASES.forEach(function (ph) {
       var el = document.createElement("div");
       el.className = "ph";
-      el.innerHTML = "<b>" + p.name.slice(0, 3).toUpperCase() + "</b>sett " + p.w;
-      el.title = p.name;
-      if (wk >= p.lo && wk <= p.hi) { el.classList.add("on"); active = p; }
+      el.innerHTML = "<b>" + ph.name.slice(0, 3).toUpperCase() + "</b>sett " + ph.w;
+      el.title = ph.name;
+      if (ph === active) el.classList.add("on");
       strip.appendChild(el);
     });
 
     if (active) {
-      now.innerHTML = "<strong>Settimana " + wk + " · " + active.name + "</strong>";
+      now.innerHTML = "<strong>Settimana " + wk + " \u00b7 " + active.name + "</strong>";
       now.appendChild(document.createTextNode(active.note));
     } else {
       now.innerHTML = "<strong>Settimana " + wk + "</strong>";
       now.appendChild(document.createTextNode(
-        "Il Blocco 1 è chiuso. Rifai la batteria di test e riscrivi la scheda sui dati reali."));
+        "Il Blocco 1 \u00e8 chiuso. Rifai la batteria di test e riscrivi la scheda sui dati reali."));
     }
   }
 
-  /* ---- exercise list ---- */
+  /* ---- helper esercizi ---- */
+  function pick(field, ex) {
+    var v = ex[field];
+    if (v === undefined || v === null) return "";
+    return (typeof v === "object") ? (v[person] || "") : v;
+  }
+  function exName(ex) {
+    var n = ex.name;
+    return (typeof n === "object") ? n[person] : n;
+  }
+  function countDone(done, ex) {
+    var n = 0;
+    for (var i = 1; i <= ex.sets[person]; i++) if (done[ex.id + "." + i]) n++;
+    return n;
+  }
+
+  function refreshInputs(skipId) {
+    document.querySelectorAll(".load").forEach(function (inp) {
+      if (inp.dataset.ex === skipId) return;
+      var v = loads[person][inp.dataset.ex];
+      inp.value = (v === undefined || v === null) ? "" : v;
+    });
+    document.querySelectorAll(".rpe").forEach(function (b) {
+      var cur = rpes[person][b.dataset.ex];
+      b.setAttribute("aria-pressed", String(String(cur) === b.dataset.rpe));
+    });
+  }
+
+  /* ---- lista esercizi ---- */
   function render() {
-    var s = SESSIONS[session];
+    var sess = SESSIONS[session];
     var done = readDone();
-    document.getElementById("s-title").textContent = s.title;
-    document.getElementById("s-sub").textContent = s.sub;
+    document.getElementById("s-title").textContent = sess.title;
+    document.getElementById("s-sub").textContent = sess.sub;
     document.getElementById("badge").textContent = NAMES[person];
 
     var list = document.getElementById("list");
     list.innerHTML = "";
 
-    s.ex.forEach(function (ex) {
+    sess.ex.forEach(function (ex) {
       var nSets = ex.sets[person];
-      var reps = ex.reps[person];
       var alt = pick("alt", ex);
       var note = pick("note", ex);
 
@@ -666,10 +861,10 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
       top.className = "ex-top";
       top.innerHTML =
         '<div class="slot">' + ex.slot + "</div>" +
-        '<div class="ex-name">' + pick("name", ex) +
+        '<div class="ex-name">' + exName(ex) +
           (alt ? '<span class="ex-alt">' + alt + "</span>" : "") + "</div>" +
-        '<div class="pres">' + nSets + " × " + reps +
-          "<small>" + (ex.timed ? "serie × tempo" : "serie × rip") + "</small></div>";
+        '<div class="pres">' + nSets + " \u00d7 " + ex.reps[person] +
+          "<small>" + (ex.timed ? "serie \u00d7 tempo" : "serie \u00d7 rip") + "</small></div>";
       card.appendChild(top);
 
       if (note) {
@@ -681,6 +876,11 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
 
       var bot = document.createElement("div");
       bot.className = "ex-bot";
+
+      var rpeRow = document.createElement("div");
+      rpeRow.className = "ex-rpe";
+      rpeRow.hidden = countDone(done, ex) === 0;
+      rpeRow.innerHTML = '<span class="lbl">RPE</span>';
 
       var pips = document.createElement("div");
       pips.className = "pips";
@@ -696,8 +896,14 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
           b.addEventListener("click", function () {
             var d = readDone();
             if (d[key]) { delete d[key]; b.setAttribute("aria-pressed", "false"); }
-            else { d[key] = 1; b.setAttribute("aria-pressed", "true"); startRest(ex.rest, pick("name", ex)); }
+            else {
+              d[key] = 1;
+              b.setAttribute("aria-pressed", "true");
+              startRest(ex.rest, exName(ex));
+            }
             writeDone(d);
+            rpeRow.hidden = countDone(d, ex) === 0;
+            updateSaveInfo();
           });
           pips.appendChild(b);
         })(i);
@@ -706,15 +912,21 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
       bot.appendChild(Object.assign(document.createElement("span"), { className: "spacer" }));
 
       if (!ex.timed) {
-        var lk = "fit.load." + person + "." + ex.id;
         var inp = document.createElement("input");
         inp.className = "load";
         inp.type = "text";
         inp.inputMode = "decimal";
         inp.placeholder = "kg";
-        inp.value = get(lk) || "";
-        inp.setAttribute("aria-label", "Carico usato — " + pick("name", ex));
-        inp.addEventListener("input", function () { set(lk, inp.value); });
+        inp.dataset.ex = ex.id;
+        var cur = loads[person][ex.id];
+        inp.value = (cur === undefined || cur === null) ? "" : cur;
+        inp.setAttribute("aria-label", "Carico usato \u2014 " + exName(ex));
+        inp.addEventListener("input", function () {
+          var v = inp.value.trim();
+          if (v === "") delete loads[person][ex.id];
+          else loads[person][ex.id] = v;
+          scheduleFlush();
+        });
         bot.appendChild(inp);
       }
 
@@ -723,33 +935,240 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
       t.className = "timer-btn";
       t.textContent = fmt(ex.rest);
       t.setAttribute("aria-label", "Avvia recupero di " + fmt(ex.rest));
-      t.addEventListener("click", function () { startRest(ex.rest, pick("name", ex)); });
+      t.addEventListener("click", function () { startRest(ex.rest, exName(ex)); });
       bot.appendChild(t);
 
       card.appendChild(bot);
+
+      [6, 7, 8, 9].forEach(function (v) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "rpe";
+        b.textContent = v;
+        b.dataset.ex = ex.id;
+        b.dataset.rpe = String(v);
+        b.setAttribute("aria-pressed", String(rpes[person][ex.id] === v));
+        b.setAttribute("aria-label", "RPE " + v + " su " + exName(ex));
+        b.addEventListener("click", function () {
+          if (rpes[person][ex.id] === v) delete rpes[person][ex.id];
+          else rpes[person][ex.id] = v;
+          rpeRow.querySelectorAll(".rpe").forEach(function (o) {
+            o.setAttribute("aria-pressed", String(rpes[person][ex.id] === Number(o.dataset.rpe)));
+          });
+          scheduleFlush();
+        });
+        rpeRow.appendChild(b);
+      });
+      card.appendChild(rpeRow);
+
       list.appendChild(card);
     });
+
+    updateSaveInfo();
   }
 
-  /* ---- rest timer ---- */
+  /* ---- configurazione endpoint ---- */
+  function cfg() {
+    return {
+      url: (lget("fit.sync.url") || "").trim(),
+      secret: (lget("fit.sync.secret") || "").trim()
+    };
+  }
+  function syncReady() {
+    var c = cfg();
+    return c.url.indexOf("https://") === 0 && c.secret.length > 0;
+  }
+  function initCfgFields() {
+    var c = cfg();
+    var u = document.getElementById("cfg-url");
+    var k = document.getElementById("cfg-secret");
+    u.value = c.url;
+    k.value = c.secret;
+    u.addEventListener("input", function () { lset("fit.sync.url", u.value.trim()); paintSync(); });
+    k.addEventListener("input", function () { lset("fit.sync.secret", k.value.trim()); paintSync(); });
+  }
+  function paintSync() {
+    var chip = document.getElementById("sync");
+    if (syncReady()) {
+      chip.className = "sync live";
+      chip.textContent = "sincronizzato";
+    } else {
+      chip.className = "sync";
+      chip.textContent = "solo su questo telefono";
+    }
+  }
+
+  /* ---- salvataggio seduta ---- */
+  function sessionPayload() {
+    var done = readDone();
+    var ph = currentPhase();
+    return {
+      persona: NAMES[person],
+      personaId: person,
+      data: today(),
+      seduta: session,
+      settimana: currentWeek(),
+      fase: ph ? ph.name : "fuori blocco",
+      esercizi: SESSIONS[session].ex.map(function (ex) {
+        return {
+          id: ex.id,
+          slot: ex.slot,
+          nome: exName(ex),
+          serie_previste: ex.sets[person],
+          ripetizioni: String(ex.reps[person]),
+          serie_fatte: countDone(done, ex),
+          carico_kg: loads[person][ex.id] || null,
+          rpe: rpes[person][ex.id] || null
+        };
+      }),
+      salvato: new Date().toISOString()
+    };
+  }
+
+  function csvDump() {
+    var pl = sessionPayload();
+    var rows = ["data,persona,seduta,esercizio,serie,ripetizioni,carico_kg,rpe,note"];
+    pl.esercizi.forEach(function (e) {
+      if (!e.serie_fatte && !e.carico_kg) return;
+      rows.push([pl.data, pl.personaId, pl.seduta, e.nome,
+        e.serie_fatte + "/" + e.serie_previste, e.ripetizioni,
+        e.carico_kg || "", e.rpe || "", ""].join(","));
+    });
+    return rows.join("\n");
+  }
+
+  function updateSaveInfo() {
+    var done = readDone();
+    var total = 0, fatte = 0;
+    SESSIONS[session].ex.forEach(function (ex) {
+      total += ex.sets[person];
+      fatte += countDone(done, ex);
+    });
+    var info = document.getElementById("save-info");
+    var btn = document.getElementById("save");
+    if (fatte === 0) {
+      info.textContent = "Spunta le serie mentre ti alleni, poi salva.";
+      btn.disabled = true;
+    } else {
+      info.innerHTML = "Seduta <b>" + session + "</b> di " + NAMES[person] +
+        ": <b>" + fatte + "</b> serie su " + total + " spuntate.";
+      btn.disabled = false;
+    }
+    btn.classList.remove("ok");
+    btn.textContent = "Salva seduta";
+  }
+
+  function showDump(info, msg) {
+    var dump = document.getElementById("dump");
+    dump.value = csvDump();
+    dump.hidden = false;
+    info.innerHTML = msg;
+  }
+
+  function onSave() {
+    var btn = document.getElementById("save");
+    var info = document.getElementById("save-info");
+    var dump = document.getElementById("dump");
+
+    if (syncReady()) {
+      var c = cfg();
+      btn.disabled = true;
+      btn.textContent = "Invio\u2026";
+      var ctrl = new AbortController();
+      var killer = setTimeout(function () { ctrl.abort(); }, 15000);
+
+      fetch(c.url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret: c.secret, seduta: sessionPayload() }),
+        signal: ctrl.signal
+      }).then(function (r) {
+        clearTimeout(killer);
+        if (r.ok) {
+          btn.classList.add("ok");
+          btn.textContent = "Inviata";
+          info.innerHTML = "<b>Inviata.</b> La seduta \u00e8 nel repo <code>fit-log</code>: la leggo da l\u00ec.";
+          return;
+        }
+        btn.disabled = false;
+        btn.textContent = "Riprova";
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (j.error === "bad_secret") {
+            info.innerHTML = "<b>Passphrase sbagliata.</b> Correggila in Sincronizzazione qui sotto.";
+          } else if (j.error === "server_not_configured") {
+            info.innerHTML = "<b>Endpoint non configurato lato server.</b> Mancano le variabili su Vercel.";
+          } else {
+            showDump(info, "<b>Invio non riuscito</b> (" + (j.error || r.status) + "). Intanto copia il log qui sotto.");
+          }
+        });
+      }).catch(function (e) {
+        clearTimeout(killer);
+        btn.disabled = false;
+        btn.textContent = "Riprova";
+        showDump(info, e && e.name === "AbortError"
+          ? "<b>Timeout.</b> Rete lenta: copia il log qui sotto e riprova dopo."
+          : "<b>Endpoint non raggiungibile.</b> Copia il log qui sotto.");
+      });
+      return;
+    }
+
+    if (DB) {
+      btn.disabled = true;
+      btn.textContent = "Salvo\u2026";
+      DB.doc("sessioni/" + person + "-" + today() + "-" + session).set(sessionPayload())
+        .then(function () {
+          btn.classList.add("ok");
+          btn.textContent = "Salvata";
+          info.innerHTML = "<b>Salvata.</b> La seduta \u00e8 sul database dell\u2019artifact: la rileggo da qui.";
+        })
+        .catch(function (e) {
+          btn.disabled = false;
+          btn.textContent = "Riprova";
+          info.textContent = (e && e.code === "rate_limited")
+            ? "Troppe richieste, riprova tra qualche secondo."
+            : "Salvataggio non riuscito. Intanto copia il log qui sotto.";
+          dump.value = csvDump();
+          dump.hidden = false;
+        });
+      return;
+    }
+
+    // versione statica: nessun database, si copia il log
+    dump.value = csvDump();
+    dump.hidden = false;
+    dump.select();
+    var copied = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(dump.value);
+        copied = true;
+      }
+    } catch (e) {}
+    btn.classList.add("ok");
+    btn.textContent = copied ? "Copiato" : "Copia sotto";
+    info.innerHTML = copied
+      ? "<b>Log copiato.</b> Incollalo in chat e lo registro io."
+      : "<b>Seleziona il testo qui sotto</b> e incollalo in chat.";
+  }
+
+  /* ---- timer di recupero ---- */
   var left = 0, tick = null;
   var bar = document.getElementById("rest");
   var clock = document.getElementById("clock");
   var lab = document.getElementById("rest-lab");
 
-  function fmt(s) {
-    var m = Math.floor(s / 60);
-    var r = s % 60;
+  function fmt(sec) {
+    var m = Math.floor(sec / 60);
+    var r = sec % 60;
     return m + ":" + (r < 10 ? "0" : "") + r;
   }
-
   function paint() { clock.textContent = fmt(Math.max(0, left)); }
 
   function startRest(secs, name) {
     left = secs;
     bar.hidden = false;
     bar.classList.remove("done");
-    lab.textContent = "Recupero · " + name;
+    lab.textContent = "Recupero \u00b7 " + name;
     paint();
     if (tick) clearInterval(tick);
     tick = setInterval(function () {
@@ -758,12 +1177,11 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
       if (left <= 0) {
         clearInterval(tick); tick = null;
         bar.classList.add("done");
-        lab.textContent = "Pronto — vai con la prossima serie";
+        lab.textContent = "Pronto \u2014 vai con la prossima serie";
         try { if (navigator.vibrate) navigator.vibrate([220, 90, 220]); } catch (e) {}
       }
     }, 1000);
   }
-
   function stopRest() {
     if (tick) clearInterval(tick);
     tick = null;
@@ -777,14 +1195,17 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
     left += 30; paint();
   });
 
-  /* ---- controls ---- */
+  /* ---- controlli ---- */
   document.querySelectorAll("[data-person]").forEach(function (b) {
     b.addEventListener("click", function () {
+      if (flushTimer) flushLoads();
       person = b.dataset.person;
-      set("fit.person", person);
+      lset("fit.person", person);
       document.querySelectorAll("[data-person]").forEach(function (o) {
         o.setAttribute("aria-pressed", String(o === b));
       });
+      if (DB) subscribeLoads();
+      else { loads[person] = localLoads(person); rpes[person] = localRpes(person); }
       render();
     });
   });
@@ -795,6 +1216,7 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
       document.querySelectorAll("[data-session]").forEach(function (o) {
         o.setAttribute("aria-pressed", String(o === b));
       });
+      document.getElementById("dump").hidden = true;
       render();
       window.scrollTo({ top: document.querySelector(".tabbar").offsetTop, behavior: "smooth" });
     });
@@ -802,18 +1224,40 @@ sett. 4   110 kg ×  8,  8,  8,  7   → riparti</div>
 
   document.getElementById("reset").addEventListener("click", function () {
     writeDone({});
+    document.getElementById("dump").hidden = true;
     render();
   });
 
-  /* ---- init ---- */
-  var saved = get("fit.person");
+  document.getElementById("save").addEventListener("click", onSave);
+
+  /* ---- avvio ---- */
+  var saved = lget("fit.person");
   if (saved === "e" || saved === "j") person = saved;
   document.querySelectorAll("[data-person]").forEach(function (o) {
     o.setAttribute("aria-pressed", String(o.dataset.person === person));
   });
 
+  loads.j = localLoads("j"); loads.e = localLoads("e");
+  rpes.j  = localRpes("j");  rpes.e  = localRpes("e");
+
   renderPhases();
   render();
+  initCfgFields();
+  paintSync();
+
+  // il db arriva dopo, se questa vista lo concede: la pagina funziona senza.
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("db").then(function (db) {
+      if (!db) return;
+      DB = db;
+      if (!syncReady()) {
+        var chip = document.getElementById("sync");
+        chip.className = "sync live";
+        chip.textContent = "sincronizzato";
+      }
+      subscribeLoads();
+    }).catch(noop);
+  }
 })();
 </script>
 

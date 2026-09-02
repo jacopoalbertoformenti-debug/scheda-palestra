@@ -493,7 +493,7 @@
     <details class="cfg">
       <summary>Sincronizzazione</summary>
       <div class="body">
-        <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px">Compilati una volta, restano su questo telefono. Con entrambi i campi pieni, &ldquo;Salva seduta&rdquo; manda i dati direttamente a Claude; se sono vuoti, ti copia il log da incollare in chat.</p>
+        <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px">L&rsquo;endpoint &egrave; gi&agrave; impostato: ti serve solo la <b>passphrase</b>, una volta per telefono. Con quella inserita, &ldquo;Salva seduta&rdquo; manda la seduta direttamente a Claude; senza, ti copia il log da incollare in chat.</p>
         <label>Endpoint
           <input type="url" id="cfg-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://…/api/log">
         </label>
@@ -945,9 +945,12 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   }
 
   /* ---- configurazione endpoint ---- */
+  var DEFAULT_URL = "https://fit-login.vercel.app/api/log";
+
   function cfg() {
+    var u = (lget("fit.sync.url") || "").trim();
     return {
-      url: (lget("fit.sync.url") || "").trim(),
+      url: u || DEFAULT_URL,
       secret: (lget("fit.sync.secret") || "").trim()
     };
   }

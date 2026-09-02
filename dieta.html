@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- pagina personale: fuori dai motori di ricerca -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Composizione dei pasti con target giornalieri.">
+<meta name="theme-color" content="#EBEEEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1A24" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129367;</text></svg>">
+<style>
+  :root { color-scheme: light dark; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Dieta Jacopo &amp; Elisa</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+  :root {
+    --ground:#EBEEEA; --surface:#FBFCFA; --surface-2:#E2E7E1;
+    --ink:#15283A; --ink-2:#4A5F70; --ink-3:#7C8C97;
+    --line:#C7D0CB; --line-2:#DDE3DE;
+    --accent:#9E5B0D; --accent-2:#C2761A; --accent-bg:#F3E6D3;
+    --ok:#2F6E60; --ok-bg:#DCE8E3; --warn:#8A4A16;
+    --shadow:0 1px 2px rgba(21,40,58,.07), 0 6px 18px -12px rgba(21,40,58,.22);
+    --radius:10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0E1A24; --surface:#162836; --surface-2:#1E3446;
+      --ink:#E7EBE7; --ink-2:#A3B4C0; --ink-3:#74889A;
+      --line:#2C4356; --line-2:#223948;
+      --accent:#E7A24A; --accent-2:#F0B368; --accent-bg:#2A2318;
+      --ok:#63AE99; --ok-bg:#17322D; --warn:#E0A96D;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 22px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0E1A24; --surface:#162836; --surface-2:#1E3446;
+    --ink:#E7EBE7; --ink-2:#A3B4C0; --ink-3:#74889A;
+    --line:#2C4356; --line-2:#223948;
+    --accent:#E7A24A; --accent-2:#F0B368; --accent-bg:#2A2318;
+    --ok:#63AE99; --ok-bg:#17322D; --warn:#E0A96D;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 22px -14px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%; padding-bottom:40px;
+  }
+  .wrap { max-width:660px; margin:0 auto; padding:0 14px; }
+
+  header { padding:22px 0 14px; }
+  .eyebrow {
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .eyebrow span { color:var(--ink-3); }
+  h1 {
+    font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;
+    font-weight:700; font-size:clamp(30px,9vw,40px); line-height:1.02;
+    margin:8px 0 0; letter-spacing:-.01em; text-wrap:balance;
+  }
+  .lede { color:var(--ink-2); font-size:14px; margin:8px 0 0; max-width:48ch; }
+
+  .who { margin:18px 0 0; }
+  .who-label, .sect-label {
+    font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-bottom:7px;
+  }
+  .seg { display:flex; gap:6px; }
+  .seg button {
+    flex:1; min-height:46px; padding:0 12px; background:var(--surface); color:var(--ink-2);
+    border:1px solid var(--line); border-radius:8px;
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:17px; font-weight:600;
+    cursor:pointer; transition:background .13s,color .13s,border-color .13s;
+  }
+  .seg button[aria-pressed="true"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
+
+  /* ---- pannello totali, appiccicato in alto: e' il cuore della pagina ---- */
+  .totals {
+    position:sticky; top:0; z-index:20; margin:16px 0 0;
+    background:var(--ground); padding:11px 0 10px; border-bottom:1px solid var(--line-2);
+  }
+  .tgrid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .t {
+    background:var(--surface); border:1px solid var(--line-2); border-radius:9px;
+    padding:9px 10px 10px; box-shadow:var(--shadow);
+  }
+  .t.wide { grid-column:1 / -1; }
+  .t .k {
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3);
+    display:flex; justify-content:space-between; align-items:baseline; gap:6px;
+  }
+  .t .v {
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:20px; font-weight:600; letter-spacing:-.02em; margin-top:3px; line-height:1.1;
+  }
+  .t .v small { font-size:11.5px; font-weight:500; color:var(--ink-3); letter-spacing:0; }
+  .t .d {
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:11px; font-weight:600;
+  }
+  .t .d.ok   { color:var(--ok); }
+  .t .d.miss { color:var(--warn); }
+  .bar { height:5px; border-radius:3px; background:var(--surface-2); margin-top:7px; overflow:hidden; }
+  .bar i { display:block; height:100%; background:var(--accent); border-radius:3px; transition:width .18s; }
+  .bar i.ok { background:var(--ok); }
+
+  .gfbar {
+    margin:14px 0 0; padding:11px 13px; border-radius:9px;
+    background:var(--ok-bg); color:var(--ink); font-size:13px;
+    border-left:3px solid var(--ok);
+  }
+  .gfbar[hidden] { display:none !important; }
+  .gfbar b {
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ok);
+  }
+  .gfbar.alert { background:var(--accent-bg); border-left-color:var(--warn); }
+  .gfbar.alert b { color:var(--warn); }
+  .tag {
+    display:inline-block; margin-left:6px; padding:1px 6px; border-radius:4px;
+    background:var(--ok-bg); color:var(--ok);
+    font-family:"IBM Plex Mono",monospace; font-size:9px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase; vertical-align:1px;
+  }
+  .tag.cert { background:var(--accent-bg); color:var(--accent); }
+  .tag.bad  { background:var(--accent-bg); color:var(--warn); }
+
+  .hint {
+    margin:9px 0 0; padding:10px 12px; border-radius:9px;
+    background:var(--accent-bg); color:var(--ink); font-size:13px;
+  }
+  .hint[hidden] { display:none !important; }
+  .hint b { font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); }
+  .hint .adds { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .hint .adds button {
+    background:var(--surface); border:1px solid var(--line); border-radius:7px;
+    color:var(--ink); padding:8px 11px; cursor:pointer; font-size:12.5px;
+    font-family:"IBM Plex Sans",sans-serif;
+  }
+  .hint .adds button:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* ---- pasti ---- */
+  .meal { margin:22px 0 0; }
+  .meal h2 {
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:22px; font-weight:700;
+    margin:0 0 3px; line-height:1.1;
+  }
+  .meal .sub {
+    font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px;
+  }
+  .opts { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .opts button {
+    background:var(--surface); border:1px solid var(--line); border-radius:20px;
+    color:var(--ink-2); padding:9px 14px; cursor:pointer; font-size:13.5px;
+    font-family:"IBM Plex Sans",sans-serif; min-height:40px;
+    transition:background .13s,color .13s,border-color .13s;
+  }
+  .opts button[aria-pressed="true"] {
+    background:var(--accent); border-color:var(--accent); color:var(--ground); font-weight:500;
+  }
+  :root[data-theme="dark"] .opts button[aria-pressed="true"],
+  :root[data-theme="dark"] .seg button[aria-pressed="true"] { color:#0E1A24; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .opts button[aria-pressed="true"],
+    :root:not([data-theme="light"]) .seg button[aria-pressed="true"] { color:#0E1A24; }
+  }
+
+  .items {
+    background:var(--surface); border:1px solid var(--line-2); border-radius:var(--radius);
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .row {
+    display:flex; align-items:center; gap:10px; padding:10px 12px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .row:last-child { border-bottom:none; }
+  .row .nm { flex:1; min-width:0; font-size:14.5px; }
+  .row .nm em { display:block; font-style:normal; font-size:11.5px; color:var(--ink-3); margin-top:1px; }
+  .row .macro {
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:11px; color:var(--ink-3); text-align:right; white-space:nowrap;
+  }
+  .row input {
+    width:72px; min-height:38px; padding:0 8px; text-align:right;
+    background:var(--ground); color:var(--ink); border:1px solid var(--line); border-radius:7px;
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:14px; font-weight:600;
+  }
+  .row .g { font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); }
+  .row .x {
+    background:none; border:none; color:var(--ink-3); cursor:pointer;
+    font-size:19px; line-height:1; padding:6px 2px;
+  }
+  .row .x:hover { color:var(--warn); }
+  .empty { padding:16px 12px; color:var(--ink-3); font-size:13.5px; }
+
+  .add {
+    display:flex; gap:6px; margin-top:8px; align-items:stretch; flex-wrap:wrap;
+  }
+  .add select {
+    flex:1; min-width:150px; min-height:40px; padding:0 9px;
+    background:var(--surface); color:var(--ink); border:1px solid var(--line);
+    border-radius:7px; font-family:"IBM Plex Sans",sans-serif; font-size:13.5px;
+  }
+  .add button {
+    min-height:40px; padding:0 14px; background:var(--surface-2); color:var(--ink-2);
+    border:1px solid var(--line); border-radius:7px; cursor:pointer;
+    font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .add button:hover { color:var(--accent); border-color:var(--accent); }
+
+  /* ---- salvataggio ---- */
+  .savebar {
+    margin:24px 0 0; padding:14px; background:var(--surface);
+    border:1px solid var(--line-2); border-radius:var(--radius); box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .savebar .info { flex:1; min-width:150px; font-size:12.5px; color:var(--ink-2); }
+  .savebar .info b { color:var(--ink); }
+  .save {
+    min-height:46px; padding:0 18px; background:var(--ink); color:var(--ground);
+    border:1px solid var(--ink); border-radius:8px; cursor:pointer;
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:16px; font-weight:600;
+  }
+  .save.ok { background:var(--ok); border-color:var(--ok); }
+  .sync {
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .sync::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--ink-3); }
+  .sync.live { color:var(--ok); }
+  .sync.live::before { background:var(--ok); }
+  .dump {
+    width:100%; margin:10px 0 0; min-height:110px; resize:vertical;
+    background:var(--ground); color:var(--ink); border:1px solid var(--line);
+    border-radius:8px; padding:10px; font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px; line-height:1.55; white-space:pre; overflow-x:auto;
+  }
+  .dump[hidden] { display:none !important; }
+
+  details {
+    background:var(--surface); border:1px solid var(--line-2);
+    border-radius:var(--radius); overflow:hidden; margin-top:8px;
+  }
+  summary {
+    cursor:pointer; padding:14px; list-style:none;
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:16.5px; font-weight:600;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; font-family:"IBM Plex Mono",monospace; font-size:19px; color:var(--accent); }
+  details[open] summary::after { content:"\2212"; }
+  details[open] summary { border-bottom:1px solid var(--line-2); }
+  .body { padding:13px 14px 16px; font-size:14px; color:var(--ink-2); }
+  .body > :first-child { margin-top:0; }
+  .body > :last-child { margin-bottom:0; }
+  .body p { margin:0 0 10px; }
+  .body strong { color:var(--ink); font-weight:600; }
+  .body ul { margin:0 0 10px; padding-left:20px; }
+  .body li { margin-bottom:6px; }
+  .body label { display:block; margin-bottom:10px;
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .body input {
+    display:block; width:100%; margin-top:5px; min-height:42px; padding:0 11px;
+    background:var(--ground); color:var(--ink); border:1px solid var(--line);
+    border-radius:7px; font-family:"IBM Plex Mono",monospace; font-size:12.5px;
+  }
+  .tbl { width:100%; border-collapse:collapse; font-size:13px; }
+  .tbl th, .tbl td { text-align:left; padding:6px 8px 6px 0; border-bottom:1px solid var(--line-2); }
+  .tbl th { font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .tbl td.n { font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right; }
+
+  footer { margin:28px 0 10px; padding-top:16px; border-top:1px solid var(--line-2);
+    font-size:12.5px; color:var(--ink-3); }
+  footer p { margin:0 0 7px; }
+  button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+    outline:2px solid var(--accent-2); outline-offset:2px;
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+  @media (min-width:620px) { .tgrid { grid-template-columns:repeat(4,1fr); } .t.wide { grid-column:auto; } }
+</style><style>
+  .xnav { max-width:660px; margin:0 auto; padding:12px 14px 0; display:flex; gap:6px; }
+  .xnav a {
+    flex:1; text-align:center; padding:10px 12px; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    text-decoration:none; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+    font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .xnav a[aria-current="page"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
+</style>
+</head>
+<body>
+<nav class="xnav"><a href="index.html">Allenamento</a><a href="dieta.html" aria-current="page">Dieta</a></nav>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Blocco 1 <span>target giornalieri</span></p>
+    <h1>Dieta Jacopo &amp; Elisa</h1>
+    <p class="lede">Scegli un&rsquo;opzione per pasto e aggiusta le grammature: il totale si aggiorna mentre componi. La colonna di Elisa &egrave; <strong>senza glutine</strong>, con i valori dei sostituti gi&agrave; ricalcolati.</p>
+
+    <div class="who">
+      <p class="who-label">Sto componendo la giornata di</p>
+      <div class="seg" role="group" aria-label="Scegli persona">
+        <button type="button" data-person="j" aria-pressed="true">Jacopo</button>
+        <button type="button" data-person="e" aria-pressed="false">Elisa</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="gfbar" id="gfbar" hidden></div>
+
+  <div class="totals">
+    <div class="tgrid" id="tgrid"></div>
+    <div class="hint" id="hint" hidden></div>
+  </div>
+
+  <main id="meals"></main>
+
+  <div class="savebar">
+    <div class="info" id="save-info">Componi la giornata, poi salva.</div>
+    <span class="sync" id="sync">solo su questo telefono</span>
+    <button type="button" class="save" id="save">Salva giornata</button>
+  </div>
+  <textarea class="dump" id="dump" hidden readonly aria-label="Giornata da copiare"></textarea>
+
+  <section style="margin-top:26px">
+    <p class="sect-label">Come si usa</p>
+
+    <details>
+      <summary>I due numeri che contano</summary>
+      <div class="body">
+        <p><strong>Calorie e proteine.</strong> Grassi e carboidrati sono il resto, e restano flessibili: se un giorno i carboidrati sono pi&ugrave; alti e i grassi pi&ugrave; bassi non &egrave; un problema, purch&eacute; i grassi non scendano sotto ~50 g. Inseguire quattro numeri contemporaneamente ogni giorno &egrave; il modo pi&ugrave; rapido per mollare tutto.</p>
+        <p>Le proteine sono la met&agrave; che protegge il muscolo mentre il peso scende. Se in una giornata sforate le calorie di 100 ma centrate le proteine, va bene. Il contrario, no.</p>
+        <p><strong>Conta la media della settimana</strong>, non il singolo giorno. Un pasto fuori il sabato si assorbe da s&eacute;.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Perch&eacute; alcune scelte non bastano</summary>
+      <div class="body">
+        <p>Le opzioni non sono equivalenti sul fronte proteico, e la pagina te lo dice invece di far finta che lo siano.</p>
+        <p><strong>Jacopo:</strong> con 180 g di proteine da centrare, alcune combinazioni non ci arrivano nemmeno con porzioni piene &mdash; le lenticchie a pranzo e la frutta secca come spuntino, per esempio, lasciano scoperti fino a 60-70 g. Quando succede compare in cima il riquadro con le aggiunte: un vasetto di skyr o un misurino di proteine chiudono il buco.</p>
+        <p><strong>Elisa:</strong> con 108 g il margine &egrave; molto pi&ugrave; ampio, e quasi tutte le combinazioni funzionano senza aggiunte.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Celiachia: cosa cambia</summary>
+      <div class="body">
+        <p><strong>La colonna di Elisa non contiene glutine</strong>, e i sostituti non sono equivalenti sulla carta: la pasta di mais o riso ha circa <strong>7 g di proteine invece di 12</strong>, il pane senza glutine circa <strong>4 invece di 8</strong> e in compenso pi&ugrave; grassi. Le porzioni sono state ricalcolate su quei valori, non semplicemente scambiate.</p>
+        <p><strong>Fuori dalle sue opzioni:</strong> pasta e pane di frumento, fette biscottate normali, avena non certificata, seitan (&egrave; glutine puro). L&rsquo;elenco alimenti nella sua vista non li mostra nemmeno.</p>
+        <p><strong>Da verificare sull&rsquo;etichetta</strong> anche quando l&rsquo;alimento &egrave; naturalmente senza glutine: proteine in polvere e affettati come la bresaola, dove il rischio non &egrave; l&rsquo;ingrediente ma additivi e stabilimento. Sono segnalati con <span class="tag cert">etichetta</span>. Cerca la dicitura &ldquo;senza glutine&rdquo; o la spiga barrata.</p>
+        <p><strong>Contaminazione crociata in cucina</strong>, che &egrave; il punto pi&ugrave; delicato per una coppia in cui uno solo &egrave; celiaco: acqua di cottura separata per la pasta (non lo stesso scolapasta, non la stessa acqua), tostapane dedicato o sacchetti appositi, tagliere e coltello separati per il pane, attenzione alle briciole sui piani di lavoro e a mestoli e colini condivisi. Nel batch cooking della domenica conviene preparare prima le porzioni senza glutine, su superfici pulite.</p>
+        <p>Su diagnosi, controlli e integrazioni parlatene con il medico o con una dietista: questa pagina gestisce le grammature, non la parte clinica.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Le grammature</summary>
+      <div class="body">
+        <p>Sono <strong>a crudo e come si acquista</strong>: 80 g di pasta sono la pasta secca, 165 g di pollo sono il petto crudo. La differenza col cotto &egrave; grande e sbagliarla vale centinaia di calorie.</p>
+        <p>Pesare per due settimane serve a calibrare l&rsquo;occhio. Dopo, si stima a vista e si pesa solo quando qualcosa non torna.</p>
+        <p>Dove il grammo non dice niente c&rsquo;&egrave; l&rsquo;equivalenza pratica sotto il nome: un uovo &asymp; 55 g, un cucchiaio d&rsquo;olio &asymp; 10 g.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Sincronizzazione</summary>
+      <div class="body">
+        <p>Stessa passphrase della scheda di allenamento: se l&rsquo;hai gi&agrave; inserita l&igrave;, va inserita anche qui una volta (sono due pagine diverse).</p>
+        <label>Endpoint
+          <input type="url" id="cfg-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://&hellip;/api/log">
+        </label>
+        <label>Passphrase
+          <input type="password" id="cfg-secret" autocomplete="off" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+        </label>
+      </div>
+    </details>
+
+    <details>
+      <summary>Tabella alimenti</summary>
+      <div class="body">
+        <p>Valori per 100 g, crudo o come si acquista.</p>
+        <div style="overflow-x:auto">
+          <table class="tbl" id="ftbl">
+            <thead><tr><th>Alimento</th><th class="n">kcal</th><th class="n">Prot</th><th class="n">Gras</th><th class="n">Carb</th><th>Glutine</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p><strong>Le scelte restano su questo telefono</strong>, separate per persona e azzerate ogni giorno. I carichi della palestra sono nell&rsquo;altra pagina.</p>
+    <p>Consigli da preparazione atletica, non indicazioni mediche o dietologiche cliniche. I valori degli alimenti sono medie di tabella: servono a ragionare per ordini di grandezza, non a fare chimica.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var D = {"foods":{"skyr":{"kcal":60,"p":10.0,"f":0.2,"c":4.0,"nome":"Skyr o greco 0%","hint":"","glutine":"no"},"latte_scremato":{"kcal":35,"p":3.4,"f":0.1,"c":5.0,"nome":"Latte scremato","hint":"","glutine":"no"},"banana":{"kcal":89,"p":1.1,"f":0.3,"c":23.0,"nome":"Banana","hint":"","glutine":"no"},"mela":{"kcal":52,"p":0.3,"f":0.2,"c":14.0,"nome":"Mela","hint":"","glutine":"no"},"mandorle":{"kcal":579,"p":21.0,"f":50.0,"c":22.0,"nome":"Mandorle","hint":"","glutine":"no"},"noci":{"kcal":654,"p":15.0,"f":65.0,"c":14.0,"nome":"Noci","hint":"","glutine":"no"},"riso":{"kcal":350,"p":7.0,"f":0.6,"c":78.0,"nome":"Riso","hint":"","glutine":"no"},"patate":{"kcal":77,"p":2.0,"f":0.1,"c":17.0,"nome":"Patate","hint":"","glutine":"no"},"pollo":{"kcal":110,"p":23.0,"f":1.5,"c":0.0,"nome":"Petto di pollo","hint":"","glutine":"no"},"tacchino":{"kcal":110,"p":24.0,"f":1.0,"c":0.0,"nome":"Tacchino","hint":"","glutine":"no"},"manzo_magro":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Manzo magro","hint":"","glutine":"no"},"tonno":{"kcal":116,"p":25.0,"f":1.0,"c":0.0,"nome":"Tonno al naturale","hint":"","glutine":"no"},"salmone":{"kcal":208,"p":20.0,"f":13.0,"c":0.0,"nome":"Salmone","hint":"","glutine":"no"},"merluzzo":{"kcal":82,"p":18.0,"f":0.7,"c":0.0,"nome":"Merluzzo","hint":"","glutine":"no"},"uova":{"kcal":143,"p":13.0,"f":10.0,"c":1.0,"nome":"Uova","hint":"1 uovo ≈ 55 g","glutine":"no"},"albume":{"kcal":52,"p":11.0,"f":0.2,"c":0.7,"nome":"Albume","hint":"","glutine":"no"},"ricotta":{"kcal":146,"p":9.0,"f":11.0,"c":3.0,"nome":"Ricotta","hint":"","glutine":"no"},"fiocchi_latte":{"kcal":98,"p":12.0,"f":4.0,"c":3.0,"nome":"Fiocchi di latte","hint":"","glutine":"no"},"grana":{"kcal":392,"p":33.0,"f":28.0,"c":0.0,"nome":"Grana","hint":"1 cucchiaio ≈ 10 g","glutine":"no"},"lenticchie_secche":{"kcal":353,"p":25.0,"f":1.0,"c":60.0,"nome":"Lenticchie secche","hint":"","glutine":"no"},"tofu":{"kcal":120,"p":12.0,"f":7.0,"c":2.0,"nome":"Tofu","hint":"","glutine":"no"},"verdure":{"kcal":25,"p":2.0,"f":0.3,"c":3.0,"nome":"Verdure","hint":"","glutine":"no"},"pomodori":{"kcal":18,"p":0.9,"f":0.2,"c":3.9,"nome":"Pomodori","hint":"","glutine":"no"},"olio_evo":{"kcal":884,"p":0.0,"f":100.0,"c":0.0,"nome":"Olio EVO","hint":"1 cucchiaio ≈ 10 g","glutine":"no"},"bresaola":{"kcal":151,"p":32.0,"f":2.0,"c":0.0,"nome":"Bresaola","hint":"","glutine":"cert"},"whey":{"kcal":380,"p":78.0,"f":5.0,"c":7.0,"nome":"Proteine in polvere","hint":"1 misurino ≈ 30 g","glutine":"cert"},"avena":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena in fiocchi","hint":"","glutine":"si"},"pane":{"kcal":265,"p":8.0,"f":1.5,"c":50.0,"nome":"Pane","hint":"","glutine":"si"},"fette_biscottate":{"kcal":410,"p":11.0,"f":6.0,"c":75.0,"nome":"Fette biscottate","hint":"","glutine":"si"},"pasta":{"kcal":355,"p":12.0,"f":1.5,"c":72.0,"nome":"Pasta","hint":"","glutine":"si"},"avena_gf":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena senza glutine","hint":"","glutine":"cert"},"pane_gf":{"kcal":270,"p":4.0,"f":6.0,"c":48.0,"nome":"Pane senza glutine","hint":"","glutine":"cert"},"fette_gf":{"kcal":400,"p":5.0,"f":8.0,"c":76.0,"nome":"Fette biscottate senza glutine","hint":"","glutine":"cert"},"pasta_gf":{"kcal":355,"p":7.0,"f":1.5,"c":79.0,"nome":"Pasta senza glutine","hint":"","glutine":"cert"}},"meals":[{"id":"colazione","nome":"Colazione","opzioni":[{"label":"Avena e skyr","items":[{"food":"avena","j":100,"foodE":"avena_gf","e":40},{"food":"skyr","j":250,"foodE":"skyr","e":175},{"food":"banana","j":50,"foodE":"banana","e":90},{"food":"mandorle","j":20,"foodE":"mandorle","e":10}]},{"label":"Uova e pane","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"pomodori","j":100,"foodE":"pomodori","e":100},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":3}]},{"label":"Skyr e frutta secca","items":[{"food":"skyr","j":250,"foodE":"skyr","e":225},{"food":"fette_biscottate","j":55,"foodE":"fette_gf","e":25},{"food":"noci","j":25,"foodE":"noci","e":15},{"food":"mela","j":60,"foodE":"mela","e":140}]},{"label":"Veloce con whey","items":[{"food":"whey","j":30,"foodE":"whey","e":15},{"food":"latte_scremato","j":210,"foodE":"latte_scremato","e":300},{"food":"avena","j":75,"foodE":"avena_gf","e":25},{"food":"banana","j":100,"foodE":"banana","e":150}]}]},{"id":"pranzo","nome":"Pranzo","opzioni":[{"label":"Pasta e pollo","items":[{"food":"pasta","j":80,"foodE":"pasta_gf","e":70},{"food":"pollo","j":165,"foodE":"pollo","e":100},{"food":"verdure","j":300,"foodE":"verdure","e":225},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":9}]},{"label":"Riso e tonno","items":[{"food":"riso","j":105,"foodE":"riso","e":70},{"food":"tonno","j":170,"foodE":"tonno","e":90},{"food":"verdure","j":200,"foodE":"verdure","e":225},{"food":"olio_evo","j":10,"foodE":"olio_evo","e":9}]},{"label":"Lenticchie","items":[{"food":"lenticchie_secche","j":120,"foodE":"lenticchie_secche","e":120},{"food":"riso","j":20,"foodE":"riso","e":15},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Insalatona","items":[{"food":"pane","j":65,"foodE":"pane_gf","e":65},{"food":"pollo","j":145,"foodE":"pollo","e":85},{"food":"verdure","j":300,"foodE":"verdure","e":250},{"food":"pomodori","j":275,"foodE":"pomodori","e":200},{"food":"grana","j":15,"foodE":"grana","e":10},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":10}]}]},{"id":"spuntino","nome":"Spuntino","opzioni":[{"label":"Skyr e frutto","items":[{"food":"skyr","j":205,"foodE":"skyr","e":125},{"food":"mela","j":200,"foodE":"mela","e":200}]},{"label":"Fiocchi di latte","items":[{"food":"fiocchi_latte","j":175,"foodE":"fiocchi_latte","e":105},{"food":"mela","j":200,"foodE":"mela","e":180}]},{"label":"Bresaola e pane","items":[{"food":"bresaola","j":60,"foodE":"bresaola","e":35},{"food":"pane","j":30,"foodE":"pane_gf","e":55}]},{"label":"Frutta secca","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"mela","j":60,"foodE":"mela","e":60}]}]},{"id":"cena","nome":"Cena","opzioni":[{"label":"Pesce bianco e patate","items":[{"food":"merluzzo","j":205,"foodE":"merluzzo","e":110},{"food":"patate","j":350,"foodE":"patate","e":255},{"food":"verdure","j":300,"foodE":"verdure","e":275},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Salmone e patate","items":[{"food":"salmone","j":200,"foodE":"salmone","e":115},{"food":"patate","j":160,"foodE":"patate","e":155},{"food":"verdure","j":150,"foodE":"verdure","e":200},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":5}]},{"label":"Carne e patate","items":[{"food":"manzo_magro","j":185,"foodE":"manzo_magro","e":100},{"food":"patate","j":300,"foodE":"patate","e":215},{"food":"verdure","j":275,"foodE":"verdure","e":275},{"food":"olio_evo","j":14,"foodE":"olio_evo","e":11}]},{"label":"Uova e verdure","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"verdure","j":100,"foodE":"verdure","e":150},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]}]},{"id":"postcena","nome":"Post-cena","opzioni":[{"label":"Skyr","items":[{"food":"skyr","j":110,"foodE":"skyr","e":65}]},{"label":"Ricotta","items":[{"food":"ricotta","j":120,"foodE":"ricotta","e":70}]},{"label":"Niente","items":[]}]}],"target":{"j":{"kcal":2350,"p":180,"f":70,"c":250},"e":{"kcal":1625,"p":108,"f":55,"c":175}},"extras":["skyr","whey","bresaola","albume","fiocchi_latte","tonno"],"gfSwap":{"avena":"avena_gf","pane":"pane_gf","fette_biscottate":"fette_gf","pasta":"pasta_gf"}};
+  var FOODS = D.foods, MEALS = D.meals, TARGET = D.target, EXTRAS = D.extras;
+  var GF_SWAP = D.gfSwap;
+  var NAMES = { j: "Jacopo", e: "Elisa" };
+  var DEFAULT_URL = "https://fit-login.vercel.app/api/log";
+
+  var person = "j";
+  var day = {};          // meal id -> { opt: indice|null, items: [{food, g}] }
+
+  function lget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function jparse(raw, fb) {
+    try { var v = JSON.parse(raw); return (v && typeof v === "object") ? v : fb; }
+    catch (e) { return fb; }
+  }
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  /* ---- stato del giorno ---- */
+  // v2: la v1 poteva contenere alimenti con glutine nella giornata di Elisa
+  function dayKey() { return "fit.dieta.v2." + person; }
+  function loadDay() {
+    var raw = jparse(lget(dayKey()), null);
+    if (!raw || raw.d !== today()) return defaults();
+    return raw.v || defaults();
+  }
+  function saveDay() { lset(dayKey(), JSON.stringify({ d: today(), v: day })); }
+
+  function defaults() {
+    var o = {};
+    MEALS.forEach(function (m) { o[m.id] = { opt: null, items: [] }; });
+    return o;
+  }
+
+  function pickOption(mealId, oi) {
+    var m = MEALS.filter(function (x) { return x.id === mealId; })[0];
+    var opt = m.opzioni[oi];
+    day[mealId] = {
+      opt: oi,
+      items: opt.items.map(function (it) {
+        return { food: (person === "e" && it.foodE) ? it.foodE : it.food, g: it[person] };
+      })
+    };
+    saveDay(); render();
+  }
+
+  /* ---- calcolo ---- */
+  function itemMacro(it) {
+    var f = FOODS[it.food];
+    var g = Number(it.g) || 0;
+    return { kcal: f.kcal * g / 100, p: f.p * g / 100, f: f.f * g / 100, c: f.c * g / 100 };
+  }
+  function dayTotals() {
+    var t = { kcal: 0, p: 0, f: 0, c: 0 };
+    MEALS.forEach(function (m) {
+      (day[m.id] ? day[m.id].items : []).forEach(function (it) {
+        var x = itemMacro(it);
+        t.kcal += x.kcal; t.p += x.p; t.f += x.f; t.c += x.c;
+      });
+    });
+    return t;
+  }
+
+  /* ---- glutine ---- */
+  function gluten(foodKey) { return (FOODS[foodKey] || {}).glutine || "no"; }
+
+  function tagFor(foodKey) {
+    var g = gluten(foodKey);
+    if (g === "cert") return '<span class="tag cert">etichetta</span>';
+    if (g === "si") return '<span class="tag bad">glutine</span>';
+    return "";
+  }
+
+  /** Alimenti che Elisa non deve nemmeno poter scegliere. */
+  function allowed(foodKey) {
+    if (person !== "e") return true;
+    if (gluten(foodKey) === "si") return false;
+    // se esiste una versione GF, si offre quella e non l'originale
+    return !GF_SWAP[foodKey];
+  }
+
+  function renderGfBar() {
+    var bar = document.getElementById("gfbar");
+    if (person !== "e") { bar.hidden = true; return; }
+
+    // rete di sicurezza: nessun alimento con glutine deve finire nella sua giornata
+    var bad = [];
+    MEALS.forEach(function (m) {
+      (day[m.id] ? day[m.id].items : []).forEach(function (it) {
+        if (gluten(it.food) === "si") bad.push(FOODS[it.food].nome);
+      });
+    });
+
+    if (bad.length) {
+      bar.className = "gfbar alert";
+      bar.innerHTML = "<b>Attenzione: contiene glutine</b><br>" +
+        "Nella giornata c&rsquo;&egrave; " + bad.join(", ") +
+        ". Togli la riga e riscegli l&rsquo;opzione: le versioni senza glutine hanno valori diversi.";
+      bar.hidden = false;
+      return;
+    }
+
+    bar.className = "gfbar";
+    bar.innerHTML = "<b>Senza glutine</b><br>" +
+      "Cereali sostituiti con le versioni GF e porzioni ricalcolate sui loro valori. " +
+      "Dove compare <span class='tag cert'>etichetta</span> verifica la certificazione sulla confezione.";
+    bar.hidden = false;
+  }
+
+  /* ---- pannello totali ---- */
+  var ROWS = [
+    { k: "kcal", lab: "Calorie", u: "", wide: true },
+    { k: "p", lab: "Proteine", u: "g", wide: true },
+    { k: "f", lab: "Grassi", u: "g" },
+    { k: "c", lab: "Carboidrati", u: "g" }
+  ];
+
+  function renderTotals() {
+    var t = dayTotals();
+    var tg = TARGET[person];
+    var grid = document.getElementById("tgrid");
+    grid.innerHTML = "";
+
+    ROWS.forEach(function (r) {
+      var val = t[r.k], target = tg[r.k];
+      var pct = Math.max(0, Math.min(100, target ? val / target * 100 : 0));
+      // "in target" = entro il 6% per calorie e proteine, entro il 20% per il resto
+      var tol = (r.k === "kcal" || r.k === "p") ? 0.06 : 0.20;
+      var good = Math.abs(val - target) <= target * tol;
+      var delta = Math.round(val - target);
+
+      var el = document.createElement("div");
+      el.className = "t" + (r.wide ? " wide" : "");
+      el.innerHTML =
+        '<div class="k"><span>' + r.lab + '</span>' +
+          '<span class="d ' + (good ? "ok" : "miss") + '">' +
+            (delta === 0 ? "in target" : (delta > 0 ? "+" : "") + delta + r.u) + "</span></div>" +
+        '<div class="v">' + Math.round(val) + r.u +
+          " <small>/ " + target + r.u + "</small></div>" +
+        '<div class="bar"><i class="' + (good ? "ok" : "") + '" style="width:' + pct.toFixed(1) + '%"></i></div>';
+      grid.appendChild(el);
+    });
+
+    renderHint(t, tg);
+    renderGfBar();
+    updateSaveInfo(t);
+  }
+
+  /* ---- riquadro aggiunte proteiche ---- */
+  function renderHint(t, tg) {
+    var box = document.getElementById("hint");
+    var gapP = tg.p - t.p;
+    var anyFood = MEALS.some(function (m) { return day[m.id] && day[m.id].items.length; });
+
+    if (!anyFood || gapP < 10) { box.hidden = true; return; }
+
+    var html = "<b>Mancano " + Math.round(gapP) + " g di proteine</b><br>" +
+      "Con le scelte di adesso non ci arrivi. Un&rsquo;aggiunta chiude il buco:";
+    html += '<div class="adds">';
+    EXTRAS.forEach(function (fk) {
+      if (!allowed(fk)) return;
+      var f = FOODS[fk];
+      var g = Math.round(gapP * 100 / f.p / 5) * 5;   // grammi che coprono il gap
+      if (g < 10 || g > 350) return;
+      html += '<button type="button" data-add="' + fk + '" data-g="' + g + '">' +
+        f.nome + " " + g + " g <span style='color:var(--ink-3)'>+" + Math.round(f.kcal * g / 100) + " kcal</span>" + tagFor(fk) + "</button>";
+    });
+    html += "</div>";
+    box.innerHTML = html;
+    box.hidden = false;
+
+    box.querySelectorAll("[data-add]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var mid = day.spuntino ? "spuntino" : MEALS[0].id;
+        if (!day[mid]) day[mid] = { opt: null, items: [] };
+        day[mid].items.push({ food: b.dataset.add, g: Number(b.dataset.g) });
+        day[mid].opt = null;
+        saveDay(); render();
+      });
+    });
+  }
+
+  /* ---- pasti ---- */
+  function renderMeals() {
+    var host = document.getElementById("meals");
+    host.innerHTML = "";
+
+    MEALS.forEach(function (m) {
+      var state = day[m.id] || { opt: null, items: [] };
+
+      var sec = document.createElement("section");
+      sec.className = "meal";
+
+      var mt = { kcal: 0, p: 0 };
+      state.items.forEach(function (it) { var x = itemMacro(it); mt.kcal += x.kcal; mt.p += x.p; });
+
+      sec.innerHTML = "<h2>" + m.nome + "</h2>" +
+        '<p class="sub">' + (state.items.length
+          ? Math.round(mt.kcal) + " kcal \u00b7 " + Math.round(mt.p) + " g proteine"
+          : "nessuna scelta") + "</p>";
+
+      var opts = document.createElement("div");
+      opts.className = "opts";
+      m.opzioni.forEach(function (o, oi) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = o.label;
+        b.setAttribute("aria-pressed", String(state.opt === oi));
+        b.addEventListener("click", function () {
+          if (state.opt === oi) { day[m.id] = { opt: null, items: [] }; saveDay(); render(); }
+          else pickOption(m.id, oi);
+        });
+        opts.appendChild(b);
+      });
+      sec.appendChild(opts);
+
+      var box = document.createElement("div");
+      box.className = "items";
+      if (!state.items.length) {
+        box.innerHTML = '<p class="empty">Scegli un&rsquo;opzione qui sopra, oppure aggiungi un alimento.</p>';
+      } else {
+        state.items.forEach(function (it, ii) {
+          var f = FOODS[it.food];
+          var x = itemMacro(it);
+          var row = document.createElement("div");
+          row.className = "row";
+          row.innerHTML =
+            '<div class="nm">' + f.nome + tagFor(it.food) +
+              (f.hint ? "<em>" + f.hint + "</em>" : "") + "</div>" +
+            '<div class="macro">' + Math.round(x.kcal) + " kcal<br>" + Math.round(x.p) + " g prot</div>";
+
+          var inp = document.createElement("input");
+          inp.type = "text"; inp.inputMode = "numeric"; inp.value = it.g;
+          inp.setAttribute("aria-label", "Grammi di " + f.nome);
+          inp.addEventListener("input", function () {
+            var v = parseInt(inp.value.replace(/[^0-9]/g, ""), 10);
+            it.g = isNaN(v) ? 0 : v;
+            day[m.id].opt = null;
+            saveDay(); renderTotals();
+            row.querySelector(".macro").innerHTML =
+              Math.round(itemMacro(it).kcal) + " kcal<br>" + Math.round(itemMacro(it).p) + " g prot";
+          });
+          row.appendChild(inp);
+          row.appendChild(Object.assign(document.createElement("span"), { className: "g", textContent: "g" }));
+
+          var x2 = document.createElement("button");
+          x2.type = "button"; x2.className = "x"; x2.innerHTML = "&times;";
+          x2.setAttribute("aria-label", "Togli " + f.nome);
+          x2.addEventListener("click", function () {
+            day[m.id].items.splice(ii, 1);
+            day[m.id].opt = null;
+            saveDay(); render();
+          });
+          row.appendChild(x2);
+          box.appendChild(row);
+        });
+      }
+      sec.appendChild(box);
+
+      var add = document.createElement("div");
+      add.className = "add";
+      var sel = document.createElement("select");
+      sel.setAttribute("aria-label", "Alimento da aggiungere a " + m.nome);
+      Object.keys(FOODS).filter(allowed).sort(function (a, b) {
+        return FOODS[a].nome.localeCompare(FOODS[b].nome, "it");
+      }).forEach(function (fk) {
+        var o = document.createElement("option");
+        o.value = fk; o.textContent = FOODS[fk].nome;
+        sel.appendChild(o);
+      });
+      var ab = document.createElement("button");
+      ab.type = "button"; ab.textContent = "Aggiungi";
+      ab.addEventListener("click", function () {
+        if (!day[m.id]) day[m.id] = { opt: null, items: [] };
+        day[m.id].items.push({ food: sel.value, g: 100 });
+        day[m.id].opt = null;
+        saveDay(); render();
+      });
+      add.appendChild(sel); add.appendChild(ab);
+      sec.appendChild(add);
+
+      host.appendChild(sec);
+    });
+  }
+
+  function render() { renderMeals(); renderTotals(); }
+
+  /* ---- tabella alimenti ---- */
+  function renderFoodTable() {
+    var tb = document.querySelector("#ftbl tbody");
+    tb.innerHTML = "";
+    Object.keys(FOODS).filter(allowed).sort(function (a, b) {
+      return FOODS[a].nome.localeCompare(FOODS[b].nome, "it");
+    }).forEach(function (fk) {
+      var f = FOODS[fk];
+      var tr = document.createElement("tr");
+      var g = f.glutine === "si" ? "contiene"
+            : f.glutine === "cert" ? "verifica etichetta" : "no";
+      tr.innerHTML = "<td>" + f.nome + '</td><td class="n">' + f.kcal +
+        '</td><td class="n">' + f.p + '</td><td class="n">' + f.f +
+        '</td><td class="n">' + f.c + '</td><td style="font-size:11.5px;color:var(--ink-3)">' + g + "</td>";
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---- salvataggio ---- */
+  function cfg() {
+    var u = (lget("fit.sync.url") || "").trim();
+    return { url: u || DEFAULT_URL, secret: (lget("fit.sync.secret") || "").trim() };
+  }
+  function syncReady() {
+    var c = cfg();
+    return c.url.indexOf("https://") === 0 && c.secret.length > 0;
+  }
+  function paintSync() {
+    var chip = document.getElementById("sync");
+    if (syncReady()) { chip.className = "sync live"; chip.textContent = "sincronizzato"; }
+    else { chip.className = "sync"; chip.textContent = "solo su questo telefono"; }
+  }
+  function initCfgFields() {
+    var c = cfg();
+    var u = document.getElementById("cfg-url");
+    var k = document.getElementById("cfg-secret");
+    u.value = c.url; k.value = c.secret;
+    u.addEventListener("input", function () { lset("fit.sync.url", u.value.trim()); paintSync(); });
+    k.addEventListener("input", function () { lset("fit.sync.secret", k.value.trim()); paintSync(); });
+  }
+
+  function payload() {
+    var t = dayTotals();
+    var tg = TARGET[person];
+    return {
+      personaId: person, persona: NAMES[person], data: today(),
+      senzaGlutine: person === "e",
+      totali: { kcal: Math.round(t.kcal), proteine: Math.round(t.p), grassi: Math.round(t.f), carboidrati: Math.round(t.c) },
+      target: { kcal: tg.kcal, proteine: tg.p, grassi: tg.f, carboidrati: tg.c },
+      pasti: MEALS.map(function (m) {
+        var st = day[m.id] || { opt: null, items: [] };
+        return {
+          id: m.id, nome: m.nome,
+          opzione: st.opt === null ? null : m.opzioni[st.opt].label,
+          alimenti: st.items.map(function (it) {
+            return { nome: FOODS[it.food].nome, grammi: Number(it.g) || 0 };
+          })
+        };
+      }).filter(function (p) { return p.alimenti.length; })
+    };
+  }
+
+  function csvDump() {
+    var pl = payload();
+    var rows = ["data,persona,pasto,opzione,alimento,grammi"];
+    pl.pasti.forEach(function (p) {
+      p.alimenti.forEach(function (a) {
+        rows.push([pl.data, pl.personaId, p.nome, p.opzione || "", a.nome, a.grammi].join(","));
+      });
+    });
+    rows.push("");
+    rows.push("# totali: " + pl.totali.kcal + " kcal, " + pl.totali.proteine + " g proteine, " +
+      pl.totali.grassi + " g grassi, " + pl.totali.carboidrati + " g carboidrati");
+    return rows.join("\n");
+  }
+
+  function updateSaveInfo(t) {
+    var btn = document.getElementById("save");
+    var info = document.getElementById("save-info");
+    var any = MEALS.some(function (m) { return day[m.id] && day[m.id].items.length; });
+    if (!any) {
+      info.textContent = "Componi la giornata, poi salva.";
+      btn.disabled = true;
+    } else {
+      info.innerHTML = "Giornata di <b>" + NAMES[person] + "</b>: <b>" +
+        Math.round(t.kcal) + "</b> kcal, <b>" + Math.round(t.p) + "</b> g di proteine.";
+      btn.disabled = false;
+    }
+    btn.classList.remove("ok");
+    btn.textContent = "Salva giornata";
+  }
+
+  function onSave() {
+    var btn = document.getElementById("save");
+    var info = document.getElementById("save-info");
+    var dump = document.getElementById("dump");
+
+    if (syncReady()) {
+      var c = cfg();
+      btn.disabled = true; btn.textContent = "Invio\u2026";
+      var ctrl = new AbortController();
+      var killer = setTimeout(function () { ctrl.abort(); }, 15000);
+
+      fetch(c.url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret: c.secret, dieta: payload() }),
+        signal: ctrl.signal
+      }).then(function (r) {
+        clearTimeout(killer);
+        if (r.ok) {
+          btn.classList.add("ok"); btn.textContent = "Inviata";
+          info.innerHTML = "<b>Inviata.</b> La giornata \u00e8 nel repo <code>fit-log</code>.";
+          return;
+        }
+        btn.disabled = false; btn.textContent = "Riprova";
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (j.error === "bad_secret") {
+            info.innerHTML = "<b>Passphrase sbagliata.</b> Correggila in Sincronizzazione.";
+          } else {
+            dump.value = csvDump(); dump.hidden = false;
+            info.innerHTML = "<b>Invio non riuscito</b> (" + (j.error || r.status) + "). Copia il testo qui sotto.";
+          }
+        });
+      }).catch(function (e) {
+        clearTimeout(killer);
+        btn.disabled = false; btn.textContent = "Riprova";
+        dump.value = csvDump(); dump.hidden = false;
+        info.innerHTML = e && e.name === "AbortError"
+          ? "<b>Timeout.</b> Copia il testo qui sotto."
+          : "<b>Endpoint non raggiungibile.</b> Copia il testo qui sotto.";
+      });
+      return;
+    }
+
+    dump.value = csvDump();
+    dump.hidden = false;
+    dump.select();
+    var copied = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(dump.value); copied = true;
+      }
+    } catch (e) {}
+    btn.classList.add("ok");
+    btn.textContent = copied ? "Copiato" : "Copia sotto";
+    info.innerHTML = copied
+      ? "<b>Giornata copiata.</b> Incollala in chat."
+      : "<b>Seleziona il testo qui sotto</b> e incollalo in chat.";
+  }
+
+  /* ---- controlli ---- */
+  document.querySelectorAll("[data-person]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      person = b.dataset.person;
+      lset("fit.person", person);
+      document.querySelectorAll("[data-person]").forEach(function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      day = loadDay();
+      document.getElementById("dump").hidden = true;
+      renderFoodTable();
+      render();
+    });
+  });
+  document.getElementById("save").addEventListener("click", onSave);
+
+  /* ---- avvio ---- */
+  var saved = lget("fit.person");
+  if (saved === "e" || saved === "j") person = saved;
+  document.querySelectorAll("[data-person]").forEach(function (o) {
+    o.setAttribute("aria-pressed", String(o.dataset.person === person));
+  });
+
+  day = loadDay();
+  renderFoodTable();
+  render();
+  initCfgFields();
+  paintSync();
+})();
+</script>
+
+</body>
+</html>

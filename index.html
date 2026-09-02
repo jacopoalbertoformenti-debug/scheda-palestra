@@ -444,8 +444,19 @@
     body { font-size: 15.5px; }
     .ref-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
   }
-</style></head>
+</style><style>
+  .xnav { max-width:660px; margin:0 auto; padding:12px 14px 0; display:flex; gap:6px; }
+  .xnav a {
+    flex:1; text-align:center; padding:10px 12px; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    text-decoration:none; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+    font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .xnav a[aria-current="page"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
+</style>
+</head>
 <body>
+<nav class="xnav"><a href="index.html" aria-current="page">Allenamento</a><a href="dieta.html">Dieta</a></nav>
 <div class="wrap">
   <header>
     <p class="eyebrow">Blocco 1 <span>12 settimane</span> <span>dal 02.09.2026</span></p>

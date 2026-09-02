@@ -706,10 +706,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   var person = "j";
   var session = "A";
 
-  var DB = null;              // namespace db, quando questa vista lo concede
   var loads = { j: {}, e: {} };
   var rpes  = { j: {}, e: {} };
-  var unsubLoads = null;
   var flushTimer = null;
 
   function noop() {}
@@ -746,29 +744,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
 
   function flushLoads() {
     flushTimer = null;
-    var body = { carichi: loads[person], rpe: rpes[person], aggiornato: new Date().toISOString() };
-    if (DB) {
-      DB.doc("carichi/" + person).set(body).catch(noop);
-    } else {
-      lset("fit.loads." + person, JSON.stringify(loads[person]));
-      lset("fit.rpes." + person, JSON.stringify(rpes[person]));
-    }
-  }
-
-  function subscribeLoads() {
-    if (unsubLoads) { unsubLoads(); unsubLoads = null; }
-    if (!DB) return;
-    var p = person;
-    unsubLoads = DB.doc("carichi/" + p).onSnapshot(function (snap) {
-      if (!snap.exists) return;
-      var d = snap.data() || {};
-      // non sovrascrivere il campo che l'utente sta digitando in questo momento
-      var focused = document.activeElement;
-      var skip = (focused && focused.classList && focused.classList.contains("load")) ? focused.dataset.ex : null;
-      loads[p] = Object.assign({}, d.carichi || {});
-      rpes[p]  = Object.assign({}, d.rpe || {});
-      if (p === person) refreshInputs(skip);
-    }, noop);
+    lset("fit.loads." + person, JSON.stringify(loads[person]));
+    lset("fit.rpes." + person, JSON.stringify(rpes[person]));
   }
 
   /* ---- fase corrente ---- */
@@ -1112,28 +1089,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       return;
     }
 
-    if (DB) {
-      btn.disabled = true;
-      btn.textContent = "Salvo\u2026";
-      DB.doc("sessioni/" + person + "-" + today() + "-" + session).set(sessionPayload())
-        .then(function () {
-          btn.classList.add("ok");
-          btn.textContent = "Salvata";
-          info.innerHTML = "<b>Salvata.</b> La seduta \u00e8 sul database dell\u2019artifact: la rileggo da qui.";
-        })
-        .catch(function (e) {
-          btn.disabled = false;
-          btn.textContent = "Riprova";
-          info.textContent = (e && e.code === "rate_limited")
-            ? "Troppe richieste, riprova tra qualche secondo."
-            : "Salvataggio non riuscito. Intanto copia il log qui sotto.";
-          dump.value = csvDump();
-          dump.hidden = false;
-        });
-      return;
-    }
-
-    // versione statica: nessun database, si copia il log
+    // endpoint non configurato: si copia il log
     dump.value = csvDump();
     dump.hidden = false;
     dump.select();
@@ -1204,8 +1160,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       document.querySelectorAll("[data-person]").forEach(function (o) {
         o.setAttribute("aria-pressed", String(o === b));
       });
-      if (DB) subscribeLoads();
-      else { loads[person] = localLoads(person); rpes[person] = localRpes(person); }
+      loads[person] = localLoads(person);
+      rpes[person] = localRpes(person);
       render();
     });
   });
@@ -1244,20 +1200,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   render();
   initCfgFields();
   paintSync();
-
-  // il db arriva dopo, se questa vista lo concede: la pagina funziona senza.
-  if (window.claude && typeof window.claude.use === "function") {
-    window.claude.use("db").then(function (db) {
-      if (!db) return;
-      DB = db;
-      if (!syncReady()) {
-        var chip = document.getElementById("sync");
-        chip.className = "sync live";
-        chip.textContent = "sincronizzato";
-      }
-      subscribeLoads();
-    }).catch(noop);
-  }
 })();
 </script>
 

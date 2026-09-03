@@ -239,31 +239,23 @@
     border-left: 2px solid var(--line); padding-left: 9px;
   }
   .ex-bot { display: flex; align-items: center; gap: 8px; margin: 11px 0 0 41px; flex-wrap: wrap; }
-  .pips { display: flex; gap: 6px; }
-  .pip {
-    width: 38px; height: 38px; border-radius: 50%;
-    border: 1.5px solid var(--line); background: var(--surface-2);
-    color: var(--ink-3); cursor: pointer;
-    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .12s, color .12s, border-color .12s;
-  }
-  .pip[aria-pressed="true"] { background: var(--done); border-color: var(--done); color: var(--surface); }
-  :root[data-theme="dark"] .pip[aria-pressed="true"] { color: #0E1A24; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .pip[aria-pressed="true"] { color: #0E1A24; }
-  }
   .spacer { flex: 1; }
+  .prev {
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .04em;
+    color: var(--ink-3); white-space: nowrap; text-align: right;
+  }
+  .prev.up { color: var(--done); }
   .load {
-    width: 76px; height: 38px; padding: 0 9px;
+    width: 92px; height: 46px; padding: 0 10px;
     background: var(--ground); color: var(--ink);
     border: 1px solid var(--line); border-radius: 7px;
     font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
-    font-size: 14px; font-weight: 600; text-align: right;
+    font-size: 17px; font-weight: 600; text-align: right;
   }
   .load::placeholder { color: var(--ink-3); font-weight: 500; }
   .timer-btn {
-    height: 38px; padding: 0 12px;
+    height: 46px; padding: 0 14px;
     background: var(--surface-2); color: var(--ink-2);
     border: 1px solid var(--line); border-radius: 7px; cursor: pointer;
     font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
@@ -272,29 +264,7 @@
   .timer-btn:hover { color: var(--accent); border-color: var(--accent); }
 
 
-  /* ---- RPE + salvataggio ---- */
-  .ex-rpe {
-    display: flex; align-items: center; gap: 6px;
-    margin: 9px 0 0 41px; flex-wrap: wrap;
-  }
-  .ex-rpe .lbl {
-    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
-    margin-right: 2px;
-  }
-  .rpe {
-    width: 36px; height: 34px; border-radius: 7px;
-    border: 1.5px solid var(--line); background: var(--surface-2);
-    color: var(--ink-3); cursor: pointer;
-    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
-    transition: background .12s, color .12s, border-color .12s;
-  }
-  .rpe[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
-  :root[data-theme="dark"] .rpe[aria-pressed="true"] { color: #0E1A24; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .rpe[aria-pressed="true"] { color: #0E1A24; }
-  }
-
+  /* ---- salvataggio ---- */
   .savebar {
     margin: 16px 0 0; padding: 14px;
     background: var(--surface); border: 1px solid var(--line-2);
@@ -324,6 +294,14 @@
   }
   .sync.live { color: var(--done); }
   .sync.live::before { background: var(--done); }
+
+  .note-in {
+    width: 100%; margin: 10px 0 0; min-height: 44px; padding: 11px;
+    background: var(--ground); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px;
+    font-family: "IBM Plex Sans", sans-serif; font-size: 14px;
+  }
+  .note-in::placeholder { color: var(--ink-3); }
 
   .dump {
     width: 100%; margin: 10px 0 0; min-height: 110px; resize: vertical;
@@ -490,13 +468,15 @@
         <h2 id="s-title">Spinta + quadricipiti</h2>
         <p id="s-sub">macchine + panca</p>
       </div>
-      <button type="button" class="reset" id="reset">Azzera serie</button>
+      <span class="sync" id="sync">solo su questo telefono</span>
     </div>
     <div class="ex-list" id="list"></div>
 
+    <input type="text" class="note-in" id="note" maxlength="200"
+           placeholder="Nota sulla seduta &mdash; esercizi saltati, macchina occupata, come &egrave; andata">
+
     <div class="savebar">
-      <div class="info" id="save-info">Spunta le serie mentre ti alleni, poi salva.</div>
-      <span class="sync" id="sync">solo su questo telefono</span>
+      <div class="info" id="save-info">Scrivi i carichi, poi salva.</div>
       <button type="button" class="save" id="save">Salva seduta</button>
     </div>
     <textarea class="dump" id="dump" hidden readonly aria-label="Log della seduta da copiare"></textarea>
@@ -718,7 +698,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   var session = "A";
 
   var loads = { j: {}, e: {} };
-  var rpes  = { j: {}, e: {} };
   var flushTimer = null;
 
   function noop() {}
@@ -735,18 +714,18 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   }
 
-  /* ---- serie spuntate: sempre locali, per dispositivo e per giorno ---- */
-  function doneKey() { return "fit.done." + person + "." + session; }
-  function readDone() {
-    var raw = jparse(lget(doneKey()), null);
-    if (!raw || raw.d !== today()) return {};
-    return raw.v || {};
-  }
-  function writeDone(v) { lset(doneKey(), JSON.stringify({ d: today(), v: v })); }
-
-  /* ---- carichi e RPE: db se c'e', altrimenti locale ---- */
+  /* ---- carichi, e carichi della volta precedente ---- */
   function localLoads(p) { return jparse(lget("fit.loads." + p), {}); }
-  function localRpes(p)  { return jparse(lget("fit.rpes." + p), {}); }
+  function prevKey() { return "fit.prev." + person + "." + session; }
+  function readPrev() { return jparse(lget(prevKey()), {}); }
+  function snapshotPrev() {
+    var snap = {};
+    SESSIONS[session].ex.forEach(function (ex) {
+      var v = loads[person][ex.id];
+      if (v !== undefined && v !== null && v !== "") snap[ex.id] = v;
+    });
+    lset(prevKey(), JSON.stringify(snap));
+  }
 
   function scheduleFlush() {
     if (flushTimer) clearTimeout(flushTimer);
@@ -756,7 +735,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   function flushLoads() {
     flushTimer = null;
     lset("fit.loads." + person, JSON.stringify(loads[person]));
-    lset("fit.rpes." + person, JSON.stringify(rpes[person]));
   }
 
   /* ---- fase corrente ---- */
@@ -808,28 +786,10 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     var n = ex.name;
     return (typeof n === "object") ? n[person] : n;
   }
-  function countDone(done, ex) {
-    var n = 0;
-    for (var i = 1; i <= ex.sets[person]; i++) if (done[ex.id + "." + i]) n++;
-    return n;
-  }
-
-  function refreshInputs(skipId) {
-    document.querySelectorAll(".load").forEach(function (inp) {
-      if (inp.dataset.ex === skipId) return;
-      var v = loads[person][inp.dataset.ex];
-      inp.value = (v === undefined || v === null) ? "" : v;
-    });
-    document.querySelectorAll(".rpe").forEach(function (b) {
-      var cur = rpes[person][b.dataset.ex];
-      b.setAttribute("aria-pressed", String(String(cur) === b.dataset.rpe));
-    });
-  }
-
   /* ---- lista esercizi ---- */
   function render() {
     var sess = SESSIONS[session];
-    var done = readDone();
+    var prev = readPrev();
     document.getElementById("s-title").textContent = sess.title;
     document.getElementById("s-sub").textContent = sess.sub;
     document.getElementById("badge").textContent = NAMES[person];
@@ -838,7 +798,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     list.innerHTML = "";
 
     sess.ex.forEach(function (ex) {
-      var nSets = ex.sets[person];
       var alt = pick("alt", ex);
       var note = pick("note", ex);
 
@@ -851,7 +810,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         '<div class="slot">' + ex.slot + "</div>" +
         '<div class="ex-name">' + exName(ex) +
           (alt ? '<span class="ex-alt">' + alt + "</span>" : "") + "</div>" +
-        '<div class="pres">' + nSets + " \u00d7 " + ex.reps[person] +
+        '<div class="pres">' + ex.sets[person] + " \u00d7 " + ex.reps[person] +
           "<small>" + (ex.timed ? "serie \u00d7 tempo" : "serie \u00d7 rip") + "</small></div>";
       card.appendChild(top);
 
@@ -864,42 +823,17 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
 
       var bot = document.createElement("div");
       bot.className = "ex-bot";
-
-      var rpeRow = document.createElement("div");
-      rpeRow.className = "ex-rpe";
-      rpeRow.hidden = countDone(done, ex) === 0;
-      rpeRow.innerHTML = '<span class="lbl">RPE</span>';
-
-      var pips = document.createElement("div");
-      pips.className = "pips";
-      for (var i = 1; i <= nSets; i++) {
-        (function (i) {
-          var key = ex.id + "." + i;
-          var b = document.createElement("button");
-          b.type = "button";
-          b.className = "pip";
-          b.textContent = i;
-          b.setAttribute("aria-pressed", done[key] ? "true" : "false");
-          b.setAttribute("aria-label", "Serie " + i + " di " + nSets);
-          b.addEventListener("click", function () {
-            var d = readDone();
-            if (d[key]) { delete d[key]; b.setAttribute("aria-pressed", "false"); }
-            else {
-              d[key] = 1;
-              b.setAttribute("aria-pressed", "true");
-              startRest(ex.rest, exName(ex));
-            }
-            writeDone(d);
-            rpeRow.hidden = countDone(d, ex) === 0;
-            updateSaveInfo();
-          });
-          pips.appendChild(b);
-        })(i);
-      }
-      bot.appendChild(pips);
       bot.appendChild(Object.assign(document.createElement("span"), { className: "spacer" }));
 
       if (!ex.timed) {
+        // carico della volta precedente: e' la doppia progressione, resa visibile
+        var pv = prev[ex.id];
+        var pdiv = document.createElement("div");
+        pdiv.className = "prev";
+        pdiv.textContent = (pv === undefined || pv === null || pv === "")
+          ? "prima volta" : "prec. " + pv + " kg";
+        bot.appendChild(pdiv);
+
         var inp = document.createElement("input");
         inp.className = "load";
         inp.type = "text";
@@ -908,12 +842,22 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         inp.dataset.ex = ex.id;
         var cur = loads[person][ex.id];
         inp.value = (cur === undefined || cur === null) ? "" : cur;
-        inp.setAttribute("aria-label", "Carico usato \u2014 " + exName(ex));
+        inp.setAttribute("aria-label", "Carico di oggi \u2014 " + exName(ex));
+
+        function markUp() {
+          var a = parseFloat(String(inp.value).replace(",", "."));
+          var b = parseFloat(String(pv).replace(",", "."));
+          pdiv.className = "prev" + (!isNaN(a) && !isNaN(b) && a > b ? " up" : "");
+        }
+        markUp();
+
         inp.addEventListener("input", function () {
           var v = inp.value.trim();
           if (v === "") delete loads[person][ex.id];
           else loads[person][ex.id] = v;
+          markUp();
           scheduleFlush();
+          updateSaveInfo();
         });
         bot.appendChild(inp);
       }
@@ -927,28 +871,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       bot.appendChild(t);
 
       card.appendChild(bot);
-
-      [6, 7, 8, 9].forEach(function (v) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "rpe";
-        b.textContent = v;
-        b.dataset.ex = ex.id;
-        b.dataset.rpe = String(v);
-        b.setAttribute("aria-pressed", String(rpes[person][ex.id] === v));
-        b.setAttribute("aria-label", "RPE " + v + " su " + exName(ex));
-        b.addEventListener("click", function () {
-          if (rpes[person][ex.id] === v) delete rpes[person][ex.id];
-          else rpes[person][ex.id] = v;
-          rpeRow.querySelectorAll(".rpe").forEach(function (o) {
-            o.setAttribute("aria-pressed", String(rpes[person][ex.id] === Number(o.dataset.rpe)));
-          });
-          scheduleFlush();
-        });
-        rpeRow.appendChild(b);
-      });
-      card.appendChild(rpeRow);
-
       list.appendChild(card);
     });
 
@@ -991,8 +913,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
 
   /* ---- salvataggio seduta ---- */
   function sessionPayload() {
-    var done = readDone();
     var ph = currentPhase();
+    var nota = (document.getElementById("note").value || "").trim();
     return {
       persona: NAMES[person],
       personaId: person,
@@ -1007,42 +929,40 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           nome: exName(ex),
           serie_previste: ex.sets[person],
           ripetizioni: String(ex.reps[person]),
-          serie_fatte: countDone(done, ex),
-          carico_kg: loads[person][ex.id] || null,
-          rpe: rpes[person][ex.id] || null
+          carico_kg: loads[person][ex.id] || null
         };
-      }),
+      }).filter(function (e) { return e.carico_kg !== null; }),
+      note: nota || null,
       salvato: new Date().toISOString()
     };
   }
 
   function csvDump() {
     var pl = sessionPayload();
-    var rows = ["data,persona,seduta,esercizio,serie,ripetizioni,carico_kg,rpe,note"];
+    var rows = ["data,persona,seduta,esercizio,serie,ripetizioni,carico_kg,note"];
     pl.esercizi.forEach(function (e) {
-      if (!e.serie_fatte && !e.carico_kg) return;
       rows.push([pl.data, pl.personaId, pl.seduta, e.nome,
-        e.serie_fatte + "/" + e.serie_previste, e.ripetizioni,
-        e.carico_kg || "", e.rpe || "", ""].join(","));
+        e.serie_previste, e.ripetizioni, e.carico_kg, ""].join(","));
     });
-    return rows.join("\n");
+    if (pl.note) rows.push("# nota: " + pl.note);
+    return rows.join("\\n");
   }
 
   function updateSaveInfo() {
-    var done = readDone();
-    var total = 0, fatte = 0;
-    SESSIONS[session].ex.forEach(function (ex) {
-      total += ex.sets[person];
-      fatte += countDone(done, ex);
-    });
-    var info = document.getElementById("save-info");
     var btn = document.getElementById("save");
-    if (fatte === 0) {
-      info.textContent = "Spunta le serie mentre ti alleni, poi salva.";
+    var info = document.getElementById("save-info");
+    var n = SESSIONS[session].ex.filter(function (ex) {
+      var v = loads[person][ex.id];
+      return !ex.timed && v !== undefined && v !== null && v !== "";
+    }).length;
+    var tot = SESSIONS[session].ex.filter(function (ex) { return !ex.timed; }).length;
+
+    if (n === 0) {
+      info.textContent = "Scrivi i carichi, poi salva.";
       btn.disabled = true;
     } else {
       info.innerHTML = "Seduta <b>" + session + "</b> di " + NAMES[person] +
-        ": <b>" + fatte + "</b> serie su " + total + " spuntate.";
+        ": <b>" + n + "</b> carichi su " + tot + ".";
       btn.disabled = false;
     }
     btn.classList.remove("ok");
@@ -1078,7 +998,13 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         if (r.ok) {
           btn.classList.add("ok");
           btn.textContent = "Inviata";
-          info.innerHTML = "<b>Inviata.</b> La seduta \u00e8 nel repo <code>fit-log</code>: la leggo da l\u00ec.";
+          info.innerHTML = "<b>Inviata.</b> Seduta del " + today() +
+            " nel repo <code>fit-log</code>. I carichi di oggi diventano il riferimento della prossima volta.";
+          snapshotPrev();
+          render();
+          btn.classList.add("ok");
+          btn.textContent = "Inviata";
+          btn.disabled = true;
           return;
         }
         btn.disabled = false;
@@ -1114,6 +1040,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         copied = true;
       }
     } catch (e) {}
+    snapshotPrev();
     btn.classList.add("ok");
     btn.textContent = copied ? "Copiato" : "Copia sotto";
     info.innerHTML = copied
@@ -1175,7 +1102,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         o.setAttribute("aria-pressed", String(o === b));
       });
       loads[person] = localLoads(person);
-      rpes[person] = localRpes(person);
       render();
     });
   });
@@ -1192,12 +1118,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     });
   });
 
-  document.getElementById("reset").addEventListener("click", function () {
-    writeDone({});
-    document.getElementById("dump").hidden = true;
-    render();
-  });
-
   document.getElementById("save").addEventListener("click", onSave);
 
   /* ---- avvio ---- */
@@ -1208,7 +1128,6 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   });
 
   loads.j = localLoads("j"); loads.e = localLoads("e");
-  rpes.j  = localRpes("j");  rpes.e  = localRpes("e");
 
   renderPhases();
   render();

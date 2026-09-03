@@ -66,7 +66,7 @@
     font-weight:700; font-size:clamp(30px,9vw,40px); line-height:1.02;
     margin:8px 0 0; letter-spacing:-.01em; text-wrap:balance;
   }
-  .lede { color:var(--ink-2); font-size:14px; margin:8px 0 0; max-width:48ch; }
+  .lede { color:var(--ink-2); font-size:14px; margin:8px 0 0; max-width:50ch; }
 
   .who { margin:18px 0 0; }
   .who-label, .sect-label {
@@ -82,7 +82,20 @@
   }
   .seg button[aria-pressed="true"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
 
-  /* ---- pannello totali, appiccicato in alto: e' il cuore della pagina ---- */
+  .gfbar {
+    margin:14px 0 0; padding:11px 13px; border-radius:9px;
+    background:var(--ok-bg); color:var(--ink); font-size:13px;
+    border-left:3px solid var(--ok);
+  }
+  .gfbar[hidden] { display:none !important; }
+  .gfbar b {
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ok);
+  }
+  .gfbar.alert { background:var(--accent-bg); border-left-color:var(--warn); }
+  .gfbar.alert b { color:var(--warn); }
+
+  /* ---- totali della giornata ---- */
   .totals {
     position:sticky; top:0; z-index:20; margin:16px 0 0;
     background:var(--ground); padding:11px 0 10px; border-bottom:1px solid var(--line-2);
@@ -103,61 +116,27 @@
     font-size:20px; font-weight:600; letter-spacing:-.02em; margin-top:3px; line-height:1.1;
   }
   .t .v small { font-size:11.5px; font-weight:500; color:var(--ink-3); letter-spacing:0; }
-  .t .d {
-    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
-    font-size:11px; font-weight:600;
-  }
-  .t .d.ok   { color:var(--ok); }
-  .t .d.miss { color:var(--warn); }
+  .t .d { font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:11px; font-weight:600; }
+  .t .d.ok { color:var(--ok); } .t .d.miss { color:var(--warn); }
   .bar { height:5px; border-radius:3px; background:var(--surface-2); margin-top:7px; overflow:hidden; }
   .bar i { display:block; height:100%; background:var(--accent); border-radius:3px; transition:width .18s; }
   .bar i.ok { background:var(--ok); }
 
-  .gfbar {
-    margin:14px 0 0; padding:11px 13px; border-radius:9px;
-    background:var(--ok-bg); color:var(--ink); font-size:13px;
-    border-left:3px solid var(--ok);
-  }
-  .gfbar[hidden] { display:none !important; }
-  .gfbar b {
-    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.06em;
-    text-transform:uppercase; color:var(--ok);
-  }
-  .gfbar.alert { background:var(--accent-bg); border-left-color:var(--warn); }
-  .gfbar.alert b { color:var(--warn); }
-  .tag {
-    display:inline-block; margin-left:6px; padding:1px 6px; border-radius:4px;
-    background:var(--ok-bg); color:var(--ok);
-    font-family:"IBM Plex Mono",monospace; font-size:9px; font-weight:600;
-    letter-spacing:.08em; text-transform:uppercase; vertical-align:1px;
-  }
-  .tag.cert { background:var(--accent-bg); color:var(--accent); }
-  .tag.bad  { background:var(--accent-bg); color:var(--warn); }
-
-  .hint {
-    margin:9px 0 0; padding:10px 12px; border-radius:9px;
-    background:var(--accent-bg); color:var(--ink); font-size:13px;
-  }
-  .hint[hidden] { display:none !important; }
-  .hint b { font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); }
-  .hint .adds { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
-  .hint .adds button {
-    background:var(--surface); border:1px solid var(--line); border-radius:7px;
-    color:var(--ink); padding:8px 11px; cursor:pointer; font-size:12.5px;
-    font-family:"IBM Plex Sans",sans-serif;
-  }
-  .hint .adds button:hover { border-color:var(--accent); color:var(--accent); }
-
   /* ---- pasti ---- */
-  .meal { margin:22px 0 0; }
+  .meal { margin:24px 0 0; }
+  .mhead { display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:10px; }
   .meal h2 {
     font-family:"IBM Plex Sans Condensed",sans-serif; font-size:22px; font-weight:700;
-    margin:0 0 3px; line-height:1.1;
+    margin:0; line-height:1.1;
   }
-  .meal .sub {
-    font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px;
+  .mbudget {
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:11px; font-weight:600; text-align:right; color:var(--ink-3);
+    white-space:nowrap; line-height:1.5;
   }
+  .mbudget b { color:var(--ink-2); }
+  .mbudget .ok { color:var(--ok); }
+
   .opts { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
   .opts button {
     background:var(--surface); border:1px solid var(--line); border-radius:20px;
@@ -179,69 +158,94 @@
     background:var(--surface); border:1px solid var(--line-2); border-radius:var(--radius);
     box-shadow:var(--shadow); overflow:hidden;
   }
-  .row {
-    display:flex; align-items:center; gap:10px; padding:10px 12px;
-    border-bottom:1px solid var(--line-2);
-  }
+  .row { display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--line-2); }
   .row:last-child { border-bottom:none; }
   .row .nm { flex:1; min-width:0; font-size:14.5px; }
   .row .nm em { display:block; font-style:normal; font-size:11.5px; color:var(--ink-3); margin-top:1px; }
   .row .macro {
     font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
-    font-size:11px; color:var(--ink-3); text-align:right; white-space:nowrap;
+    font-size:11px; color:var(--ink-3); text-align:right; white-space:nowrap; line-height:1.4;
   }
   .row input {
-    width:72px; min-height:38px; padding:0 8px; text-align:right;
+    width:72px; min-height:40px; padding:0 8px; text-align:right;
     background:var(--ground); color:var(--ink); border:1px solid var(--line); border-radius:7px;
     font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
-    font-size:14px; font-weight:600;
+    font-size:15px; font-weight:600;
   }
   .row .g { font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); }
-  .row .x {
-    background:none; border:none; color:var(--ink-3); cursor:pointer;
-    font-size:19px; line-height:1; padding:6px 2px;
-  }
+  .row .x { background:none; border:none; color:var(--ink-3); cursor:pointer; font-size:19px; line-height:1; padding:6px 2px; }
   .row .x:hover { color:var(--warn); }
   .empty { padding:16px 12px; color:var(--ink-3); font-size:13.5px; }
 
-  .add {
-    display:flex; gap:6px; margin-top:8px; align-items:stretch; flex-wrap:wrap;
-  }
+  .add { display:flex; gap:6px; margin-top:8px; align-items:stretch; flex-wrap:wrap; }
   .add select {
-    flex:1; min-width:150px; min-height:40px; padding:0 9px;
+    flex:1; min-width:160px; min-height:42px; padding:0 9px;
     background:var(--surface); color:var(--ink); border:1px solid var(--line);
     border-radius:7px; font-family:"IBM Plex Sans",sans-serif; font-size:13.5px;
   }
   .add button {
-    min-height:40px; padding:0 14px; background:var(--surface-2); color:var(--ink-2);
+    min-height:42px; padding:0 14px; background:var(--surface-2); color:var(--ink-2);
     border:1px solid var(--line); border-radius:7px; cursor:pointer;
     font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
     letter-spacing:.08em; text-transform:uppercase;
   }
   .add button:hover { color:var(--accent); border-color:var(--accent); }
 
-  /* ---- salvataggio ---- */
+  /* ---- cosa manca a questo pasto ---- */
+  .gap {
+    margin:9px 0 0; padding:11px 13px; border-radius:9px;
+    background:var(--accent-bg); font-size:13px; color:var(--ink);
+    border-left:3px solid var(--accent);
+  }
+  .gap[hidden] { display:none !important; }
+  .gap.done { background:var(--ok-bg); border-left-color:var(--ok); }
+  .gap .lab {
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--accent);
+  }
+  .gap.done .lab { color:var(--ok); }
+  .gap .chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:9px; }
+  .gap .chips button {
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    color:var(--ink); padding:9px 12px; cursor:pointer; font-size:13px;
+    font-family:"IBM Plex Sans",sans-serif; min-height:42px; text-align:left;
+  }
+  .gap .chips button:hover { border-color:var(--accent); }
+  .gap .chips small {
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:10px;
+    color:var(--ink-3); margin-top:1px;
+  }
+  .tag {
+    display:inline-block; margin-left:6px; padding:1px 6px; border-radius:4px;
+    background:var(--ok-bg); color:var(--ok);
+    font-family:"IBM Plex Mono",monospace; font-size:9px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase; vertical-align:1px;
+  }
+  .tag.cert { background:var(--accent-bg); color:var(--accent); }
+  .tag.bad { background:var(--accent-bg); color:var(--warn); }
+
+  /* ---- salvataggio, opzionale ---- */
   .savebar {
-    margin:24px 0 0; padding:14px; background:var(--surface);
+    margin:26px 0 0; padding:14px; background:var(--surface);
     border:1px solid var(--line-2); border-radius:var(--radius); box-shadow:var(--shadow);
     display:flex; align-items:center; gap:12px; flex-wrap:wrap;
   }
   .savebar .info { flex:1; min-width:150px; font-size:12.5px; color:var(--ink-2); }
   .savebar .info b { color:var(--ink); }
   .save {
-    min-height:46px; padding:0 18px; background:var(--ink); color:var(--ground);
-    border:1px solid var(--ink); border-radius:8px; cursor:pointer;
-    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:16px; font-weight:600;
+    min-height:44px; padding:0 16px; background:var(--surface-2); color:var(--ink-2);
+    border:1px solid var(--line); border-radius:8px; cursor:pointer;
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:15px; font-weight:600;
   }
-  .save.ok { background:var(--ok); border-color:var(--ok); }
+  .save:hover { color:var(--accent); border-color:var(--accent); }
+  .save.ok { background:var(--ok); border-color:var(--ok); color:var(--surface); }
   .sync {
     display:inline-flex; align-items:center; gap:6px;
     font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
     letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
   }
   .sync::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--ink-3); }
-  .sync.live { color:var(--ok); }
-  .sync.live::before { background:var(--ok); }
+  .sync.live { color:var(--ok); } .sync.live::before { background:var(--ok); }
   .dump {
     width:100%; margin:10px 0 0; min-height:110px; resize:vertical;
     background:var(--ground); color:var(--ink); border:1px solid var(--line);
@@ -270,9 +274,10 @@
   .body strong { color:var(--ink); font-weight:600; }
   .body ul { margin:0 0 10px; padding-left:20px; }
   .body li { margin-bottom:6px; }
-  .body label { display:block; margin-bottom:10px;
-    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .body label {
+    display:block; margin-bottom:10px; font-family:"IBM Plex Mono",monospace;
+    font-size:9.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  }
   .body input {
     display:block; width:100%; margin-top:5px; min-height:42px; padding:0 11px;
     background:var(--ground); color:var(--ink); border:1px solid var(--line);
@@ -280,12 +285,19 @@
   }
   .tbl { width:100%; border-collapse:collapse; font-size:13px; }
   .tbl th, .tbl td { text-align:left; padding:6px 8px 6px 0; border-bottom:1px solid var(--line-2); }
-  .tbl th { font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .tbl th {
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+    position:sticky; top:0; background:var(--surface);
+  }
   .tbl td.n { font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right; }
+  .tbl tr.cat td {
+    font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--accent);
+    padding-top:14px; border-bottom-color:var(--line);
+  }
 
-  footer { margin:28px 0 10px; padding-top:16px; border-top:1px solid var(--line-2);
-    font-size:12.5px; color:var(--ink-3); }
+  footer { margin:28px 0 10px; padding-top:16px; border-top:1px solid var(--line-2); font-size:12.5px; color:var(--ink-3); }
   footer p { margin:0 0 7px; }
   button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
     outline:2px solid var(--accent-2); outline-offset:2px;
@@ -307,12 +319,12 @@
 <nav class="xnav"><a href="index.html">Allenamento</a><a href="dieta.html" aria-current="page">Dieta</a></nav>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Blocco 1 <span>target giornalieri</span></p>
+    <p class="eyebrow">Blocco 1 <span>cinque pasti</span></p>
     <h1>Dieta Jacopo &amp; Elisa</h1>
-    <p class="lede">Scegli un&rsquo;opzione per pasto e aggiusta le grammature: il totale si aggiorna mentre componi. La colonna di Elisa &egrave; <strong>senza glutine</strong>, con i valori dei sostituti gi&agrave; ricalcolati.</p>
+    <p class="lede">Scegli cosa stai mangiando: per ogni pasto vedi quanto ci sta e <strong>cosa aggiungere per chiudere le proteine</strong>. Non serve registrare la giornata &mdash; si pu&ograve;, ma il senso &egrave; consultarla al momento.</p>
 
     <div class="who">
-      <p class="who-label">Sto componendo la giornata di</p>
+      <p class="who-label">Sto guardando i pasti di</p>
       <div class="seg" role="group" aria-label="Scegli persona">
         <button type="button" data-person="j" aria-pressed="true">Jacopo</button>
         <button type="button" data-person="e" aria-pressed="false">Elisa</button>
@@ -324,13 +336,12 @@
 
   <div class="totals">
     <div class="tgrid" id="tgrid"></div>
-    <div class="hint" id="hint" hidden></div>
   </div>
 
   <main id="meals"></main>
 
   <div class="savebar">
-    <div class="info" id="save-info">Componi la giornata, poi salva.</div>
+    <div class="info" id="save-info">Il salvataggio &egrave; facoltativo: serve solo se vuoi che Claude veda la giornata.</div>
     <span class="sync" id="sync">solo su questo telefono</span>
     <button type="button" class="save" id="save">Salva giornata</button>
   </div>
@@ -340,47 +351,45 @@
     <p class="sect-label">Come si usa</p>
 
     <details>
-      <summary>I due numeri che contano</summary>
+      <summary>Il riquadro &ldquo;cosa manca&rdquo;</summary>
       <div class="body">
-        <p><strong>Calorie e proteine.</strong> Grassi e carboidrati sono il resto, e restano flessibili: se un giorno i carboidrati sono pi&ugrave; alti e i grassi pi&ugrave; bassi non &egrave; un problema, purch&eacute; i grassi non scendano sotto ~50 g. Inseguire quattro numeri contemporaneamente ogni giorno &egrave; il modo pi&ugrave; rapido per mollare tutto.</p>
-        <p>Le proteine sono la met&agrave; che protegge il muscolo mentre il peso scende. Se in una giornata sforate le calorie di 100 ma centrate le proteine, va bene. Il contrario, no.</p>
-        <p><strong>Conta la media della settimana</strong>, non il singolo giorno. Un pasto fuori il sabato si assorbe da s&eacute;.</p>
+        <p>Ogni pasto ha una sua quota della giornata. Sotto il pasto compare quanto manca per chiuderne le <strong>proteine</strong>, con due o tre alimenti gi&agrave; dosati: tocchi e si aggiungono.</p>
+        <p>I suggerimenti sono filtrati: niente carne alla colazione, niente skyr dentro la cena, niente glutine nella vista di Elisa. E vengono ordinati per <strong>calorie spese per grammo di proteina</strong> &mdash; in cima c&rsquo;&egrave; sempre il modo pi&ugrave; economico di chiudere il buco.</p>
+        <p>Se una porzione dovesse risultare irreale (300 g di grana) o sfondare troppo le calorie rimaste, quell&rsquo;alimento semplicemente non viene proposto.</p>
       </div>
     </details>
 
     <details>
-      <summary>Perch&eacute; alcune scelte non bastano</summary>
+      <summary>Non devo registrare tutto?</summary>
       <div class="body">
-        <p>Le opzioni non sono equivalenti sul fronte proteico, e la pagina te lo dice invece di far finta che lo siano.</p>
-        <p><strong>Jacopo:</strong> con 180 g di proteine da centrare, alcune combinazioni non ci arrivano nemmeno con porzioni piene &mdash; le lenticchie a pranzo e la frutta secca come spuntino, per esempio, lasciano scoperti fino a 60-70 g. Quando succede compare in cima il riquadro con le aggiunte: un vasetto di skyr o un misurino di proteine chiudono il buco.</p>
-        <p><strong>Elisa:</strong> con 108 g il margine &egrave; molto pi&ugrave; ampio, e quasi tutte le combinazioni funzionano senza aggiunte.</p>
+        <p><strong>No.</strong> Questa pagina serve a rispondere a &ldquo;cosa mangio adesso e quanto&rdquo;, non a tenere un diario. Il pulsante di salvataggio in fondo &egrave; facoltativo.</p>
+        <p>Il tracking completo serve solo <strong>due settimane all&rsquo;inizio</strong>, per calibrare l&rsquo;occhio sulle porzioni. Dopo, si stima a vista e si pesa solo quando qualcosa non torna. Le uniche due cose che restano nel tempo sono il peso al mattino e le circonferenze ogni due settimane.</p>
+        <p>Se un giorno vuoi un parere sulla giornata, salvala. Altrimenti usala e chiudila.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I due numeri che contano</summary>
+      <div class="body">
+        <p><strong>Calorie e proteine.</strong> Grassi e carboidrati sono il resto e restano flessibili, purch&eacute; i grassi non scendano sotto ~50 g. Inseguire quattro numeri ogni giorno &egrave; il modo pi&ugrave; rapido per mollare.</p>
+        <p>Conta la <strong>media della settimana</strong>, non il singolo giorno. Se sfori di 100 kcal ma centri le proteine, va bene. Il contrario, no.</p>
       </div>
     </details>
 
     <details>
       <summary>Celiachia: cosa cambia</summary>
       <div class="body">
-        <p><strong>La colonna di Elisa non contiene glutine</strong>, e i sostituti non sono equivalenti sulla carta: la pasta di mais o riso ha circa <strong>7 g di proteine invece di 12</strong>, il pane senza glutine circa <strong>4 invece di 8</strong> e in compenso pi&ugrave; grassi. Le porzioni sono state ricalcolate su quei valori, non semplicemente scambiate.</p>
-        <p><strong>Fuori dalle sue opzioni:</strong> pasta e pane di frumento, fette biscottate normali, avena non certificata, seitan (&egrave; glutine puro). L&rsquo;elenco alimenti nella sua vista non li mostra nemmeno.</p>
-        <p><strong>Da verificare sull&rsquo;etichetta</strong> anche quando l&rsquo;alimento &egrave; naturalmente senza glutine: proteine in polvere e affettati come la bresaola, dove il rischio non &egrave; l&rsquo;ingrediente ma additivi e stabilimento. Sono segnalati con <span class="tag cert">etichetta</span>. Cerca la dicitura &ldquo;senza glutine&rdquo; o la spiga barrata.</p>
-        <p><strong>Contaminazione crociata in cucina</strong>, che &egrave; il punto pi&ugrave; delicato per una coppia in cui uno solo &egrave; celiaco: acqua di cottura separata per la pasta (non lo stesso scolapasta, non la stessa acqua), tostapane dedicato o sacchetti appositi, tagliere e coltello separati per il pane, attenzione alle briciole sui piani di lavoro e a mestoli e colini condivisi. Nel batch cooking della domenica conviene preparare prima le porzioni senza glutine, su superfici pulite.</p>
-        <p>Su diagnosi, controlli e integrazioni parlatene con il medico o con una dietista: questa pagina gestisce le grammature, non la parte clinica.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Le grammature</summary>
-      <div class="body">
-        <p>Sono <strong>a crudo e come si acquista</strong>: 80 g di pasta sono la pasta secca, 165 g di pollo sono il petto crudo. La differenza col cotto &egrave; grande e sbagliarla vale centinaia di calorie.</p>
-        <p>Pesare per due settimane serve a calibrare l&rsquo;occhio. Dopo, si stima a vista e si pesa solo quando qualcosa non torna.</p>
-        <p>Dove il grammo non dice niente c&rsquo;&egrave; l&rsquo;equivalenza pratica sotto il nome: un uovo &asymp; 55 g, un cucchiaio d&rsquo;olio &asymp; 10 g.</p>
+        <p><strong>La vista di Elisa non contiene glutine</strong>, e i sostituti non sono equivalenti: la pasta di mais o riso ha ~7 g di proteine invece di 12, il pane senza glutine ~4 invece di 8 e pi&ugrave; grassi. Le porzioni sono ricalcolate su quei valori, non scambiate.</p>
+        <p><strong>Attenzione ai cereali da colazione:</strong> fiocchi di mais e di riso comuni (Corn Flakes, Rice Krispies e simili) contengono quasi sempre <strong>malto d&rsquo;orzo</strong>, quindi glutine, pur essendo mais e riso naturalmente privi. Nella vista di Elisa compaiono solo le versioni certificate.</p>
+        <p><strong>Da verificare in etichetta</strong> anche se naturalmente senza glutine: proteine in polvere, affettati, gallette, polenta, legumi in scatola, hummus, formaggi spalmabili, cacao. Segnalati con <span class="tag cert">etichetta</span>.</p>
+        <p><strong>Contaminazione crociata:</strong> acqua di cottura e scolapasta separati, tostapane dedicato, tagliere del pane a parte, e nel batch cooking le porzioni senza glutine per prime.</p>
       </div>
     </details>
 
     <details>
       <summary>Sincronizzazione</summary>
       <div class="body">
-        <p>Stessa passphrase della scheda di allenamento: se l&rsquo;hai gi&agrave; inserita l&igrave;, va inserita anche qui una volta (sono due pagine diverse).</p>
+        <p>Stessa passphrase della scheda di allenamento. Da inserire una volta anche qui: sono due pagine diverse.</p>
         <label>Endpoint
           <input type="url" id="cfg-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://&hellip;/api/log">
         </label>
@@ -394,7 +403,7 @@
       <summary>Tabella alimenti</summary>
       <div class="body">
         <p>Valori per 100 g, crudo o come si acquista.</p>
-        <div style="overflow-x:auto">
+        <div style="overflow-x:auto;max-height:60vh">
           <table class="tbl" id="ftbl">
             <thead><tr><th>Alimento</th><th class="n">kcal</th><th class="n">Prot</th><th class="n">Gras</th><th class="n">Carb</th><th>Glutine</th></tr></thead>
             <tbody></tbody>
@@ -405,8 +414,8 @@
   </section>
 
   <footer>
-    <p><strong>Le scelte restano su questo telefono</strong>, separate per persona e azzerate ogni giorno. I carichi della palestra sono nell&rsquo;altra pagina.</p>
-    <p>Consigli da preparazione atletica, non indicazioni mediche o dietologiche cliniche. I valori degli alimenti sono medie di tabella: servono a ragionare per ordini di grandezza, non a fare chimica.</p>
+    <p><strong>Le scelte restano su questo telefono</strong>, separate per persona e azzerate ogni giorno.</p>
+    <p>Consigli da preparazione atletica, non indicazioni mediche o dietologiche cliniche. I valori sono medie di tabella: servono a ragionare per ordini di grandezza.</p>
   </footer>
 </div>
 
@@ -414,14 +423,14 @@
 (function () {
   "use strict";
 
-  var D = {"foods":{"skyr":{"kcal":60,"p":10.0,"f":0.2,"c":4.0,"nome":"Skyr o greco 0%","hint":"","glutine":"no"},"latte_scremato":{"kcal":35,"p":3.4,"f":0.1,"c":5.0,"nome":"Latte scremato","hint":"","glutine":"no"},"banana":{"kcal":89,"p":1.1,"f":0.3,"c":23.0,"nome":"Banana","hint":"","glutine":"no"},"mela":{"kcal":52,"p":0.3,"f":0.2,"c":14.0,"nome":"Mela","hint":"","glutine":"no"},"mandorle":{"kcal":579,"p":21.0,"f":50.0,"c":22.0,"nome":"Mandorle","hint":"","glutine":"no"},"noci":{"kcal":654,"p":15.0,"f":65.0,"c":14.0,"nome":"Noci","hint":"","glutine":"no"},"riso":{"kcal":350,"p":7.0,"f":0.6,"c":78.0,"nome":"Riso","hint":"","glutine":"no"},"patate":{"kcal":77,"p":2.0,"f":0.1,"c":17.0,"nome":"Patate","hint":"","glutine":"no"},"pollo":{"kcal":110,"p":23.0,"f":1.5,"c":0.0,"nome":"Petto di pollo","hint":"","glutine":"no"},"tacchino":{"kcal":110,"p":24.0,"f":1.0,"c":0.0,"nome":"Tacchino","hint":"","glutine":"no"},"manzo_magro":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Manzo magro","hint":"","glutine":"no"},"tonno":{"kcal":116,"p":25.0,"f":1.0,"c":0.0,"nome":"Tonno al naturale","hint":"","glutine":"no"},"salmone":{"kcal":208,"p":20.0,"f":13.0,"c":0.0,"nome":"Salmone","hint":"","glutine":"no"},"merluzzo":{"kcal":82,"p":18.0,"f":0.7,"c":0.0,"nome":"Merluzzo","hint":"","glutine":"no"},"uova":{"kcal":143,"p":13.0,"f":10.0,"c":1.0,"nome":"Uova","hint":"1 uovo ≈ 55 g","glutine":"no"},"albume":{"kcal":52,"p":11.0,"f":0.2,"c":0.7,"nome":"Albume","hint":"","glutine":"no"},"ricotta":{"kcal":146,"p":9.0,"f":11.0,"c":3.0,"nome":"Ricotta","hint":"","glutine":"no"},"fiocchi_latte":{"kcal":98,"p":12.0,"f":4.0,"c":3.0,"nome":"Fiocchi di latte","hint":"","glutine":"no"},"grana":{"kcal":392,"p":33.0,"f":28.0,"c":0.0,"nome":"Grana","hint":"1 cucchiaio ≈ 10 g","glutine":"no"},"lenticchie_secche":{"kcal":353,"p":25.0,"f":1.0,"c":60.0,"nome":"Lenticchie secche","hint":"","glutine":"no"},"tofu":{"kcal":120,"p":12.0,"f":7.0,"c":2.0,"nome":"Tofu","hint":"","glutine":"no"},"verdure":{"kcal":25,"p":2.0,"f":0.3,"c":3.0,"nome":"Verdure","hint":"","glutine":"no"},"pomodori":{"kcal":18,"p":0.9,"f":0.2,"c":3.9,"nome":"Pomodori","hint":"","glutine":"no"},"olio_evo":{"kcal":884,"p":0.0,"f":100.0,"c":0.0,"nome":"Olio EVO","hint":"1 cucchiaio ≈ 10 g","glutine":"no"},"bresaola":{"kcal":151,"p":32.0,"f":2.0,"c":0.0,"nome":"Bresaola","hint":"","glutine":"cert"},"whey":{"kcal":380,"p":78.0,"f":5.0,"c":7.0,"nome":"Proteine in polvere","hint":"1 misurino ≈ 30 g","glutine":"cert"},"avena":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena in fiocchi","hint":"","glutine":"si"},"pane":{"kcal":265,"p":8.0,"f":1.5,"c":50.0,"nome":"Pane","hint":"","glutine":"si"},"fette_biscottate":{"kcal":410,"p":11.0,"f":6.0,"c":75.0,"nome":"Fette biscottate","hint":"","glutine":"si"},"pasta":{"kcal":355,"p":12.0,"f":1.5,"c":72.0,"nome":"Pasta","hint":"","glutine":"si"},"avena_gf":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena senza glutine","hint":"","glutine":"cert"},"pane_gf":{"kcal":270,"p":4.0,"f":6.0,"c":48.0,"nome":"Pane senza glutine","hint":"","glutine":"cert"},"fette_gf":{"kcal":400,"p":5.0,"f":8.0,"c":76.0,"nome":"Fette biscottate senza glutine","hint":"","glutine":"cert"},"pasta_gf":{"kcal":355,"p":7.0,"f":1.5,"c":79.0,"nome":"Pasta senza glutine","hint":"","glutine":"cert"}},"meals":[{"id":"colazione","nome":"Colazione","opzioni":[{"label":"Avena e skyr","items":[{"food":"avena","j":100,"foodE":"avena_gf","e":40},{"food":"skyr","j":250,"foodE":"skyr","e":175},{"food":"banana","j":50,"foodE":"banana","e":90},{"food":"mandorle","j":20,"foodE":"mandorle","e":10}]},{"label":"Uova e pane","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"pomodori","j":100,"foodE":"pomodori","e":100},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":3}]},{"label":"Skyr e frutta secca","items":[{"food":"skyr","j":250,"foodE":"skyr","e":225},{"food":"fette_biscottate","j":55,"foodE":"fette_gf","e":25},{"food":"noci","j":25,"foodE":"noci","e":15},{"food":"mela","j":60,"foodE":"mela","e":140}]},{"label":"Veloce con whey","items":[{"food":"whey","j":30,"foodE":"whey","e":15},{"food":"latte_scremato","j":210,"foodE":"latte_scremato","e":300},{"food":"avena","j":75,"foodE":"avena_gf","e":25},{"food":"banana","j":100,"foodE":"banana","e":150}]}]},{"id":"pranzo","nome":"Pranzo","opzioni":[{"label":"Pasta e pollo","items":[{"food":"pasta","j":80,"foodE":"pasta_gf","e":70},{"food":"pollo","j":165,"foodE":"pollo","e":100},{"food":"verdure","j":300,"foodE":"verdure","e":225},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":9}]},{"label":"Riso e tonno","items":[{"food":"riso","j":105,"foodE":"riso","e":70},{"food":"tonno","j":170,"foodE":"tonno","e":90},{"food":"verdure","j":200,"foodE":"verdure","e":225},{"food":"olio_evo","j":10,"foodE":"olio_evo","e":9}]},{"label":"Lenticchie","items":[{"food":"lenticchie_secche","j":120,"foodE":"lenticchie_secche","e":120},{"food":"riso","j":20,"foodE":"riso","e":15},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Insalatona","items":[{"food":"pane","j":65,"foodE":"pane_gf","e":65},{"food":"pollo","j":145,"foodE":"pollo","e":85},{"food":"verdure","j":300,"foodE":"verdure","e":250},{"food":"pomodori","j":275,"foodE":"pomodori","e":200},{"food":"grana","j":15,"foodE":"grana","e":10},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":10}]}]},{"id":"spuntino","nome":"Spuntino","opzioni":[{"label":"Skyr e frutto","items":[{"food":"skyr","j":205,"foodE":"skyr","e":125},{"food":"mela","j":200,"foodE":"mela","e":200}]},{"label":"Fiocchi di latte","items":[{"food":"fiocchi_latte","j":175,"foodE":"fiocchi_latte","e":105},{"food":"mela","j":200,"foodE":"mela","e":180}]},{"label":"Bresaola e pane","items":[{"food":"bresaola","j":60,"foodE":"bresaola","e":35},{"food":"pane","j":30,"foodE":"pane_gf","e":55}]},{"label":"Frutta secca","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"mela","j":60,"foodE":"mela","e":60}]}]},{"id":"cena","nome":"Cena","opzioni":[{"label":"Pesce bianco e patate","items":[{"food":"merluzzo","j":205,"foodE":"merluzzo","e":110},{"food":"patate","j":350,"foodE":"patate","e":255},{"food":"verdure","j":300,"foodE":"verdure","e":275},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Salmone e patate","items":[{"food":"salmone","j":200,"foodE":"salmone","e":115},{"food":"patate","j":160,"foodE":"patate","e":155},{"food":"verdure","j":150,"foodE":"verdure","e":200},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":5}]},{"label":"Carne e patate","items":[{"food":"manzo_magro","j":185,"foodE":"manzo_magro","e":100},{"food":"patate","j":300,"foodE":"patate","e":215},{"food":"verdure","j":275,"foodE":"verdure","e":275},{"food":"olio_evo","j":14,"foodE":"olio_evo","e":11}]},{"label":"Uova e verdure","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"verdure","j":100,"foodE":"verdure","e":150},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]}]},{"id":"postcena","nome":"Post-cena","opzioni":[{"label":"Skyr","items":[{"food":"skyr","j":110,"foodE":"skyr","e":65}]},{"label":"Ricotta","items":[{"food":"ricotta","j":120,"foodE":"ricotta","e":70}]},{"label":"Niente","items":[]}]}],"target":{"j":{"kcal":2350,"p":180,"f":70,"c":250},"e":{"kcal":1625,"p":108,"f":55,"c":175}},"extras":["skyr","whey","bresaola","albume","fiocchi_latte","tonno"],"gfSwap":{"avena":"avena_gf","pane":"pane_gf","fette_biscottate":"fette_gf","pasta":"pasta_gf"}};
-  var FOODS = D.foods, MEALS = D.meals, TARGET = D.target, EXTRAS = D.extras;
-  var GF_SWAP = D.gfSwap;
+  var D = {"foods":{"avena":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena / porridge","hint":"","glutine":"si","tag":"","max":300},"pane":{"kcal":265,"p":8.0,"f":1.5,"c":50.0,"nome":"Pane","hint":"","glutine":"si","tag":"","max":300},"pane_integrale":{"kcal":240,"p":9.0,"f":2.0,"c":45.0,"nome":"Pane integrale","hint":"","glutine":"si","tag":"","max":300},"fette_biscottate":{"kcal":410,"p":11.0,"f":6.0,"c":75.0,"nome":"Fette biscottate","hint":"","glutine":"si","tag":"","max":300},"pasta":{"kcal":355,"p":12.0,"f":1.5,"c":72.0,"nome":"Pasta","hint":"","glutine":"si","tag":"","max":300},"couscous":{"kcal":350,"p":12.0,"f":1.0,"c":72.0,"nome":"Couscous","hint":"","glutine":"si","tag":"","max":300},"gnocchi":{"kcal":160,"p":4.0,"f":0.5,"c":34.0,"nome":"Gnocchi di patate","hint":"","glutine":"si","tag":"","max":300},"piadina":{"kcal":300,"p":8.0,"f":8.0,"c":50.0,"nome":"Piadina","hint":"","glutine":"si","tag":"","max":300},"crackers":{"kcal":430,"p":10.0,"f":12.0,"c":70.0,"nome":"Crackers","hint":"","glutine":"si","tag":"","max":300},"biscotti":{"kcal":430,"p":7.0,"f":12.0,"c":73.0,"nome":"Biscotti secchi","hint":"1 biscotto secco ≈ 8 g","glutine":"si","tag":"","max":300},"cereali_misti":{"kcal":380,"p":8.0,"f":2.0,"c":82.0,"nome":"Cereali misti (riso, frumento, orzo)","hint":"","glutine":"si","tag":"","max":300},"fiocchi_mais":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais","hint":"","glutine":"si","tag":"","max":300},"fiocchi_riso":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso","hint":"","glutine":"si","tag":"","max":300},"riso":{"kcal":350,"p":7.0,"f":0.6,"c":78.0,"nome":"Riso","hint":"","glutine":"no","tag":"","max":300},"quinoa":{"kcal":368,"p":14.0,"f":6.0,"c":64.0,"nome":"Quinoa","hint":"","glutine":"no","tag":"pasto","max":300},"grano_saraceno":{"kcal":343,"p":13.0,"f":3.0,"c":72.0,"nome":"Grano saraceno","hint":"","glutine":"no","tag":"pasto","max":300},"polenta":{"kcal":360,"p":8.0,"f":1.0,"c":79.0,"nome":"Polenta","hint":"","glutine":"cert","tag":"","max":300},"gallette_riso":{"kcal":380,"p":8.0,"f":3.0,"c":81.0,"nome":"Gallette di riso","hint":"1 galletta ≈ 8 g","glutine":"cert","tag":"","max":300},"patate":{"kcal":77,"p":2.0,"f":0.1,"c":17.0,"nome":"Patate","hint":"","glutine":"no","tag":"","max":300},"patate_dolci":{"kcal":86,"p":1.6,"f":0.1,"c":20.0,"nome":"Patate dolci","hint":"","glutine":"no","tag":"","max":300},"avena_gf":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pane_gf":{"kcal":270,"p":4.0,"f":6.0,"c":48.0,"nome":"Pane senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fette_gf":{"kcal":400,"p":5.0,"f":8.0,"c":76.0,"nome":"Fette biscottate senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pasta_gf":{"kcal":355,"p":7.0,"f":1.5,"c":79.0,"nome":"Pasta senza glutine","hint":"","glutine":"cert","tag":"","max":300},"biscotti_gf":{"kcal":460,"p":4.0,"f":17.0,"c":72.0,"nome":"Biscotti senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_mais_gf":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_riso_gf":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pollo":{"kcal":110,"p":23.0,"f":1.5,"c":0.0,"nome":"Petto di pollo","hint":"","glutine":"no","tag":"pasto","max":250},"tacchino":{"kcal":110,"p":24.0,"f":1.0,"c":0.0,"nome":"Tacchino","hint":"","glutine":"no","tag":"pasto","max":250},"manzo_magro":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Manzo magro","hint":"","glutine":"no","tag":"pasto","max":250},"hamburger_manzo":{"kcal":210,"p":19.0,"f":15.0,"c":0.0,"nome":"Hamburger di manzo","hint":"","glutine":"no","tag":"pasto","max":300},"vitello":{"kcal":120,"p":21.0,"f":4.0,"c":0.0,"nome":"Vitello","hint":"","glutine":"no","tag":"pasto","max":250},"coniglio":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Coniglio","hint":"","glutine":"no","tag":"pasto","max":300},"lonza_maiale":{"kcal":140,"p":21.0,"f":6.0,"c":0.0,"nome":"Lonza di maiale","hint":"","glutine":"no","tag":"pasto","max":220},"prosciutto_cotto":{"kcal":145,"p":20.0,"f":6.0,"c":1.0,"nome":"Prosciutto cotto","hint":"","glutine":"cert","tag":"colazione","max":120},"prosciutto_crudo":{"kcal":220,"p":26.0,"f":13.0,"c":0.0,"nome":"Prosciutto crudo","hint":"","glutine":"no","tag":"pasto","max":100},"bresaola":{"kcal":151,"p":32.0,"f":2.0,"c":0.0,"nome":"Bresaola","hint":"","glutine":"cert","tag":"colazione","max":90},"speck":{"kcal":250,"p":28.0,"f":15.0,"c":0.0,"nome":"Speck","hint":"","glutine":"cert","tag":"pasto","max":90},"tonno":{"kcal":116,"p":25.0,"f":1.0,"c":0.0,"nome":"Tonno al naturale","hint":"","glutine":"no","tag":"pasto","max":200},"salmone":{"kcal":208,"p":20.0,"f":13.0,"c":0.0,"nome":"Salmone","hint":"","glutine":"no","tag":"pasto","max":200},"merluzzo":{"kcal":82,"p":18.0,"f":0.7,"c":0.0,"nome":"Merluzzo","hint":"","glutine":"no","tag":"pasto","max":250},"orata":{"kcal":120,"p":20.0,"f":4.0,"c":0.0,"nome":"Orata","hint":"","glutine":"no","tag":"pasto","max":250},"sgombro":{"kcal":180,"p":22.0,"f":10.0,"c":0.0,"nome":"Sgombro","hint":"","glutine":"no","tag":"pasto","max":180},"sardine":{"kcal":200,"p":21.0,"f":13.0,"c":0.0,"nome":"Sardine","hint":"","glutine":"no","tag":"pasto","max":300},"gamberi":{"kcal":85,"p":18.0,"f":1.0,"c":0.0,"nome":"Gamberi","hint":"","glutine":"no","tag":"pasto","max":250},"calamari":{"kcal":82,"p":16.0,"f":1.0,"c":1.0,"nome":"Calamari","hint":"","glutine":"no","tag":"pasto","max":300},"uova":{"kcal":143,"p":13.0,"f":10.0,"c":1.0,"nome":"Uova","hint":"1 uovo ≈ 55 g","glutine":"no","tag":"both","max":180},"albume":{"kcal":52,"p":11.0,"f":0.2,"c":0.7,"nome":"Albume","hint":"","glutine":"no","tag":"colazione","max":200},"skyr":{"kcal":60,"p":10.0,"f":0.2,"c":4.0,"nome":"Skyr","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_greco":{"kcal":73,"p":9.0,"f":2.0,"c":4.0,"nome":"Yogurt greco","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_bianco":{"kcal":61,"p":3.5,"f":3.3,"c":4.7,"nome":"Yogurt bianco","hint":"","glutine":"no","tag":"colazione","max":300},"fiocchi_latte":{"kcal":98,"p":12.0,"f":4.0,"c":3.0,"nome":"Fiocchi di latte","hint":"","glutine":"no","tag":"colazione","max":200},"ricotta":{"kcal":146,"p":9.0,"f":11.0,"c":3.0,"nome":"Ricotta","hint":"","glutine":"no","tag":"both","max":150},"mozzarella":{"kcal":253,"p":18.0,"f":19.0,"c":1.0,"nome":"Mozzarella","hint":"","glutine":"no","tag":"both","max":125},"grana":{"kcal":392,"p":33.0,"f":28.0,"c":0.0,"nome":"Grana","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"both","max":30},"pecorino":{"kcal":390,"p":26.0,"f":31.0,"c":0.0,"nome":"Pecorino","hint":"","glutine":"no","tag":"both","max":300},"feta":{"kcal":264,"p":14.0,"f":21.0,"c":4.0,"nome":"Feta","hint":"","glutine":"no","tag":"both","max":80},"scamorza":{"kcal":300,"p":25.0,"f":22.0,"c":1.0,"nome":"Scamorza","hint":"","glutine":"no","tag":"colazione","max":300},"stracchino":{"kcal":300,"p":18.0,"f":25.0,"c":1.0,"nome":"Stracchino","hint":"","glutine":"no","tag":"colazione","max":300},"formaggio_spalm":{"kcal":250,"p":6.0,"f":24.0,"c":4.0,"nome":"Formaggio spalmabile","hint":"","glutine":"cert","tag":"colazione","max":300},"latte_scremato":{"kcal":35,"p":3.4,"f":0.1,"c":5.0,"nome":"Latte scremato","hint":"","glutine":"no","tag":"colazione","max":300},"latte_intero":{"kcal":64,"p":3.2,"f":3.6,"c":4.8,"nome":"Latte intero","hint":"","glutine":"no","tag":"colazione","max":300},"bevanda_soia":{"kcal":40,"p":3.3,"f":1.8,"c":2.8,"nome":"Bevanda di soia","hint":"","glutine":"no","tag":"colazione","max":300},"whey":{"kcal":380,"p":78.0,"f":5.0,"c":7.0,"nome":"Proteine in polvere","hint":"1 misurino ≈ 30 g","glutine":"cert","tag":"colazione","max":40},"lenticchie_secche":{"kcal":353,"p":25.0,"f":1.0,"c":60.0,"nome":"Lenticchie secche","hint":"","glutine":"no","tag":"pasto","max":120},"ceci_secchi":{"kcal":378,"p":20.0,"f":6.0,"c":61.0,"nome":"Ceci secchi","hint":"","glutine":"no","tag":"pasto","max":120},"fagioli_secchi":{"kcal":333,"p":23.0,"f":1.0,"c":60.0,"nome":"Fagioli secchi","hint":"","glutine":"no","tag":"pasto","max":300},"legumi_scatola":{"kcal":91,"p":7.0,"f":0.5,"c":12.0,"nome":"Legumi in scatola","hint":"","glutine":"cert","tag":"pasto","max":250},"piselli":{"kcal":81,"p":5.0,"f":0.4,"c":14.0,"nome":"Piselli","hint":"","glutine":"no","tag":"pasto","max":300},"edamame":{"kcal":122,"p":11.0,"f":5.0,"c":10.0,"nome":"Edamame","hint":"","glutine":"no","tag":"pasto","max":200},"hummus":{"kcal":170,"p":8.0,"f":10.0,"c":14.0,"nome":"Hummus","hint":"","glutine":"cert","tag":"pasto","max":300},"tofu":{"kcal":120,"p":12.0,"f":7.0,"c":2.0,"nome":"Tofu","hint":"","glutine":"no","tag":"pasto","max":250},"tempeh":{"kcal":193,"p":19.0,"f":11.0,"c":9.0,"nome":"Tempeh","hint":"","glutine":"no","tag":"pasto","max":200},"seitan":{"kcal":140,"p":24.0,"f":2.0,"c":4.0,"nome":"Seitan","hint":"","glutine":"si","tag":"pasto","max":300},"verdure":{"kcal":25,"p":2.0,"f":0.3,"c":3.0,"nome":"Verdure miste","hint":"","glutine":"no","tag":"","max":300},"pomodori":{"kcal":18,"p":0.9,"f":0.2,"c":3.9,"nome":"Pomodori","hint":"","glutine":"no","tag":"","max":300},"broccoli":{"kcal":34,"p":2.8,"f":0.4,"c":7.0,"nome":"Broccoli","hint":"","glutine":"no","tag":"","max":300},"spinaci":{"kcal":23,"p":2.9,"f":0.4,"c":3.6,"nome":"Spinaci","hint":"","glutine":"no","tag":"","max":300},"carote":{"kcal":41,"p":0.9,"f":0.2,"c":10.0,"nome":"Carote","hint":"","glutine":"no","tag":"","max":300},"zucchine":{"kcal":17,"p":1.2,"f":0.3,"c":3.1,"nome":"Zucchine","hint":"","glutine":"no","tag":"","max":300},"insalata":{"kcal":15,"p":1.4,"f":0.2,"c":2.9,"nome":"Insalata","hint":"","glutine":"no","tag":"","max":300},"banana":{"kcal":89,"p":1.1,"f":0.3,"c":23.0,"nome":"Banana","hint":"","glutine":"no","tag":"","max":300},"mela":{"kcal":52,"p":0.3,"f":0.2,"c":14.0,"nome":"Mela","hint":"","glutine":"no","tag":"","max":300},"pera":{"kcal":57,"p":0.4,"f":0.1,"c":15.0,"nome":"Pera","hint":"","glutine":"no","tag":"","max":300},"arancia":{"kcal":47,"p":0.9,"f":0.1,"c":12.0,"nome":"Arancia","hint":"","glutine":"no","tag":"","max":300},"kiwi":{"kcal":61,"p":1.1,"f":0.5,"c":15.0,"nome":"Kiwi","hint":"","glutine":"no","tag":"","max":300},"fragole":{"kcal":32,"p":0.7,"f":0.3,"c":8.0,"nome":"Fragole","hint":"","glutine":"no","tag":"","max":300},"frutti_bosco":{"kcal":45,"p":1.0,"f":0.4,"c":10.0,"nome":"Frutti di bosco","hint":"","glutine":"no","tag":"","max":300},"uva":{"kcal":69,"p":0.7,"f":0.2,"c":18.0,"nome":"Uva","hint":"","glutine":"no","tag":"","max":300},"ananas":{"kcal":50,"p":0.5,"f":0.1,"c":13.0,"nome":"Ananas","hint":"","glutine":"no","tag":"","max":300},"avocado":{"kcal":160,"p":2.0,"f":15.0,"c":9.0,"nome":"Avocado","hint":"","glutine":"no","tag":"","max":300},"olio_evo":{"kcal":884,"p":0.0,"f":100.0,"c":0.0,"nome":"Olio EVO","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"","max":15},"mandorle":{"kcal":579,"p":21.0,"f":50.0,"c":22.0,"nome":"Mandorle","hint":"","glutine":"no","tag":"colazione","max":40},"noci":{"kcal":654,"p":15.0,"f":65.0,"c":14.0,"nome":"Noci","hint":"","glutine":"no","tag":"colazione","max":30},"burro_arachidi":{"kcal":588,"p":25.0,"f":50.0,"c":20.0,"nome":"Burro di arachidi","hint":"","glutine":"no","tag":"colazione","max":30},"miele":{"kcal":304,"p":0.3,"f":0.0,"c":82.0,"nome":"Miele","hint":"1 cucchiaino ≈ 7 g","glutine":"no","tag":"","max":300},"marmellata":{"kcal":250,"p":0.5,"f":0.0,"c":60.0,"nome":"Marmellata","hint":"","glutine":"no","tag":"","max":300},"cioccolato_fond":{"kcal":570,"p":8.0,"f":42.0,"c":34.0,"nome":"Cioccolato fondente","hint":"","glutine":"no","tag":"","max":300},"cacao_amaro":{"kcal":350,"p":20.0,"f":11.0,"c":11.0,"nome":"Cacao amaro","hint":"","glutine":"cert","tag":"colazione","max":15},"birra":{"kcal":43,"p":0.5,"f":0.0,"c":3.6,"nome":"Birra","hint":"1 media ≈ 400 g","glutine":"si","tag":"","max":300},"vino_rosso":{"kcal":85,"p":0.1,"f":0.0,"c":2.6,"nome":"Vino rosso","hint":"","glutine":"no","tag":"","max":300}},"meals":[{"id":"colazione","nome":"Colazione","opzioni":[{"label":"Porridge e skyr","items":[{"food":"avena","j":95,"foodE":"avena_gf","e":40},{"food":"skyr","j":245,"foodE":"skyr","e":165},{"food":"banana","j":50,"foodE":"banana","e":80},{"food":"mandorle","j":20,"foodE":"mandorle","e":10}]},{"label":"Porridge e frutti di bosco","items":[{"food":"avena","j":30,"foodE":"avena_gf","e":20},{"food":"latte_scremato","j":300,"foodE":"latte_scremato","e":300},{"food":"frutti_bosco","j":200,"foodE":"frutti_bosco","e":200},{"food":"burro_arachidi","j":5,"foodE":"burro_arachidi","e":5}]},{"label":"Fiocchi e yogurt","items":[{"food":"fiocchi_mais","j":20,"foodE":"fiocchi_mais_gf","e":20},{"food":"yogurt_greco","j":250,"foodE":"yogurt_greco","e":225},{"food":"banana","j":40,"foodE":"banana","e":60},{"food":"noci","j":30,"foodE":"noci","e":10}]},{"label":"Cereali e latte","items":[{"food":"cereali_misti","j":25,"foodE":"fiocchi_mais_gf","e":40},{"food":"latte_intero","j":300,"foodE":"latte_intero","e":205},{"food":"mela","j":200,"foodE":"mela","e":150}]},{"label":"Biscotti e latte","items":[{"food":"biscotti","j":60,"foodE":"biscotti_gf","e":40},{"food":"latte_scremato","j":260,"foodE":"latte_scremato","e":210},{"food":"skyr","j":250,"foodE":"skyr","e":150}]},{"label":"Uova e pane","items":[{"food":"uova","j":180,"foodE":"uova","e":170},{"food":"pane","j":115,"foodE":"pane_gf","e":30},{"food":"pomodori","j":100,"foodE":"pomodori","e":100},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":3}]}]},{"id":"spuntino_m","nome":"Spuntino di metà mattina","opzioni":[{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":195,"foodE":"yogurt_greco","e":115},{"food":"mela","j":180,"foodE":"mela","e":150}]},{"label":"Gallette e arachidi","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"burro_arachidi","j":30,"foodE":"burro_arachidi","e":30},{"food":"banana","j":40,"foodE":"banana","e":40}]},{"label":"Bresaola e gallette","items":[{"food":"bresaola","j":50,"foodE":"bresaola","e":30},{"food":"gallette_riso","j":20,"foodE":"gallette_riso","e":15}]},{"label":"Skyr e cacao","items":[{"food":"skyr","j":165,"foodE":"skyr","e":100},{"food":"cacao_amaro","j":5,"foodE":"cacao_amaro","e":5},{"food":"miele","j":20,"foodE":"miele","e":20}]},{"label":"Frutta secca","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"mela","j":60,"foodE":"mela","e":60}]},{"label":"Prosciutto e pane","items":[{"food":"prosciutto_cotto","j":75,"foodE":"prosciutto_cotto","e":45},{"food":"pane","j":40,"foodE":"pane_gf","e":35}]}]},{"id":"pranzo","nome":"Pranzo","opzioni":[{"label":"Pasta e pollo","items":[{"food":"pasta","j":80,"foodE":"pasta_gf","e":70},{"food":"pollo","j":165,"foodE":"pollo","e":100},{"food":"verdure","j":300,"foodE":"verdure","e":225},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":9}]},{"label":"Riso e tonno","items":[{"food":"riso","j":105,"foodE":"riso","e":75},{"food":"tonno","j":180,"foodE":"tonno","e":105},{"food":"pomodori","j":150,"foodE":"pomodori","e":175},{"food":"olio_evo","j":11,"foodE":"olio_evo","e":9}]},{"label":"Lenticchie e riso","items":[{"food":"lenticchie_secche","j":120,"foodE":"lenticchie_secche","e":120},{"food":"riso","j":20,"foodE":"riso","e":15},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Insalatona","items":[{"food":"pane","j":70,"foodE":"pane_gf","e":65},{"food":"pollo","j":155,"foodE":"pollo","e":95},{"food":"insalata","j":200,"foodE":"insalata","e":200},{"food":"pomodori","j":300,"foodE":"pomodori","e":200},{"food":"grana","j":15,"foodE":"grana","e":10},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Quinoa e salmone","items":[{"food":"quinoa","j":110,"foodE":"quinoa","e":55},{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"spinaci","j":60,"foodE":"spinaci","e":105},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":4}]},{"label":"Patate e uova","items":[{"food":"patate","j":130,"foodE":"patate","e":140},{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"broccoli","j":65,"foodE":"broccoli","e":105},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]}]},{"id":"spuntino_p","nome":"Spuntino del pomeriggio","opzioni":[{"label":"Skyr e frutto","items":[{"food":"skyr","j":170,"foodE":"skyr","e":100},{"food":"pera","j":200,"foodE":"pera","e":180}]},{"label":"Fiocchi di latte","items":[{"food":"fiocchi_latte","j":135,"foodE":"fiocchi_latte","e":75},{"food":"kiwi","j":170,"foodE":"kiwi","e":145}]},{"label":"Ricotta e miele","items":[{"food":"ricotta","j":150,"foodE":"ricotta","e":120},{"food":"miele","j":5,"foodE":"miele","e":5}]},{"label":"Frutta secca e cioccolato","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"cioccolato_fond","j":30,"foodE":"cioccolato_fond","e":25}]},{"label":"Gallette e formaggio","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"scamorza","j":80,"foodE":"scamorza","e":70},{"food":"pomodori","j":100,"foodE":"pomodori","e":100}]},{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":175,"foodE":"yogurt_greco","e":100},{"food":"fragole","j":250,"foodE":"fragole","e":250}]}]},{"id":"cena","nome":"Cena","opzioni":[{"label":"Pesce bianco e patate","items":[{"food":"merluzzo","j":205,"foodE":"merluzzo","e":110},{"food":"patate","j":350,"foodE":"patate","e":255},{"food":"verdure","j":300,"foodE":"verdure","e":275},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Salmone e verdure","items":[{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"patate","j":160,"foodE":"patate","e":150},{"food":"broccoli","j":160,"foodE":"broccoli","e":205},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":5}]},{"label":"Carne e patate","items":[{"food":"manzo_magro","j":185,"foodE":"manzo_magro","e":100},{"food":"patate","j":300,"foodE":"patate","e":215},{"food":"verdure","j":275,"foodE":"verdure","e":275},{"food":"olio_evo","j":14,"foodE":"olio_evo","e":11}]},{"label":"Uova e verdure","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"zucchine","j":100,"foodE":"zucchine","e":145},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]},{"label":"Legumi e verdure","items":[{"food":"ceci_secchi","j":120,"foodE":"ceci_secchi","e":120},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"grana","j":30,"foodE":"grana","e":30},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Pollo e polenta","items":[{"food":"pollo","j":125,"foodE":"pollo","e":55},{"food":"polenta","j":45,"foodE":"polenta","e":20},{"food":"spinaci","j":300,"foodE":"spinaci","e":300},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":15}]}]}],"target":{"j":{"kcal":2350,"p":180,"f":70,"c":250},"e":{"kcal":1625,"p":108,"f":55,"c":175}},"gfSwap":{"avena":"avena_gf","pane":"pane_gf","pane_integrale":"pane_gf","fette_biscottate":"fette_gf","pasta":"pasta_gf","biscotti":"biscotti_gf","fiocchi_mais":"fiocchi_mais_gf","fiocchi_riso":"fiocchi_riso_gf","cereali_misti":"fiocchi_mais_gf","couscous":"quinoa","crackers":"gallette_riso","piadina":"gallette_riso","gnocchi":"patate","seitan":"tofu","birra":"vino_rosso"},"cat":{"Cereali e pane":["avena","avena_gf","pane","pane_integrale","pane_gf","fette_biscottate","fette_gf","pasta","pasta_gf","couscous","gnocchi","piadina","crackers","gallette_riso","biscotti","biscotti_gf","cereali_misti","fiocchi_mais","fiocchi_mais_gf","fiocchi_riso","fiocchi_riso_gf","riso","quinoa","grano_saraceno","polenta","patate","patate_dolci"],"Carne e pesce":["pollo","tacchino","manzo_magro","hamburger_manzo","vitello","coniglio","lonza_maiale","prosciutto_cotto","prosciutto_crudo","bresaola","speck","tonno","salmone","merluzzo","orata","sgombro","sardine","gamberi","calamari"],"Uova e latticini":["uova","albume","skyr","yogurt_greco","yogurt_bianco","fiocchi_latte","ricotta","mozzarella","grana","pecorino","feta","scamorza","stracchino","formaggio_spalm","latte_scremato","latte_intero","bevanda_soia","whey"],"Legumi e vegetali":["lenticchie_secche","ceci_secchi","fagioli_secchi","legumi_scatola","piselli","edamame","hummus","tofu","tempeh","seitan"],"Verdura":["verdure","pomodori","broccoli","spinaci","carote","zucchine","insalata"],"Frutta":["banana","mela","pera","arancia","kiwi","fragole","frutti_bosco","uva","ananas","avocado"],"Grassi e frutta secca":["olio_evo","mandorle","noci","burro_arachidi"],"Dolci e extra":["miele","marmellata","cioccolato_fond","cacao_amaro","birra","vino_rosso"]},"share":{"colazione":0.22,"spuntino_m":0.1,"pranzo":0.3,"spuntino_p":0.1,"cena":0.28}};
+  var FOODS = D.foods, MEALS = D.meals, TARGET = D.target;
+  var GF_SWAP = D.gfSwap, CAT = D.cat, SHARE = D.share;
   var NAMES = { j: "Jacopo", e: "Elisa" };
   var DEFAULT_URL = "https://fit-login.vercel.app/api/log";
 
   var person = "j";
-  var day = {};          // meal id -> { opt: indice|null, items: [{food, g}] }
+  var day = {};
 
   function lget(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -434,98 +443,99 @@
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   }
 
-  /* ---- stato del giorno ---- */
-  // v2: la v1 poteva contenere alimenti con glutine nella giornata di Elisa
-  function dayKey() { return "fit.dieta.v2." + person; }
-  function loadDay() {
-    var raw = jparse(lget(dayKey()), null);
-    if (!raw || raw.d !== today()) return defaults();
-    return raw.v || defaults();
-  }
-  function saveDay() { lset(dayKey(), JSON.stringify({ d: today(), v: day })); }
-
+  /* ---- stato ---- */
+  function dayKey() { return "fit.dieta.v3." + person; }
   function defaults() {
     var o = {};
     MEALS.forEach(function (m) { o[m.id] = { opt: null, items: [] }; });
     return o;
   }
-
-  function pickOption(mealId, oi) {
-    var m = MEALS.filter(function (x) { return x.id === mealId; })[0];
-    var opt = m.opzioni[oi];
-    day[mealId] = {
-      opt: oi,
-      items: opt.items.map(function (it) {
-        return { food: (person === "e" && it.foodE) ? it.foodE : it.food, g: it[person] };
-      })
-    };
-    saveDay(); render();
+  function loadDay() {
+    var raw = jparse(lget(dayKey()), null);
+    if (!raw || raw.d !== today()) return defaults();
+    var v = raw.v || defaults();
+    MEALS.forEach(function (m) { if (!v[m.id]) v[m.id] = { opt: null, items: [] }; });
+    return v;
   }
-
-  /* ---- calcolo ---- */
-  function itemMacro(it) {
-    var f = FOODS[it.food];
-    var g = Number(it.g) || 0;
-    return { kcal: f.kcal * g / 100, p: f.p * g / 100, f: f.f * g / 100, c: f.c * g / 100 };
-  }
-  function dayTotals() {
-    var t = { kcal: 0, p: 0, f: 0, c: 0 };
-    MEALS.forEach(function (m) {
-      (day[m.id] ? day[m.id].items : []).forEach(function (it) {
-        var x = itemMacro(it);
-        t.kcal += x.kcal; t.p += x.p; t.f += x.f; t.c += x.c;
-      });
-    });
-    return t;
-  }
+  function saveDay() { lset(dayKey(), JSON.stringify({ d: today(), v: day })); }
 
   /* ---- glutine ---- */
-  function gluten(foodKey) { return (FOODS[foodKey] || {}).glutine || "no"; }
-
-  function tagFor(foodKey) {
-    var g = gluten(foodKey);
+  function gluten(k) { return (FOODS[k] || {}).glutine || "no"; }
+  function tagFor(k) {
+    var g = gluten(k);
     if (g === "cert") return '<span class="tag cert">etichetta</span>';
     if (g === "si") return '<span class="tag bad">glutine</span>';
     return "";
   }
-
-  /** Alimenti che Elisa non deve nemmeno poter scegliere. */
-  function allowed(foodKey) {
+  function allowed(k) {
     if (person !== "e") return true;
-    if (gluten(foodKey) === "si") return false;
-    // se esiste una versione GF, si offre quella e non l'originale
-    return !GF_SWAP[foodKey];
+    if (gluten(k) === "si") return false;
+    return !GF_SWAP[k];
   }
 
-  function renderGfBar() {
-    var bar = document.getElementById("gfbar");
-    if (person !== "e") { bar.hidden = true; return; }
-
-    // rete di sicurezza: nessun alimento con glutine deve finire nella sua giornata
-    var bad = [];
+  /* ---- calcolo ---- */
+  function itemMacro(it) {
+    var f = FOODS[it.food], g = Number(it.g) || 0;
+    return { kcal: f.kcal * g / 100, p: f.p * g / 100, f: f.f * g / 100, c: f.c * g / 100 };
+  }
+  function mealTotals(id) {
+    var t = { kcal: 0, p: 0, f: 0, c: 0 };
+    (day[id] ? day[id].items : []).forEach(function (it) {
+      var x = itemMacro(it);
+      t.kcal += x.kcal; t.p += x.p; t.f += x.f; t.c += x.c;
+    });
+    return t;
+  }
+  function mealBudget(id) {
+    var tg = TARGET[person], sh = SHARE[id] || 0.2;
+    return { kcal: tg.kcal * sh, p: tg.p * sh };
+  }
+  function dayTotals() {
+    var t = { kcal: 0, p: 0, f: 0, c: 0 };
     MEALS.forEach(function (m) {
-      (day[m.id] ? day[m.id].items : []).forEach(function (it) {
-        if (gluten(it.food) === "si") bad.push(FOODS[it.food].nome);
-      });
+      var x = mealTotals(m.id);
+      t.kcal += x.kcal; t.p += x.p; t.f += x.f; t.c += x.c;
+    });
+    return t;
+  }
+
+  /* ---- suggeritore: cosa chiude le proteine di QUESTO pasto ---- */
+  function suggestFor(id) {
+    var b = mealBudget(id), cur = mealTotals(id);
+    var gapP = b.p - cur.p, gapK = b.kcal - cur.kcal;
+    if (gapP < 4) return [];
+
+    var isSnack = (id === "colazione" || id.indexOf("spuntino") === 0);
+    var out = [];
+
+    Object.keys(FOODS).forEach(function (k) {
+      var f = FOODS[k];
+      if (f.p < 8) return;                       // dev'essere una fonte proteica
+      if (!allowed(k)) return;                   // vincolo glutine
+      // regola stretta: chi non ha un tag adatto non viene suggerito.
+      // Meglio nessun suggerimento che i calamari a colazione.
+      var okHere = isSnack ? (f.tag === "colazione" || f.tag === "both")
+                           : (f.tag === "pasto" || f.tag === "both");
+      if (!okHere) return;
+
+      // grammi che chiuderebbero il buco, ma non oltre una porzione sensata:
+      // meglio una porzione normale che ne copre una parte, che una assurda
+      // che lo chiude tutto (150 g di pecorino a colazione).
+      var need = Math.round(gapP * 100 / f.p / 5) * 5;
+      var g = Math.min(Math.max(need, 10), f.max);
+      var kc = f.kcal * g / 100;
+      if (gapK > 40 && kc > gapK * 1.4) return;  // sfonderebbe le calorie rimaste
+
+      out.push({ k: k, g: g, kcal: Math.round(kc),
+                 prot: Math.round(f.p * g / 100),
+                 eff: f.kcal / f.p });           // calorie per grammo di proteina
     });
 
-    if (bad.length) {
-      bar.className = "gfbar alert";
-      bar.innerHTML = "<b>Attenzione: contiene glutine</b><br>" +
-        "Nella giornata c&rsquo;&egrave; " + bad.join(", ") +
-        ". Togli la riga e riscegli l&rsquo;opzione: le versioni senza glutine hanno valori diversi.";
-      bar.hidden = false;
-      return;
-    }
-
-    bar.className = "gfbar";
-    bar.innerHTML = "<b>Senza glutine</b><br>" +
-      "Cereali sostituiti con le versioni GF e porzioni ricalcolate sui loro valori. " +
-      "Dove compare <span class='tag cert'>etichetta</span> verifica la certificazione sulla confezione.";
-    bar.hidden = false;
+    out.sort(function (a, b2) { return a.eff - b2.eff; });
+    return out.slice(0, 3);
   }
 
-  /* ---- pannello totali ---- */
+  /* ---- totali della giornata ---- */
   var ROWS = [
     { k: "kcal", lab: "Calorie", u: "", wide: true },
     { k: "p", lab: "Proteine", u: "g", wide: true },
@@ -534,112 +544,102 @@
   ];
 
   function renderTotals() {
-    var t = dayTotals();
-    var tg = TARGET[person];
+    var t = dayTotals(), tg = TARGET[person];
     var grid = document.getElementById("tgrid");
     grid.innerHTML = "";
-
     ROWS.forEach(function (r) {
       var val = t[r.k], target = tg[r.k];
       var pct = Math.max(0, Math.min(100, target ? val / target * 100 : 0));
-      // "in target" = entro il 6% per calorie e proteine, entro il 20% per il resto
       var tol = (r.k === "kcal" || r.k === "p") ? 0.06 : 0.20;
       var good = Math.abs(val - target) <= target * tol;
       var delta = Math.round(val - target);
-
       var el = document.createElement("div");
       el.className = "t" + (r.wide ? " wide" : "");
       el.innerHTML =
-        '<div class="k"><span>' + r.lab + '</span>' +
-          '<span class="d ' + (good ? "ok" : "miss") + '">' +
-            (delta === 0 ? "in target" : (delta > 0 ? "+" : "") + delta + r.u) + "</span></div>" +
-        '<div class="v">' + Math.round(val) + r.u +
-          " <small>/ " + target + r.u + "</small></div>" +
+        '<div class="k"><span>' + r.lab + '</span><span class="d ' + (good ? "ok" : "miss") + '">' +
+          (delta === 0 ? "in target" : (delta > 0 ? "+" : "") + delta + r.u) + "</span></div>" +
+        '<div class="v">' + Math.round(val) + r.u + " <small>/ " + target + r.u + "</small></div>" +
         '<div class="bar"><i class="' + (good ? "ok" : "") + '" style="width:' + pct.toFixed(1) + '%"></i></div>';
       grid.appendChild(el);
     });
-
-    renderHint(t, tg);
     renderGfBar();
     updateSaveInfo(t);
   }
 
-  /* ---- riquadro aggiunte proteiche ---- */
-  function renderHint(t, tg) {
-    var box = document.getElementById("hint");
-    var gapP = tg.p - t.p;
-    var anyFood = MEALS.some(function (m) { return day[m.id] && day[m.id].items.length; });
-
-    if (!anyFood || gapP < 10) { box.hidden = true; return; }
-
-    var html = "<b>Mancano " + Math.round(gapP) + " g di proteine</b><br>" +
-      "Con le scelte di adesso non ci arrivi. Un&rsquo;aggiunta chiude il buco:";
-    html += '<div class="adds">';
-    EXTRAS.forEach(function (fk) {
-      if (!allowed(fk)) return;
-      var f = FOODS[fk];
-      var g = Math.round(gapP * 100 / f.p / 5) * 5;   // grammi che coprono il gap
-      if (g < 10 || g > 350) return;
-      html += '<button type="button" data-add="' + fk + '" data-g="' + g + '">' +
-        f.nome + " " + g + " g <span style='color:var(--ink-3)'>+" + Math.round(f.kcal * g / 100) + " kcal</span>" + tagFor(fk) + "</button>";
-    });
-    html += "</div>";
-    box.innerHTML = html;
-    box.hidden = false;
-
-    box.querySelectorAll("[data-add]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var mid = day.spuntino ? "spuntino" : MEALS[0].id;
-        if (!day[mid]) day[mid] = { opt: null, items: [] };
-        day[mid].items.push({ food: b.dataset.add, g: Number(b.dataset.g) });
-        day[mid].opt = null;
-        saveDay(); render();
+  function renderGfBar() {
+    var bar = document.getElementById("gfbar");
+    if (person !== "e") { bar.hidden = true; return; }
+    var bad = [];
+    MEALS.forEach(function (m) {
+      (day[m.id] ? day[m.id].items : []).forEach(function (it) {
+        if (gluten(it.food) === "si") bad.push(FOODS[it.food].nome);
       });
     });
+    if (bad.length) {
+      bar.className = "gfbar alert";
+      bar.innerHTML = "<b>Attenzione: contiene glutine</b><br>Nella giornata c&rsquo;&egrave; " +
+        bad.join(", ") + ". Togli la riga: le versioni senza glutine hanno valori diversi.";
+    } else {
+      bar.className = "gfbar";
+      bar.innerHTML = "<b>Senza glutine</b><br>Cereali gi&agrave; sostituiti e porzioni ricalcolate. " +
+        "Dove compare <span class='tag cert'>etichetta</span> verifica la certificazione.";
+    }
+    bar.hidden = false;
   }
 
   /* ---- pasti ---- */
+  function pickOption(mealId, oi) {
+    var m = MEALS.filter(function (x) { return x.id === mealId; })[0];
+    day[mealId] = {
+      opt: oi,
+      items: m.opzioni[oi].items.map(function (it) {
+        return { food: (person === "e" && it.foodE) ? it.foodE : it.food, g: it[person] };
+      })
+    };
+    saveDay(); render();
+  }
+
   function renderMeals() {
     var host = document.getElementById("meals");
     host.innerHTML = "";
 
     MEALS.forEach(function (m) {
-      var state = day[m.id] || { opt: null, items: [] };
+      var st = day[m.id], mt = mealTotals(m.id), b = mealBudget(m.id);
 
       var sec = document.createElement("section");
       sec.className = "meal";
 
-      var mt = { kcal: 0, p: 0 };
-      state.items.forEach(function (it) { var x = itemMacro(it); mt.kcal += x.kcal; mt.p += x.p; });
-
-      sec.innerHTML = "<h2>" + m.nome + "</h2>" +
-        '<p class="sub">' + (state.items.length
-          ? Math.round(mt.kcal) + " kcal \u00b7 " + Math.round(mt.p) + " g proteine"
-          : "nessuna scelta") + "</p>";
+      var pOk = mt.p >= b.p * 0.94;
+      var kOk = Math.abs(mt.kcal - b.kcal) <= b.kcal * 0.15;
+      sec.innerHTML =
+        '<div class="mhead"><h2>' + m.nome + "</h2>" +
+        '<div class="mbudget"><span class="' + (kOk ? "ok" : "") + '"><b>' + Math.round(mt.kcal) +
+          "</b> / " + Math.round(b.kcal) + " kcal</span><br>" +
+        '<span class="' + (pOk ? "ok" : "") + '"><b>' + Math.round(mt.p) +
+          "</b> / " + Math.round(b.p) + " g prot</span></div></div>";
 
       var opts = document.createElement("div");
       opts.className = "opts";
       m.opzioni.forEach(function (o, oi) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.textContent = o.label;
-        b.setAttribute("aria-pressed", String(state.opt === oi));
-        b.addEventListener("click", function () {
-          if (state.opt === oi) { day[m.id] = { opt: null, items: [] }; saveDay(); render(); }
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = o.label;
+        btn.setAttribute("aria-pressed", String(st.opt === oi));
+        btn.addEventListener("click", function () {
+          if (st.opt === oi) { day[m.id] = { opt: null, items: [] }; saveDay(); render(); }
           else pickOption(m.id, oi);
         });
-        opts.appendChild(b);
+        opts.appendChild(btn);
       });
       sec.appendChild(opts);
 
       var box = document.createElement("div");
       box.className = "items";
-      if (!state.items.length) {
-        box.innerHTML = '<p class="empty">Scegli un&rsquo;opzione qui sopra, oppure aggiungi un alimento.</p>';
+      if (!st.items.length) {
+        box.innerHTML = '<p class="empty">Scegli un&rsquo;opzione, oppure aggiungi quello che stai mangiando.</p>';
       } else {
-        state.items.forEach(function (it, ii) {
-          var f = FOODS[it.food];
-          var x = itemMacro(it);
+        st.items.forEach(function (it, ii) {
+          var f = FOODS[it.food], x = itemMacro(it);
           var row = document.createElement("div");
           row.className = "row";
           row.innerHTML =
@@ -654,48 +654,89 @@
             var v = parseInt(inp.value.replace(/[^0-9]/g, ""), 10);
             it.g = isNaN(v) ? 0 : v;
             day[m.id].opt = null;
-            saveDay(); renderTotals();
-            row.querySelector(".macro").innerHTML =
-              Math.round(itemMacro(it).kcal) + " kcal<br>" + Math.round(itemMacro(it).p) + " g prot";
+            saveDay(); render();
           });
           row.appendChild(inp);
           row.appendChild(Object.assign(document.createElement("span"), { className: "g", textContent: "g" }));
 
-          var x2 = document.createElement("button");
-          x2.type = "button"; x2.className = "x"; x2.innerHTML = "&times;";
-          x2.setAttribute("aria-label", "Togli " + f.nome);
-          x2.addEventListener("click", function () {
+          var del = document.createElement("button");
+          del.type = "button"; del.className = "x"; del.innerHTML = "&times;";
+          del.setAttribute("aria-label", "Togli " + f.nome);
+          del.addEventListener("click", function () {
             day[m.id].items.splice(ii, 1);
             day[m.id].opt = null;
             saveDay(); render();
           });
-          row.appendChild(x2);
+          row.appendChild(del);
           box.appendChild(row);
         });
       }
       sec.appendChild(box);
 
+      // aggiunta libera, per categoria
       var add = document.createElement("div");
       add.className = "add";
       var sel = document.createElement("select");
       sel.setAttribute("aria-label", "Alimento da aggiungere a " + m.nome);
-      Object.keys(FOODS).filter(allowed).sort(function (a, b) {
-        return FOODS[a].nome.localeCompare(FOODS[b].nome, "it");
-      }).forEach(function (fk) {
-        var o = document.createElement("option");
-        o.value = fk; o.textContent = FOODS[fk].nome;
-        sel.appendChild(o);
+      Object.keys(CAT).forEach(function (cat) {
+        var keys = CAT[cat].filter(allowed);
+        if (!keys.length) return;
+        var og = document.createElement("optgroup");
+        og.label = cat;
+        keys.sort(function (a, b2) { return FOODS[a].nome.localeCompare(FOODS[b2].nome, "it"); })
+          .forEach(function (k) {
+            var o = document.createElement("option");
+            o.value = k; o.textContent = FOODS[k].nome;
+            og.appendChild(o);
+          });
+        sel.appendChild(og);
       });
       var ab = document.createElement("button");
       ab.type = "button"; ab.textContent = "Aggiungi";
       ab.addEventListener("click", function () {
-        if (!day[m.id]) day[m.id] = { opt: null, items: [] };
         day[m.id].items.push({ food: sel.value, g: 100 });
         day[m.id].opt = null;
         saveDay(); render();
       });
       add.appendChild(sel); add.appendChild(ab);
       sec.appendChild(add);
+
+      // cosa manca
+      var gap = document.createElement("div");
+      gap.className = "gap";
+      if (!st.items.length) {
+        gap.hidden = true;
+      } else {
+        var sugg = suggestFor(m.id);
+        if (!sugg.length) {
+          gap.className = "gap done";
+          gap.innerHTML = '<span class="lab">Proteine a posto</span><br>' +
+            "Questo pasto copre la sua quota: " + Math.round(mt.p) + " g su " + Math.round(b.p) + ".";
+        } else {
+          var gp = Math.round(b.p - mt.p);
+          var gk = Math.round(b.kcal - mt.kcal);
+          gap.innerHTML = '<span class="lab">Mancano ' + gp + " g di proteine</span><br>" +
+            (gk > 0 ? "Restano " + gk + " kcal in questo pasto. " : "Le calorie sono già coperte, quindi meglio una fonte magra. ") +
+            "Tocca per aggiungere:";
+          var chips = document.createElement("div");
+          chips.className = "chips";
+          sugg.forEach(function (sg) {
+            var f = FOODS[sg.k];
+            var b2 = document.createElement("button");
+            b2.type = "button";
+            b2.innerHTML = f.nome + " " + sg.g + " g<small>+" + sg.prot +
+              " g prot &middot; +" + sg.kcal + " kcal</small>";
+            b2.addEventListener("click", function () {
+              day[m.id].items.push({ food: sg.k, g: sg.g });
+              day[m.id].opt = null;
+              saveDay(); render();
+            });
+            chips.appendChild(b2);
+          });
+          gap.appendChild(chips);
+        }
+      }
+      sec.appendChild(gap);
 
       host.appendChild(sec);
     });
@@ -707,17 +748,23 @@
   function renderFoodTable() {
     var tb = document.querySelector("#ftbl tbody");
     tb.innerHTML = "";
-    Object.keys(FOODS).filter(allowed).sort(function (a, b) {
-      return FOODS[a].nome.localeCompare(FOODS[b].nome, "it");
-    }).forEach(function (fk) {
-      var f = FOODS[fk];
-      var tr = document.createElement("tr");
-      var g = f.glutine === "si" ? "contiene"
-            : f.glutine === "cert" ? "verifica etichetta" : "no";
-      tr.innerHTML = "<td>" + f.nome + '</td><td class="n">' + f.kcal +
-        '</td><td class="n">' + f.p + '</td><td class="n">' + f.f +
-        '</td><td class="n">' + f.c + '</td><td style="font-size:11.5px;color:var(--ink-3)">' + g + "</td>";
-      tb.appendChild(tr);
+    Object.keys(CAT).forEach(function (cat) {
+      var keys = CAT[cat].filter(allowed);
+      if (!keys.length) return;
+      var tr0 = document.createElement("tr");
+      tr0.className = "cat";
+      tr0.innerHTML = '<td colspan="6">' + cat + "</td>";
+      tb.appendChild(tr0);
+      keys.sort(function (a, b) { return FOODS[a].nome.localeCompare(FOODS[b].nome, "it"); })
+        .forEach(function (k) {
+          var f = FOODS[k];
+          var g = f.glutine === "si" ? "contiene" : f.glutine === "cert" ? "verifica etichetta" : "no";
+          var tr = document.createElement("tr");
+          tr.innerHTML = "<td>" + f.nome + '</td><td class="n">' + f.kcal +
+            '</td><td class="n">' + f.p + '</td><td class="n">' + f.f +
+            '</td><td class="n">' + f.c + '</td><td style="font-size:11.5px;color:var(--ink-3)">' + g + "</td>";
+          tb.appendChild(tr);
+        });
     });
   }
 
@@ -737,23 +784,22 @@
   }
   function initCfgFields() {
     var c = cfg();
-    var u = document.getElementById("cfg-url");
-    var k = document.getElementById("cfg-secret");
+    var u = document.getElementById("cfg-url"), k = document.getElementById("cfg-secret");
     u.value = c.url; k.value = c.secret;
     u.addEventListener("input", function () { lset("fit.sync.url", u.value.trim()); paintSync(); });
     k.addEventListener("input", function () { lset("fit.sync.secret", k.value.trim()); paintSync(); });
   }
 
   function payload() {
-    var t = dayTotals();
-    var tg = TARGET[person];
+    var t = dayTotals(), tg = TARGET[person];
     return {
       personaId: person, persona: NAMES[person], data: today(),
       senzaGlutine: person === "e",
-      totali: { kcal: Math.round(t.kcal), proteine: Math.round(t.p), grassi: Math.round(t.f), carboidrati: Math.round(t.c) },
+      totali: { kcal: Math.round(t.kcal), proteine: Math.round(t.p),
+                grassi: Math.round(t.f), carboidrati: Math.round(t.c) },
       target: { kcal: tg.kcal, proteine: tg.p, grassi: tg.f, carboidrati: tg.c },
       pasti: MEALS.map(function (m) {
-        var st = day[m.id] || { opt: null, items: [] };
+        var st = day[m.id];
         return {
           id: m.id, nome: m.nome,
           opzione: st.opt === null ? null : m.opzioni[st.opt].label,
@@ -761,7 +807,7 @@
             return { nome: FOODS[it.food].nome, grammi: Number(it.g) || 0 };
           })
         };
-      }).filter(function (p) { return p.alimenti.length; })
+      }).filter(function (x) { return x.alimenti.length; })
     };
   }
 
@@ -773,22 +819,20 @@
         rows.push([pl.data, pl.personaId, p.nome, p.opzione || "", a.nome, a.grammi].join(","));
       });
     });
-    rows.push("");
     rows.push("# totali: " + pl.totali.kcal + " kcal, " + pl.totali.proteine + " g proteine, " +
       pl.totali.grassi + " g grassi, " + pl.totali.carboidrati + " g carboidrati");
     return rows.join("\n");
   }
 
   function updateSaveInfo(t) {
-    var btn = document.getElementById("save");
-    var info = document.getElementById("save-info");
-    var any = MEALS.some(function (m) { return day[m.id] && day[m.id].items.length; });
+    var btn = document.getElementById("save"), info = document.getElementById("save-info");
+    var any = MEALS.some(function (m) { return day[m.id].items.length; });
     if (!any) {
-      info.textContent = "Componi la giornata, poi salva.";
+      info.textContent = "Il salvataggio è facoltativo: serve solo se vuoi che Claude veda la giornata.";
       btn.disabled = true;
     } else {
-      info.innerHTML = "Giornata di <b>" + NAMES[person] + "</b>: <b>" +
-        Math.round(t.kcal) + "</b> kcal, <b>" + Math.round(t.p) + "</b> g di proteine.";
+      info.innerHTML = "Giornata di <b>" + NAMES[person] + "</b>: <b>" + Math.round(t.kcal) +
+        "</b> kcal, <b>" + Math.round(t.p) + "</b> g di proteine.";
       btn.disabled = false;
     }
     btn.classList.remove("ok");
@@ -796,16 +840,14 @@
   }
 
   function onSave() {
-    var btn = document.getElementById("save");
-    var info = document.getElementById("save-info");
+    var btn = document.getElementById("save"), info = document.getElementById("save-info");
     var dump = document.getElementById("dump");
 
     if (syncReady()) {
       var c = cfg();
-      btn.disabled = true; btn.textContent = "Invio\u2026";
+      btn.disabled = true; btn.textContent = "Invio…";
       var ctrl = new AbortController();
       var killer = setTimeout(function () { ctrl.abort(); }, 15000);
-
       fetch(c.url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -815,7 +857,7 @@
         clearTimeout(killer);
         if (r.ok) {
           btn.classList.add("ok"); btn.textContent = "Inviata";
-          info.innerHTML = "<b>Inviata.</b> La giornata \u00e8 nel repo <code>fit-log</code>.";
+          info.innerHTML = "<b>Inviata.</b> Giornata del " + today() + " nel repo <code>fit-log</code>.";
           return;
         }
         btn.disabled = false; btn.textContent = "Riprova";
@@ -838,9 +880,7 @@
       return;
     }
 
-    dump.value = csvDump();
-    dump.hidden = false;
-    dump.select();
+    dump.value = csvDump(); dump.hidden = false; dump.select();
     var copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -849,9 +889,8 @@
     } catch (e) {}
     btn.classList.add("ok");
     btn.textContent = copied ? "Copiato" : "Copia sotto";
-    info.innerHTML = copied
-      ? "<b>Giornata copiata.</b> Incollala in chat."
-      : "<b>Seleziona il testo qui sotto</b> e incollalo in chat.";
+    info.innerHTML = copied ? "<b>Giornata copiata.</b> Incollala in chat."
+                            : "<b>Seleziona il testo qui sotto</b> e incollalo in chat.";
   }
 
   /* ---- controlli ---- */

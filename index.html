@@ -241,11 +241,17 @@
   .ex-bot { display: flex; align-items: center; gap: 8px; margin: 11px 0 0 41px; flex-wrap: wrap; }
   .spacer { flex: 1; }
   .prev {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
     font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
-    font-size: 10.5px; font-weight: 600; letter-spacing: .04em;
-    color: var(--ink-3); white-space: nowrap; text-align: right;
+    white-space: nowrap; text-align: right;
   }
-  .prev.up { color: var(--done); }
+  .prev .lbl {
+    font-size: 8.5px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .prev b { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .prev.up .lbl, .prev.up b { color: var(--done); }
+  .prev.none b { color: var(--ink-3); font-weight: 500; font-size: 11px; }
   .load {
     width: 92px; height: 46px; padding: 0 10px;
     background: var(--ground); color: var(--ink);
@@ -508,6 +514,16 @@
             <li><strong>Serie di avvicinamento</strong> sul primo esercizio: due serie leggere, 50% ×8 e 70% ×5. Sulla panca Jacopo aggiunge bilanciere vuoto ×10 prima.</li>
           </ol>
           <p>Le serie di avvicinamento non si contano come serie di lavoro, e non sono opzionali: sono la differenza tra progredire per 12 settimane e fermarsi alla quarta per una spalla infiammata.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Il carico dell&rsquo;ultima volta</summary>
+        <div class="body">
+          <p>Sotto ogni campo compare <b>ultima volta &middot; 120 kg</b>: &egrave; il carico che hai <strong>salvato</strong> nell&rsquo;ultima seduta di questa lettera, per questa persona. Non &egrave; il target, &egrave; il numero da battere.</p>
+          <p>Quando scrivi un carico pi&ugrave; alto, l&rsquo;indicatore <strong>diventa verde</strong>. Se dice <b>mai registrato</b> significa che quell&rsquo;esercizio non &egrave; ancora stato salvato nemmeno una volta: dalla seconda seduta in poi il numero c&rsquo;&egrave; sempre.</p>
+          <p>Si aggiorna <strong>solo quando premi Salva seduta</strong>. Se scrivi dei carichi e non salvi, restano nel campo ma il riferimento non avanza — cos&igrave; una seduta interrotta non falsa lo storico.</p>
+          <p><strong>Sedute A, B e C sono separate</strong>, e cos&igrave; le due persone: ognuno vede i propri numeri, per la propria seduta.</p>
         </div>
       </details>
 
@@ -829,9 +845,14 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         // carico della volta precedente: e' la doppia progressione, resa visibile
         var pv = prev[ex.id];
         var pdiv = document.createElement("div");
-        pdiv.className = "prev";
-        pdiv.textContent = (pv === undefined || pv === null || pv === "")
-          ? "prima volta" : "prec. " + pv + " kg";
+        var hasPrev = !(pv === undefined || pv === null || pv === "");
+        pdiv.className = "prev" + (hasPrev ? "" : " none");
+        pdiv.innerHTML = hasPrev
+          ? '<span class="lbl">ultima volta</span><b>' + pv + " kg</b>"
+          : '<span class="lbl">storico</span><b>mai registrato</b>';
+        pdiv.title = hasPrev
+          ? "Carico dell'ultima seduta " + session + " salvata"
+          : "Nessuna seduta " + session + " salvata finora per questo esercizio";
         bot.appendChild(pdiv);
 
         var inp = document.createElement("input");
@@ -847,7 +868,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         function markUp() {
           var a = parseFloat(String(inp.value).replace(",", "."));
           var b = parseFloat(String(pv).replace(",", "."));
-          pdiv.className = "prev" + (!isNaN(a) && !isNaN(b) && a > b ? " up" : "");
+          var up = !isNaN(a) && !isNaN(b) && a > b;
+          pdiv.className = "prev" + (hasPrev ? "" : " none") + (up ? " up" : "");
         }
         markUp();
 

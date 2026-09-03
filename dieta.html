@@ -191,6 +191,46 @@
   }
   .add button:hover { color:var(--accent); border-color:var(--accent); }
 
+  .mact { display:flex; gap:6px; margin-top:8px; }
+  .mact button {
+    flex:1; min-height:44px; padding:0 12px;
+    background:var(--ink); color:var(--ground); border:1px solid var(--ink);
+    border-radius:8px; cursor:pointer;
+    font-family:"IBM Plex Sans Condensed",sans-serif; font-size:15px; font-weight:600;
+  }
+  .mact button.ghost {
+    flex:0 0 auto; background:var(--surface); color:var(--ink-3); border-color:var(--line);
+    font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .mact button.ghost:hover { color:var(--ink); border-color:var(--ink-3); }
+  .mact button:disabled { opacity:.4; cursor:default; }
+
+  .balance {
+    margin:9px 0 0; padding:11px 13px; border-radius:9px; font-size:13px;
+    background:var(--ok-bg); color:var(--ink); border-left:3px solid var(--ok);
+  }
+  .balance[hidden] { display:none !important; }
+  .balance.warn { background:var(--accent-bg); border-left-color:var(--warn); }
+  .balance .lab {
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ok);
+  }
+  .balance.warn .lab { color:var(--warn); }
+  .balance .grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px;
+    font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+    font-size:11px; text-align:center;
+  }
+  .balance .grid div { background:var(--surface); border-radius:6px; padding:6px 2px; }
+  .balance .grid span { display:block; font-size:8.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-3); margin-bottom:2px; }
+  .balance .grid b { font-size:13px; font-weight:600; }
+  .balance .grid .off b { color:var(--warn); }
+  .balance .grid .on b { color:var(--ok); }
+  .balance .fix { margin-top:8px; font-size:12.5px; color:var(--ink-2); }
+  .row input.auto { border-color:var(--ok); }
+
   /* ---- cosa manca a questo pasto ---- */
   .gap {
     margin:9px 0 0; padding:11px 13px; border-radius:9px;
@@ -423,9 +463,11 @@
 (function () {
   "use strict";
 
-  var D = {"foods":{"avena":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena / porridge","hint":"","glutine":"si","tag":"","max":300},"pane":{"kcal":265,"p":8.0,"f":1.5,"c":50.0,"nome":"Pane","hint":"","glutine":"si","tag":"","max":300},"pane_integrale":{"kcal":240,"p":9.0,"f":2.0,"c":45.0,"nome":"Pane integrale","hint":"","glutine":"si","tag":"","max":300},"fette_biscottate":{"kcal":410,"p":11.0,"f":6.0,"c":75.0,"nome":"Fette biscottate","hint":"","glutine":"si","tag":"","max":300},"pasta":{"kcal":355,"p":12.0,"f":1.5,"c":72.0,"nome":"Pasta","hint":"","glutine":"si","tag":"","max":300},"couscous":{"kcal":350,"p":12.0,"f":1.0,"c":72.0,"nome":"Couscous","hint":"","glutine":"si","tag":"","max":300},"gnocchi":{"kcal":160,"p":4.0,"f":0.5,"c":34.0,"nome":"Gnocchi di patate","hint":"","glutine":"si","tag":"","max":300},"piadina":{"kcal":300,"p":8.0,"f":8.0,"c":50.0,"nome":"Piadina","hint":"","glutine":"si","tag":"","max":300},"crackers":{"kcal":430,"p":10.0,"f":12.0,"c":70.0,"nome":"Crackers","hint":"","glutine":"si","tag":"","max":300},"biscotti":{"kcal":430,"p":7.0,"f":12.0,"c":73.0,"nome":"Biscotti secchi","hint":"1 biscotto secco ≈ 8 g","glutine":"si","tag":"","max":300},"cereali_misti":{"kcal":380,"p":8.0,"f":2.0,"c":82.0,"nome":"Cereali misti (riso, frumento, orzo)","hint":"","glutine":"si","tag":"","max":300},"fiocchi_mais":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais","hint":"","glutine":"si","tag":"","max":300},"fiocchi_riso":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso","hint":"","glutine":"si","tag":"","max":300},"riso":{"kcal":350,"p":7.0,"f":0.6,"c":78.0,"nome":"Riso","hint":"","glutine":"no","tag":"","max":300},"quinoa":{"kcal":368,"p":14.0,"f":6.0,"c":64.0,"nome":"Quinoa","hint":"","glutine":"no","tag":"pasto","max":300},"grano_saraceno":{"kcal":343,"p":13.0,"f":3.0,"c":72.0,"nome":"Grano saraceno","hint":"","glutine":"no","tag":"pasto","max":300},"polenta":{"kcal":360,"p":8.0,"f":1.0,"c":79.0,"nome":"Polenta","hint":"","glutine":"cert","tag":"","max":300},"gallette_riso":{"kcal":380,"p":8.0,"f":3.0,"c":81.0,"nome":"Gallette di riso","hint":"1 galletta ≈ 8 g","glutine":"cert","tag":"","max":300},"patate":{"kcal":77,"p":2.0,"f":0.1,"c":17.0,"nome":"Patate","hint":"","glutine":"no","tag":"","max":300},"patate_dolci":{"kcal":86,"p":1.6,"f":0.1,"c":20.0,"nome":"Patate dolci","hint":"","glutine":"no","tag":"","max":300},"avena_gf":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pane_gf":{"kcal":270,"p":4.0,"f":6.0,"c":48.0,"nome":"Pane senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fette_gf":{"kcal":400,"p":5.0,"f":8.0,"c":76.0,"nome":"Fette biscottate senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pasta_gf":{"kcal":355,"p":7.0,"f":1.5,"c":79.0,"nome":"Pasta senza glutine","hint":"","glutine":"cert","tag":"","max":300},"biscotti_gf":{"kcal":460,"p":4.0,"f":17.0,"c":72.0,"nome":"Biscotti senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_mais_gf":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_riso_gf":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pollo":{"kcal":110,"p":23.0,"f":1.5,"c":0.0,"nome":"Petto di pollo","hint":"","glutine":"no","tag":"pasto","max":250},"tacchino":{"kcal":110,"p":24.0,"f":1.0,"c":0.0,"nome":"Tacchino","hint":"","glutine":"no","tag":"pasto","max":250},"manzo_magro":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Manzo magro","hint":"","glutine":"no","tag":"pasto","max":250},"hamburger_manzo":{"kcal":210,"p":19.0,"f":15.0,"c":0.0,"nome":"Hamburger di manzo","hint":"","glutine":"no","tag":"pasto","max":300},"vitello":{"kcal":120,"p":21.0,"f":4.0,"c":0.0,"nome":"Vitello","hint":"","glutine":"no","tag":"pasto","max":250},"coniglio":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Coniglio","hint":"","glutine":"no","tag":"pasto","max":300},"lonza_maiale":{"kcal":140,"p":21.0,"f":6.0,"c":0.0,"nome":"Lonza di maiale","hint":"","glutine":"no","tag":"pasto","max":220},"prosciutto_cotto":{"kcal":145,"p":20.0,"f":6.0,"c":1.0,"nome":"Prosciutto cotto","hint":"","glutine":"cert","tag":"colazione","max":120},"prosciutto_crudo":{"kcal":220,"p":26.0,"f":13.0,"c":0.0,"nome":"Prosciutto crudo","hint":"","glutine":"no","tag":"pasto","max":100},"bresaola":{"kcal":151,"p":32.0,"f":2.0,"c":0.0,"nome":"Bresaola","hint":"","glutine":"cert","tag":"colazione","max":90},"speck":{"kcal":250,"p":28.0,"f":15.0,"c":0.0,"nome":"Speck","hint":"","glutine":"cert","tag":"pasto","max":90},"tonno":{"kcal":116,"p":25.0,"f":1.0,"c":0.0,"nome":"Tonno al naturale","hint":"","glutine":"no","tag":"pasto","max":200},"salmone":{"kcal":208,"p":20.0,"f":13.0,"c":0.0,"nome":"Salmone","hint":"","glutine":"no","tag":"pasto","max":200},"merluzzo":{"kcal":82,"p":18.0,"f":0.7,"c":0.0,"nome":"Merluzzo","hint":"","glutine":"no","tag":"pasto","max":250},"orata":{"kcal":120,"p":20.0,"f":4.0,"c":0.0,"nome":"Orata","hint":"","glutine":"no","tag":"pasto","max":250},"sgombro":{"kcal":180,"p":22.0,"f":10.0,"c":0.0,"nome":"Sgombro","hint":"","glutine":"no","tag":"pasto","max":180},"sardine":{"kcal":200,"p":21.0,"f":13.0,"c":0.0,"nome":"Sardine","hint":"","glutine":"no","tag":"pasto","max":300},"gamberi":{"kcal":85,"p":18.0,"f":1.0,"c":0.0,"nome":"Gamberi","hint":"","glutine":"no","tag":"pasto","max":250},"calamari":{"kcal":82,"p":16.0,"f":1.0,"c":1.0,"nome":"Calamari","hint":"","glutine":"no","tag":"pasto","max":300},"uova":{"kcal":143,"p":13.0,"f":10.0,"c":1.0,"nome":"Uova","hint":"1 uovo ≈ 55 g","glutine":"no","tag":"both","max":180},"albume":{"kcal":52,"p":11.0,"f":0.2,"c":0.7,"nome":"Albume","hint":"","glutine":"no","tag":"colazione","max":200},"skyr":{"kcal":60,"p":10.0,"f":0.2,"c":4.0,"nome":"Skyr","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_greco":{"kcal":73,"p":9.0,"f":2.0,"c":4.0,"nome":"Yogurt greco","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_bianco":{"kcal":61,"p":3.5,"f":3.3,"c":4.7,"nome":"Yogurt bianco","hint":"","glutine":"no","tag":"colazione","max":300},"fiocchi_latte":{"kcal":98,"p":12.0,"f":4.0,"c":3.0,"nome":"Fiocchi di latte","hint":"","glutine":"no","tag":"colazione","max":200},"ricotta":{"kcal":146,"p":9.0,"f":11.0,"c":3.0,"nome":"Ricotta","hint":"","glutine":"no","tag":"both","max":150},"mozzarella":{"kcal":253,"p":18.0,"f":19.0,"c":1.0,"nome":"Mozzarella","hint":"","glutine":"no","tag":"both","max":125},"grana":{"kcal":392,"p":33.0,"f":28.0,"c":0.0,"nome":"Grana","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"both","max":30},"pecorino":{"kcal":390,"p":26.0,"f":31.0,"c":0.0,"nome":"Pecorino","hint":"","glutine":"no","tag":"both","max":300},"feta":{"kcal":264,"p":14.0,"f":21.0,"c":4.0,"nome":"Feta","hint":"","glutine":"no","tag":"both","max":80},"scamorza":{"kcal":300,"p":25.0,"f":22.0,"c":1.0,"nome":"Scamorza","hint":"","glutine":"no","tag":"colazione","max":300},"stracchino":{"kcal":300,"p":18.0,"f":25.0,"c":1.0,"nome":"Stracchino","hint":"","glutine":"no","tag":"colazione","max":300},"formaggio_spalm":{"kcal":250,"p":6.0,"f":24.0,"c":4.0,"nome":"Formaggio spalmabile","hint":"","glutine":"cert","tag":"colazione","max":300},"latte_scremato":{"kcal":35,"p":3.4,"f":0.1,"c":5.0,"nome":"Latte scremato","hint":"","glutine":"no","tag":"colazione","max":300},"latte_intero":{"kcal":64,"p":3.2,"f":3.6,"c":4.8,"nome":"Latte intero","hint":"","glutine":"no","tag":"colazione","max":300},"bevanda_soia":{"kcal":40,"p":3.3,"f":1.8,"c":2.8,"nome":"Bevanda di soia","hint":"","glutine":"no","tag":"colazione","max":300},"whey":{"kcal":380,"p":78.0,"f":5.0,"c":7.0,"nome":"Proteine in polvere","hint":"1 misurino ≈ 30 g","glutine":"cert","tag":"colazione","max":40},"lenticchie_secche":{"kcal":353,"p":25.0,"f":1.0,"c":60.0,"nome":"Lenticchie secche","hint":"","glutine":"no","tag":"pasto","max":120},"ceci_secchi":{"kcal":378,"p":20.0,"f":6.0,"c":61.0,"nome":"Ceci secchi","hint":"","glutine":"no","tag":"pasto","max":120},"fagioli_secchi":{"kcal":333,"p":23.0,"f":1.0,"c":60.0,"nome":"Fagioli secchi","hint":"","glutine":"no","tag":"pasto","max":300},"legumi_scatola":{"kcal":91,"p":7.0,"f":0.5,"c":12.0,"nome":"Legumi in scatola","hint":"","glutine":"cert","tag":"pasto","max":250},"piselli":{"kcal":81,"p":5.0,"f":0.4,"c":14.0,"nome":"Piselli","hint":"","glutine":"no","tag":"pasto","max":300},"edamame":{"kcal":122,"p":11.0,"f":5.0,"c":10.0,"nome":"Edamame","hint":"","glutine":"no","tag":"pasto","max":200},"hummus":{"kcal":170,"p":8.0,"f":10.0,"c":14.0,"nome":"Hummus","hint":"","glutine":"cert","tag":"pasto","max":300},"tofu":{"kcal":120,"p":12.0,"f":7.0,"c":2.0,"nome":"Tofu","hint":"","glutine":"no","tag":"pasto","max":250},"tempeh":{"kcal":193,"p":19.0,"f":11.0,"c":9.0,"nome":"Tempeh","hint":"","glutine":"no","tag":"pasto","max":200},"seitan":{"kcal":140,"p":24.0,"f":2.0,"c":4.0,"nome":"Seitan","hint":"","glutine":"si","tag":"pasto","max":300},"verdure":{"kcal":25,"p":2.0,"f":0.3,"c":3.0,"nome":"Verdure miste","hint":"","glutine":"no","tag":"","max":300},"pomodori":{"kcal":18,"p":0.9,"f":0.2,"c":3.9,"nome":"Pomodori","hint":"","glutine":"no","tag":"","max":300},"broccoli":{"kcal":34,"p":2.8,"f":0.4,"c":7.0,"nome":"Broccoli","hint":"","glutine":"no","tag":"","max":300},"spinaci":{"kcal":23,"p":2.9,"f":0.4,"c":3.6,"nome":"Spinaci","hint":"","glutine":"no","tag":"","max":300},"carote":{"kcal":41,"p":0.9,"f":0.2,"c":10.0,"nome":"Carote","hint":"","glutine":"no","tag":"","max":300},"zucchine":{"kcal":17,"p":1.2,"f":0.3,"c":3.1,"nome":"Zucchine","hint":"","glutine":"no","tag":"","max":300},"insalata":{"kcal":15,"p":1.4,"f":0.2,"c":2.9,"nome":"Insalata","hint":"","glutine":"no","tag":"","max":300},"banana":{"kcal":89,"p":1.1,"f":0.3,"c":23.0,"nome":"Banana","hint":"","glutine":"no","tag":"","max":300},"mela":{"kcal":52,"p":0.3,"f":0.2,"c":14.0,"nome":"Mela","hint":"","glutine":"no","tag":"","max":300},"pera":{"kcal":57,"p":0.4,"f":0.1,"c":15.0,"nome":"Pera","hint":"","glutine":"no","tag":"","max":300},"arancia":{"kcal":47,"p":0.9,"f":0.1,"c":12.0,"nome":"Arancia","hint":"","glutine":"no","tag":"","max":300},"kiwi":{"kcal":61,"p":1.1,"f":0.5,"c":15.0,"nome":"Kiwi","hint":"","glutine":"no","tag":"","max":300},"fragole":{"kcal":32,"p":0.7,"f":0.3,"c":8.0,"nome":"Fragole","hint":"","glutine":"no","tag":"","max":300},"frutti_bosco":{"kcal":45,"p":1.0,"f":0.4,"c":10.0,"nome":"Frutti di bosco","hint":"","glutine":"no","tag":"","max":300},"uva":{"kcal":69,"p":0.7,"f":0.2,"c":18.0,"nome":"Uva","hint":"","glutine":"no","tag":"","max":300},"ananas":{"kcal":50,"p":0.5,"f":0.1,"c":13.0,"nome":"Ananas","hint":"","glutine":"no","tag":"","max":300},"avocado":{"kcal":160,"p":2.0,"f":15.0,"c":9.0,"nome":"Avocado","hint":"","glutine":"no","tag":"","max":300},"olio_evo":{"kcal":884,"p":0.0,"f":100.0,"c":0.0,"nome":"Olio EVO","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"","max":15},"mandorle":{"kcal":579,"p":21.0,"f":50.0,"c":22.0,"nome":"Mandorle","hint":"","glutine":"no","tag":"colazione","max":40},"noci":{"kcal":654,"p":15.0,"f":65.0,"c":14.0,"nome":"Noci","hint":"","glutine":"no","tag":"colazione","max":30},"burro_arachidi":{"kcal":588,"p":25.0,"f":50.0,"c":20.0,"nome":"Burro di arachidi","hint":"","glutine":"no","tag":"colazione","max":30},"miele":{"kcal":304,"p":0.3,"f":0.0,"c":82.0,"nome":"Miele","hint":"1 cucchiaino ≈ 7 g","glutine":"no","tag":"","max":300},"marmellata":{"kcal":250,"p":0.5,"f":0.0,"c":60.0,"nome":"Marmellata","hint":"","glutine":"no","tag":"","max":300},"cioccolato_fond":{"kcal":570,"p":8.0,"f":42.0,"c":34.0,"nome":"Cioccolato fondente","hint":"","glutine":"no","tag":"","max":300},"cacao_amaro":{"kcal":350,"p":20.0,"f":11.0,"c":11.0,"nome":"Cacao amaro","hint":"","glutine":"cert","tag":"colazione","max":15},"birra":{"kcal":43,"p":0.5,"f":0.0,"c":3.6,"nome":"Birra","hint":"1 media ≈ 400 g","glutine":"si","tag":"","max":300},"vino_rosso":{"kcal":85,"p":0.1,"f":0.0,"c":2.6,"nome":"Vino rosso","hint":"","glutine":"no","tag":"","max":300}},"meals":[{"id":"colazione","nome":"Colazione","opzioni":[{"label":"Porridge e skyr","items":[{"food":"avena","j":95,"foodE":"avena_gf","e":40},{"food":"skyr","j":245,"foodE":"skyr","e":165},{"food":"banana","j":50,"foodE":"banana","e":80},{"food":"mandorle","j":20,"foodE":"mandorle","e":10}]},{"label":"Porridge e frutti di bosco","items":[{"food":"avena","j":30,"foodE":"avena_gf","e":20},{"food":"latte_scremato","j":300,"foodE":"latte_scremato","e":300},{"food":"frutti_bosco","j":200,"foodE":"frutti_bosco","e":200},{"food":"burro_arachidi","j":5,"foodE":"burro_arachidi","e":5}]},{"label":"Fiocchi e yogurt","items":[{"food":"fiocchi_mais","j":20,"foodE":"fiocchi_mais_gf","e":20},{"food":"yogurt_greco","j":250,"foodE":"yogurt_greco","e":225},{"food":"banana","j":40,"foodE":"banana","e":60},{"food":"noci","j":30,"foodE":"noci","e":10}]},{"label":"Cereali e latte","items":[{"food":"cereali_misti","j":25,"foodE":"fiocchi_mais_gf","e":40},{"food":"latte_intero","j":300,"foodE":"latte_intero","e":205},{"food":"mela","j":200,"foodE":"mela","e":150}]},{"label":"Biscotti e latte","items":[{"food":"biscotti","j":60,"foodE":"biscotti_gf","e":40},{"food":"latte_scremato","j":260,"foodE":"latte_scremato","e":210},{"food":"skyr","j":250,"foodE":"skyr","e":150}]},{"label":"Uova e pane","items":[{"food":"uova","j":180,"foodE":"uova","e":170},{"food":"pane","j":115,"foodE":"pane_gf","e":30},{"food":"pomodori","j":100,"foodE":"pomodori","e":100},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":3}]}]},{"id":"spuntino_m","nome":"Spuntino di metà mattina","opzioni":[{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":195,"foodE":"yogurt_greco","e":115},{"food":"mela","j":180,"foodE":"mela","e":150}]},{"label":"Gallette e arachidi","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"burro_arachidi","j":30,"foodE":"burro_arachidi","e":30},{"food":"banana","j":40,"foodE":"banana","e":40}]},{"label":"Bresaola e gallette","items":[{"food":"bresaola","j":50,"foodE":"bresaola","e":30},{"food":"gallette_riso","j":20,"foodE":"gallette_riso","e":15}]},{"label":"Skyr e cacao","items":[{"food":"skyr","j":165,"foodE":"skyr","e":100},{"food":"cacao_amaro","j":5,"foodE":"cacao_amaro","e":5},{"food":"miele","j":20,"foodE":"miele","e":20}]},{"label":"Frutta secca","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"mela","j":60,"foodE":"mela","e":60}]},{"label":"Prosciutto e pane","items":[{"food":"prosciutto_cotto","j":75,"foodE":"prosciutto_cotto","e":45},{"food":"pane","j":40,"foodE":"pane_gf","e":35}]}]},{"id":"pranzo","nome":"Pranzo","opzioni":[{"label":"Pasta e pollo","items":[{"food":"pasta","j":80,"foodE":"pasta_gf","e":70},{"food":"pollo","j":165,"foodE":"pollo","e":100},{"food":"verdure","j":300,"foodE":"verdure","e":225},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":9}]},{"label":"Riso e tonno","items":[{"food":"riso","j":105,"foodE":"riso","e":75},{"food":"tonno","j":180,"foodE":"tonno","e":105},{"food":"pomodori","j":150,"foodE":"pomodori","e":175},{"food":"olio_evo","j":11,"foodE":"olio_evo","e":9}]},{"label":"Lenticchie e riso","items":[{"food":"lenticchie_secche","j":120,"foodE":"lenticchie_secche","e":120},{"food":"riso","j":20,"foodE":"riso","e":15},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Insalatona","items":[{"food":"pane","j":70,"foodE":"pane_gf","e":65},{"food":"pollo","j":155,"foodE":"pollo","e":95},{"food":"insalata","j":200,"foodE":"insalata","e":200},{"food":"pomodori","j":300,"foodE":"pomodori","e":200},{"food":"grana","j":15,"foodE":"grana","e":10},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Quinoa e salmone","items":[{"food":"quinoa","j":110,"foodE":"quinoa","e":55},{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"spinaci","j":60,"foodE":"spinaci","e":105},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":4}]},{"label":"Patate e uova","items":[{"food":"patate","j":130,"foodE":"patate","e":140},{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"broccoli","j":65,"foodE":"broccoli","e":105},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]}]},{"id":"spuntino_p","nome":"Spuntino del pomeriggio","opzioni":[{"label":"Skyr e frutto","items":[{"food":"skyr","j":170,"foodE":"skyr","e":100},{"food":"pera","j":200,"foodE":"pera","e":180}]},{"label":"Fiocchi di latte","items":[{"food":"fiocchi_latte","j":135,"foodE":"fiocchi_latte","e":75},{"food":"kiwi","j":170,"foodE":"kiwi","e":145}]},{"label":"Ricotta e miele","items":[{"food":"ricotta","j":150,"foodE":"ricotta","e":120},{"food":"miele","j":5,"foodE":"miele","e":5}]},{"label":"Frutta secca e cioccolato","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"cioccolato_fond","j":30,"foodE":"cioccolato_fond","e":25}]},{"label":"Gallette e formaggio","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"scamorza","j":80,"foodE":"scamorza","e":70},{"food":"pomodori","j":100,"foodE":"pomodori","e":100}]},{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":175,"foodE":"yogurt_greco","e":100},{"food":"fragole","j":250,"foodE":"fragole","e":250}]}]},{"id":"cena","nome":"Cena","opzioni":[{"label":"Pesce bianco e patate","items":[{"food":"merluzzo","j":205,"foodE":"merluzzo","e":110},{"food":"patate","j":350,"foodE":"patate","e":255},{"food":"verdure","j":300,"foodE":"verdure","e":275},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Salmone e verdure","items":[{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"patate","j":160,"foodE":"patate","e":150},{"food":"broccoli","j":160,"foodE":"broccoli","e":205},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":5}]},{"label":"Carne e patate","items":[{"food":"manzo_magro","j":185,"foodE":"manzo_magro","e":100},{"food":"patate","j":300,"foodE":"patate","e":215},{"food":"verdure","j":275,"foodE":"verdure","e":275},{"food":"olio_evo","j":14,"foodE":"olio_evo","e":11}]},{"label":"Uova e verdure","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"zucchine","j":100,"foodE":"zucchine","e":145},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]},{"label":"Legumi e verdure","items":[{"food":"ceci_secchi","j":120,"foodE":"ceci_secchi","e":120},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"grana","j":30,"foodE":"grana","e":30},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Pollo e polenta","items":[{"food":"pollo","j":125,"foodE":"pollo","e":55},{"food":"polenta","j":45,"foodE":"polenta","e":20},{"food":"spinaci","j":300,"foodE":"spinaci","e":300},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":15}]}]}],"target":{"j":{"kcal":2350,"p":180,"f":70,"c":250},"e":{"kcal":1625,"p":108,"f":55,"c":175}},"gfSwap":{"avena":"avena_gf","pane":"pane_gf","pane_integrale":"pane_gf","fette_biscottate":"fette_gf","pasta":"pasta_gf","biscotti":"biscotti_gf","fiocchi_mais":"fiocchi_mais_gf","fiocchi_riso":"fiocchi_riso_gf","cereali_misti":"fiocchi_mais_gf","couscous":"quinoa","crackers":"gallette_riso","piadina":"gallette_riso","gnocchi":"patate","seitan":"tofu","birra":"vino_rosso"},"cat":{"Cereali e pane":["avena","avena_gf","pane","pane_integrale","pane_gf","fette_biscottate","fette_gf","pasta","pasta_gf","couscous","gnocchi","piadina","crackers","gallette_riso","biscotti","biscotti_gf","cereali_misti","fiocchi_mais","fiocchi_mais_gf","fiocchi_riso","fiocchi_riso_gf","riso","quinoa","grano_saraceno","polenta","patate","patate_dolci"],"Carne e pesce":["pollo","tacchino","manzo_magro","hamburger_manzo","vitello","coniglio","lonza_maiale","prosciutto_cotto","prosciutto_crudo","bresaola","speck","tonno","salmone","merluzzo","orata","sgombro","sardine","gamberi","calamari"],"Uova e latticini":["uova","albume","skyr","yogurt_greco","yogurt_bianco","fiocchi_latte","ricotta","mozzarella","grana","pecorino","feta","scamorza","stracchino","formaggio_spalm","latte_scremato","latte_intero","bevanda_soia","whey"],"Legumi e vegetali":["lenticchie_secche","ceci_secchi","fagioli_secchi","legumi_scatola","piselli","edamame","hummus","tofu","tempeh","seitan"],"Verdura":["verdure","pomodori","broccoli","spinaci","carote","zucchine","insalata"],"Frutta":["banana","mela","pera","arancia","kiwi","fragole","frutti_bosco","uva","ananas","avocado"],"Grassi e frutta secca":["olio_evo","mandorle","noci","burro_arachidi"],"Dolci e extra":["miele","marmellata","cioccolato_fond","cacao_amaro","birra","vino_rosso"]},"share":{"colazione":0.22,"spuntino_m":0.1,"pranzo":0.3,"spuntino_p":0.1,"cena":0.28}};
+  var D = {"foods":{"avena":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena / porridge","hint":"","glutine":"si","tag":"","max":300},"pane":{"kcal":265,"p":8.0,"f":1.5,"c":50.0,"nome":"Pane","hint":"","glutine":"si","tag":"","max":300},"pane_integrale":{"kcal":240,"p":9.0,"f":2.0,"c":45.0,"nome":"Pane integrale","hint":"","glutine":"si","tag":"","max":300},"fette_biscottate":{"kcal":410,"p":11.0,"f":6.0,"c":75.0,"nome":"Fette biscottate","hint":"","glutine":"si","tag":"","max":300},"pasta":{"kcal":355,"p":12.0,"f":1.5,"c":72.0,"nome":"Pasta","hint":"","glutine":"si","tag":"","max":300},"couscous":{"kcal":350,"p":12.0,"f":1.0,"c":72.0,"nome":"Couscous","hint":"","glutine":"si","tag":"","max":300},"gnocchi":{"kcal":160,"p":4.0,"f":0.5,"c":34.0,"nome":"Gnocchi di patate","hint":"","glutine":"si","tag":"","max":300},"piadina":{"kcal":300,"p":8.0,"f":8.0,"c":50.0,"nome":"Piadina","hint":"","glutine":"si","tag":"","max":300},"crackers":{"kcal":430,"p":10.0,"f":12.0,"c":70.0,"nome":"Crackers","hint":"","glutine":"si","tag":"","max":300},"biscotti":{"kcal":430,"p":7.0,"f":12.0,"c":73.0,"nome":"Biscotti secchi","hint":"1 biscotto secco ≈ 8 g","glutine":"si","tag":"","max":300},"cereali_misti":{"kcal":380,"p":8.0,"f":2.0,"c":82.0,"nome":"Cereali misti (riso, frumento, orzo)","hint":"","glutine":"si","tag":"","max":300},"fiocchi_mais":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais","hint":"","glutine":"si","tag":"","max":300},"fiocchi_riso":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso","hint":"","glutine":"si","tag":"","max":300},"riso":{"kcal":350,"p":7.0,"f":0.6,"c":78.0,"nome":"Riso","hint":"","glutine":"no","tag":"","max":300},"quinoa":{"kcal":368,"p":14.0,"f":6.0,"c":64.0,"nome":"Quinoa","hint":"","glutine":"no","tag":"pasto","max":300},"grano_saraceno":{"kcal":343,"p":13.0,"f":3.0,"c":72.0,"nome":"Grano saraceno","hint":"","glutine":"no","tag":"pasto","max":300},"polenta":{"kcal":360,"p":8.0,"f":1.0,"c":79.0,"nome":"Polenta","hint":"","glutine":"cert","tag":"","max":300},"gallette_riso":{"kcal":380,"p":8.0,"f":3.0,"c":81.0,"nome":"Gallette di riso","hint":"1 galletta ≈ 8 g","glutine":"cert","tag":"","max":300},"patate":{"kcal":77,"p":2.0,"f":0.1,"c":17.0,"nome":"Patate","hint":"","glutine":"no","tag":"","max":300},"patate_dolci":{"kcal":86,"p":1.6,"f":0.1,"c":20.0,"nome":"Patate dolci","hint":"","glutine":"no","tag":"","max":300},"avena_gf":{"kcal":370,"p":13.0,"f":7.0,"c":59.0,"nome":"Avena senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pane_gf":{"kcal":270,"p":4.0,"f":6.0,"c":48.0,"nome":"Pane senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fette_gf":{"kcal":400,"p":5.0,"f":8.0,"c":76.0,"nome":"Fette biscottate senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pasta_gf":{"kcal":355,"p":7.0,"f":1.5,"c":79.0,"nome":"Pasta senza glutine","hint":"","glutine":"cert","tag":"","max":300},"biscotti_gf":{"kcal":460,"p":4.0,"f":17.0,"c":72.0,"nome":"Biscotti senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_mais_gf":{"kcal":360,"p":7.0,"f":0.9,"c":84.0,"nome":"Fiocchi di mais senza glutine","hint":"","glutine":"cert","tag":"","max":300},"fiocchi_riso_gf":{"kcal":380,"p":7.0,"f":1.0,"c":85.0,"nome":"Fiocchi di riso senza glutine","hint":"","glutine":"cert","tag":"","max":300},"pollo":{"kcal":110,"p":23.0,"f":1.5,"c":0.0,"nome":"Petto di pollo","hint":"","glutine":"no","tag":"pasto","max":250},"tacchino":{"kcal":110,"p":24.0,"f":1.0,"c":0.0,"nome":"Tacchino","hint":"","glutine":"no","tag":"pasto","max":250},"manzo_magro":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Manzo magro","hint":"","glutine":"no","tag":"pasto","max":250},"hamburger_manzo":{"kcal":210,"p":19.0,"f":15.0,"c":0.0,"nome":"Hamburger di manzo","hint":"","glutine":"no","tag":"pasto","max":300},"vitello":{"kcal":120,"p":21.0,"f":4.0,"c":0.0,"nome":"Vitello","hint":"","glutine":"no","tag":"pasto","max":250},"coniglio":{"kcal":130,"p":21.0,"f":5.0,"c":0.0,"nome":"Coniglio","hint":"","glutine":"no","tag":"pasto","max":300},"lonza_maiale":{"kcal":140,"p":21.0,"f":6.0,"c":0.0,"nome":"Lonza di maiale","hint":"","glutine":"no","tag":"pasto","max":220},"prosciutto_cotto":{"kcal":145,"p":20.0,"f":6.0,"c":1.0,"nome":"Prosciutto cotto","hint":"","glutine":"cert","tag":"colazione","max":120},"prosciutto_crudo":{"kcal":220,"p":26.0,"f":13.0,"c":0.0,"nome":"Prosciutto crudo","hint":"","glutine":"no","tag":"pasto","max":100},"bresaola":{"kcal":151,"p":32.0,"f":2.0,"c":0.0,"nome":"Bresaola","hint":"","glutine":"cert","tag":"colazione","max":90},"speck":{"kcal":250,"p":28.0,"f":15.0,"c":0.0,"nome":"Speck","hint":"","glutine":"cert","tag":"pasto","max":90},"tonno":{"kcal":116,"p":25.0,"f":1.0,"c":0.0,"nome":"Tonno al naturale","hint":"","glutine":"no","tag":"pasto","max":200},"salmone":{"kcal":208,"p":20.0,"f":13.0,"c":0.0,"nome":"Salmone","hint":"","glutine":"no","tag":"pasto","max":200},"merluzzo":{"kcal":82,"p":18.0,"f":0.7,"c":0.0,"nome":"Merluzzo","hint":"","glutine":"no","tag":"pasto","max":250},"orata":{"kcal":120,"p":20.0,"f":4.0,"c":0.0,"nome":"Orata","hint":"","glutine":"no","tag":"pasto","max":250},"sgombro":{"kcal":180,"p":22.0,"f":10.0,"c":0.0,"nome":"Sgombro","hint":"","glutine":"no","tag":"pasto","max":180},"sardine":{"kcal":200,"p":21.0,"f":13.0,"c":0.0,"nome":"Sardine","hint":"","glutine":"no","tag":"pasto","max":300},"gamberi":{"kcal":85,"p":18.0,"f":1.0,"c":0.0,"nome":"Gamberi","hint":"","glutine":"no","tag":"pasto","max":250},"calamari":{"kcal":82,"p":16.0,"f":1.0,"c":1.0,"nome":"Calamari","hint":"","glutine":"no","tag":"pasto","max":300},"uova":{"kcal":143,"p":13.0,"f":10.0,"c":1.0,"nome":"Uova","hint":"1 uovo ≈ 55 g","glutine":"no","tag":"both","max":180},"albume":{"kcal":52,"p":11.0,"f":0.2,"c":0.7,"nome":"Albume","hint":"","glutine":"no","tag":"colazione","max":200},"skyr":{"kcal":60,"p":10.0,"f":0.2,"c":4.0,"nome":"Skyr","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_greco":{"kcal":73,"p":9.0,"f":2.0,"c":4.0,"nome":"Yogurt greco","hint":"","glutine":"no","tag":"colazione","max":250},"yogurt_bianco":{"kcal":61,"p":3.5,"f":3.3,"c":4.7,"nome":"Yogurt bianco","hint":"","glutine":"no","tag":"colazione","max":300},"fiocchi_latte":{"kcal":98,"p":12.0,"f":4.0,"c":3.0,"nome":"Fiocchi di latte","hint":"","glutine":"no","tag":"colazione","max":200},"ricotta":{"kcal":146,"p":9.0,"f":11.0,"c":3.0,"nome":"Ricotta","hint":"","glutine":"no","tag":"both","max":150},"mozzarella":{"kcal":253,"p":18.0,"f":19.0,"c":1.0,"nome":"Mozzarella","hint":"","glutine":"no","tag":"both","max":125},"grana":{"kcal":392,"p":33.0,"f":28.0,"c":0.0,"nome":"Grana","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"both","max":30},"pecorino":{"kcal":390,"p":26.0,"f":31.0,"c":0.0,"nome":"Pecorino","hint":"","glutine":"no","tag":"both","max":300},"feta":{"kcal":264,"p":14.0,"f":21.0,"c":4.0,"nome":"Feta","hint":"","glutine":"no","tag":"both","max":80},"scamorza":{"kcal":300,"p":25.0,"f":22.0,"c":1.0,"nome":"Scamorza","hint":"","glutine":"no","tag":"colazione","max":300},"stracchino":{"kcal":300,"p":18.0,"f":25.0,"c":1.0,"nome":"Stracchino","hint":"","glutine":"no","tag":"colazione","max":300},"formaggio_spalm":{"kcal":250,"p":6.0,"f":24.0,"c":4.0,"nome":"Formaggio spalmabile","hint":"","glutine":"cert","tag":"colazione","max":300},"latte_scremato":{"kcal":35,"p":3.4,"f":0.1,"c":5.0,"nome":"Latte scremato","hint":"","glutine":"no","tag":"colazione","max":300},"latte_intero":{"kcal":64,"p":3.2,"f":3.6,"c":4.8,"nome":"Latte intero","hint":"","glutine":"no","tag":"colazione","max":300},"bevanda_soia":{"kcal":40,"p":3.3,"f":1.8,"c":2.8,"nome":"Bevanda di soia","hint":"","glutine":"no","tag":"colazione","max":300},"whey":{"kcal":380,"p":78.0,"f":5.0,"c":7.0,"nome":"Proteine in polvere","hint":"1 misurino ≈ 30 g","glutine":"cert","tag":"colazione","max":40},"lenticchie_secche":{"kcal":353,"p":25.0,"f":1.0,"c":60.0,"nome":"Lenticchie secche","hint":"","glutine":"no","tag":"pasto","max":120},"ceci_secchi":{"kcal":378,"p":20.0,"f":6.0,"c":61.0,"nome":"Ceci secchi","hint":"","glutine":"no","tag":"pasto","max":120},"fagioli_secchi":{"kcal":333,"p":23.0,"f":1.0,"c":60.0,"nome":"Fagioli secchi","hint":"","glutine":"no","tag":"pasto","max":300},"legumi_scatola":{"kcal":91,"p":7.0,"f":0.5,"c":12.0,"nome":"Legumi in scatola","hint":"","glutine":"cert","tag":"pasto","max":250},"piselli":{"kcal":81,"p":5.0,"f":0.4,"c":14.0,"nome":"Piselli","hint":"","glutine":"no","tag":"pasto","max":300},"edamame":{"kcal":122,"p":11.0,"f":5.0,"c":10.0,"nome":"Edamame","hint":"","glutine":"no","tag":"pasto","max":200},"hummus":{"kcal":170,"p":8.0,"f":10.0,"c":14.0,"nome":"Hummus","hint":"","glutine":"cert","tag":"pasto","max":300},"tofu":{"kcal":120,"p":12.0,"f":7.0,"c":2.0,"nome":"Tofu","hint":"","glutine":"no","tag":"pasto","max":250},"tempeh":{"kcal":193,"p":19.0,"f":11.0,"c":9.0,"nome":"Tempeh","hint":"","glutine":"no","tag":"pasto","max":200},"seitan":{"kcal":140,"p":24.0,"f":2.0,"c":4.0,"nome":"Seitan","hint":"","glutine":"si","tag":"pasto","max":300},"verdure":{"kcal":25,"p":2.0,"f":0.3,"c":3.0,"nome":"Verdure miste","hint":"","glutine":"no","tag":"","max":300},"pomodori":{"kcal":18,"p":0.9,"f":0.2,"c":3.9,"nome":"Pomodori","hint":"","glutine":"no","tag":"","max":300},"broccoli":{"kcal":34,"p":2.8,"f":0.4,"c":7.0,"nome":"Broccoli","hint":"","glutine":"no","tag":"","max":300},"spinaci":{"kcal":23,"p":2.9,"f":0.4,"c":3.6,"nome":"Spinaci","hint":"","glutine":"no","tag":"","max":300},"carote":{"kcal":41,"p":0.9,"f":0.2,"c":10.0,"nome":"Carote","hint":"","glutine":"no","tag":"","max":300},"zucchine":{"kcal":17,"p":1.2,"f":0.3,"c":3.1,"nome":"Zucchine","hint":"","glutine":"no","tag":"","max":300},"insalata":{"kcal":15,"p":1.4,"f":0.2,"c":2.9,"nome":"Insalata","hint":"","glutine":"no","tag":"","max":300},"banana":{"kcal":89,"p":1.1,"f":0.3,"c":23.0,"nome":"Banana","hint":"","glutine":"no","tag":"","max":300},"mela":{"kcal":52,"p":0.3,"f":0.2,"c":14.0,"nome":"Mela","hint":"","glutine":"no","tag":"","max":300},"pera":{"kcal":57,"p":0.4,"f":0.1,"c":15.0,"nome":"Pera","hint":"","glutine":"no","tag":"","max":300},"arancia":{"kcal":47,"p":0.9,"f":0.1,"c":12.0,"nome":"Arancia","hint":"","glutine":"no","tag":"","max":300},"kiwi":{"kcal":61,"p":1.1,"f":0.5,"c":15.0,"nome":"Kiwi","hint":"","glutine":"no","tag":"","max":300},"fragole":{"kcal":32,"p":0.7,"f":0.3,"c":8.0,"nome":"Fragole","hint":"","glutine":"no","tag":"","max":300},"frutti_bosco":{"kcal":45,"p":1.0,"f":0.4,"c":10.0,"nome":"Frutti di bosco","hint":"","glutine":"no","tag":"","max":300},"uva":{"kcal":69,"p":0.7,"f":0.2,"c":18.0,"nome":"Uva","hint":"","glutine":"no","tag":"","max":300},"ananas":{"kcal":50,"p":0.5,"f":0.1,"c":13.0,"nome":"Ananas","hint":"","glutine":"no","tag":"","max":300},"avocado":{"kcal":160,"p":2.0,"f":15.0,"c":9.0,"nome":"Avocado","hint":"","glutine":"no","tag":"","max":300},"olio_evo":{"kcal":884,"p":0.0,"f":100.0,"c":0.0,"nome":"Olio EVO","hint":"1 cucchiaio ≈ 10 g","glutine":"no","tag":"","max":15},"mandorle":{"kcal":579,"p":21.0,"f":50.0,"c":22.0,"nome":"Mandorle","hint":"","glutine":"no","tag":"colazione","max":40},"noci":{"kcal":654,"p":15.0,"f":65.0,"c":14.0,"nome":"Noci","hint":"","glutine":"no","tag":"colazione","max":30},"burro_arachidi":{"kcal":588,"p":25.0,"f":50.0,"c":20.0,"nome":"Burro di arachidi","hint":"","glutine":"no","tag":"colazione","max":30},"miele":{"kcal":304,"p":0.3,"f":0.0,"c":82.0,"nome":"Miele","hint":"1 cucchiaino ≈ 7 g","glutine":"no","tag":"","max":300},"marmellata":{"kcal":250,"p":0.5,"f":0.0,"c":60.0,"nome":"Marmellata","hint":"","glutine":"no","tag":"","max":300},"cioccolato_fond":{"kcal":570,"p":8.0,"f":42.0,"c":34.0,"nome":"Cioccolato fondente","hint":"","glutine":"no","tag":"","max":300},"cacao_amaro":{"kcal":350,"p":20.0,"f":11.0,"c":11.0,"nome":"Cacao amaro","hint":"","glutine":"cert","tag":"colazione","max":15},"birra":{"kcal":43,"p":0.5,"f":0.0,"c":3.6,"nome":"Birra","hint":"1 media ≈ 400 g","glutine":"si","tag":"","max":300},"vino_rosso":{"kcal":85,"p":0.1,"f":0.0,"c":2.6,"nome":"Vino rosso","hint":"","glutine":"no","tag":"","max":300}},"meals":[{"id":"colazione","nome":"Colazione","opzioni":[{"label":"Porridge e skyr","items":[{"food":"avena","j":95,"foodE":"avena_gf","e":40},{"food":"skyr","j":245,"foodE":"skyr","e":165},{"food":"banana","j":50,"foodE":"banana","e":80},{"food":"mandorle","j":20,"foodE":"mandorle","e":10}]},{"label":"Porridge e frutti di bosco","items":[{"food":"avena","j":30,"foodE":"avena_gf","e":20},{"food":"latte_scremato","j":300,"foodE":"latte_scremato","e":300},{"food":"frutti_bosco","j":200,"foodE":"frutti_bosco","e":200},{"food":"burro_arachidi","j":5,"foodE":"burro_arachidi","e":5}]},{"label":"Fiocchi e yogurt","items":[{"food":"fiocchi_mais","j":20,"foodE":"fiocchi_mais_gf","e":20},{"food":"yogurt_greco","j":250,"foodE":"yogurt_greco","e":225},{"food":"banana","j":40,"foodE":"banana","e":60},{"food":"noci","j":30,"foodE":"noci","e":10}]},{"label":"Cereali e latte","items":[{"food":"cereali_misti","j":25,"foodE":"fiocchi_mais_gf","e":40},{"food":"latte_intero","j":300,"foodE":"latte_intero","e":205},{"food":"mela","j":200,"foodE":"mela","e":150}]},{"label":"Biscotti e latte","items":[{"food":"biscotti","j":60,"foodE":"biscotti_gf","e":40},{"food":"latte_scremato","j":260,"foodE":"latte_scremato","e":210},{"food":"skyr","j":250,"foodE":"skyr","e":150}]},{"label":"Uova e pane","items":[{"food":"uova","j":180,"foodE":"uova","e":170},{"food":"pane","j":115,"foodE":"pane_gf","e":30},{"food":"pomodori","j":100,"foodE":"pomodori","e":100},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":3}]}]},{"id":"spuntino_m","nome":"Spuntino di metà mattina","opzioni":[{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":195,"foodE":"yogurt_greco","e":115},{"food":"mela","j":180,"foodE":"mela","e":150}]},{"label":"Gallette e arachidi","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"burro_arachidi","j":30,"foodE":"burro_arachidi","e":30},{"food":"banana","j":40,"foodE":"banana","e":40}]},{"label":"Bresaola e gallette","items":[{"food":"bresaola","j":50,"foodE":"bresaola","e":30},{"food":"gallette_riso","j":20,"foodE":"gallette_riso","e":15}]},{"label":"Skyr e cacao","items":[{"food":"skyr","j":165,"foodE":"skyr","e":100},{"food":"cacao_amaro","j":5,"foodE":"cacao_amaro","e":5},{"food":"miele","j":20,"foodE":"miele","e":20}]},{"label":"Frutta secca","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"mela","j":60,"foodE":"mela","e":60}]},{"label":"Prosciutto e pane","items":[{"food":"prosciutto_cotto","j":75,"foodE":"prosciutto_cotto","e":45},{"food":"pane","j":40,"foodE":"pane_gf","e":35}]}]},{"id":"pranzo","nome":"Pranzo","opzioni":[{"label":"Pasta e pollo","items":[{"food":"pasta","j":80,"foodE":"pasta_gf","e":70},{"food":"pollo","j":165,"foodE":"pollo","e":100},{"food":"verdure","j":300,"foodE":"verdure","e":225},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":9}]},{"label":"Riso e tonno","items":[{"food":"riso","j":105,"foodE":"riso","e":75},{"food":"tonno","j":180,"foodE":"tonno","e":105},{"food":"pomodori","j":150,"foodE":"pomodori","e":175},{"food":"olio_evo","j":11,"foodE":"olio_evo","e":9}]},{"label":"Lenticchie e riso","items":[{"food":"lenticchie_secche","j":120,"foodE":"lenticchie_secche","e":120},{"food":"riso","j":20,"foodE":"riso","e":15},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Insalatona","items":[{"food":"pane","j":70,"foodE":"pane_gf","e":65},{"food":"pollo","j":155,"foodE":"pollo","e":95},{"food":"insalata","j":200,"foodE":"insalata","e":200},{"food":"pomodori","j":300,"foodE":"pomodori","e":200},{"food":"grana","j":15,"foodE":"grana","e":10},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Quinoa e salmone","items":[{"food":"quinoa","j":110,"foodE":"quinoa","e":55},{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"spinaci","j":60,"foodE":"spinaci","e":105},{"food":"olio_evo","j":3,"foodE":"olio_evo","e":4}]},{"label":"Patate e uova","items":[{"food":"patate","j":130,"foodE":"patate","e":140},{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"broccoli","j":65,"foodE":"broccoli","e":105},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]}]},{"id":"spuntino_p","nome":"Spuntino del pomeriggio","opzioni":[{"label":"Skyr e frutto","items":[{"food":"skyr","j":170,"foodE":"skyr","e":100},{"food":"pera","j":200,"foodE":"pera","e":180}]},{"label":"Fiocchi di latte","items":[{"food":"fiocchi_latte","j":135,"foodE":"fiocchi_latte","e":75},{"food":"kiwi","j":170,"foodE":"kiwi","e":145}]},{"label":"Ricotta e miele","items":[{"food":"ricotta","j":150,"foodE":"ricotta","e":120},{"food":"miele","j":5,"foodE":"miele","e":5}]},{"label":"Frutta secca e cioccolato","items":[{"food":"mandorle","j":40,"foodE":"mandorle","e":40},{"food":"cioccolato_fond","j":30,"foodE":"cioccolato_fond","e":25}]},{"label":"Gallette e formaggio","items":[{"food":"gallette_riso","j":40,"foodE":"gallette_riso","e":40},{"food":"scamorza","j":80,"foodE":"scamorza","e":70},{"food":"pomodori","j":100,"foodE":"pomodori","e":100}]},{"label":"Yogurt e frutta","items":[{"food":"yogurt_greco","j":175,"foodE":"yogurt_greco","e":100},{"food":"fragole","j":250,"foodE":"fragole","e":250}]}]},{"id":"cena","nome":"Cena","opzioni":[{"label":"Pesce bianco e patate","items":[{"food":"merluzzo","j":205,"foodE":"merluzzo","e":110},{"food":"patate","j":350,"foodE":"patate","e":255},{"food":"verdure","j":300,"foodE":"verdure","e":275},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":11}]},{"label":"Salmone e verdure","items":[{"food":"salmone","j":200,"foodE":"salmone","e":110},{"food":"patate","j":160,"foodE":"patate","e":150},{"food":"broccoli","j":160,"foodE":"broccoli","e":205},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":5}]},{"label":"Carne e patate","items":[{"food":"manzo_magro","j":185,"foodE":"manzo_magro","e":100},{"food":"patate","j":300,"foodE":"patate","e":215},{"food":"verdure","j":275,"foodE":"verdure","e":275},{"food":"olio_evo","j":14,"foodE":"olio_evo","e":11}]},{"label":"Uova e verdure","items":[{"food":"uova","j":180,"foodE":"uova","e":180},{"food":"pane","j":120,"foodE":"pane_gf","e":30},{"food":"zucchine","j":100,"foodE":"zucchine","e":145},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":6}]},{"label":"Legumi e verdure","items":[{"food":"ceci_secchi","j":120,"foodE":"ceci_secchi","e":120},{"food":"verdure","j":100,"foodE":"verdure","e":100},{"food":"grana","j":30,"foodE":"grana","e":30},{"food":"olio_evo","j":4,"foodE":"olio_evo","e":3}]},{"label":"Pollo e polenta","items":[{"food":"pollo","j":125,"foodE":"pollo","e":55},{"food":"polenta","j":45,"foodE":"polenta","e":20},{"food":"spinaci","j":300,"foodE":"spinaci","e":300},{"food":"olio_evo","j":15,"foodE":"olio_evo","e":15}]}]}],"target":{"j":{"kcal":2350,"p":180,"f":70,"c":250},"e":{"kcal":1625,"p":108,"f":55,"c":175}},"gfSwap":{"avena":"avena_gf","pane":"pane_gf","pane_integrale":"pane_gf","fette_biscottate":"fette_gf","pasta":"pasta_gf","biscotti":"biscotti_gf","fiocchi_mais":"fiocchi_mais_gf","fiocchi_riso":"fiocchi_riso_gf","cereali_misti":"fiocchi_mais_gf","couscous":"quinoa","crackers":"gallette_riso","piadina":"gallette_riso","gnocchi":"patate","seitan":"tofu","birra":"vino_rosso"},"cat":{"Cereali e pane":["avena","avena_gf","pane","pane_integrale","pane_gf","fette_biscottate","fette_gf","pasta","pasta_gf","couscous","gnocchi","piadina","crackers","gallette_riso","biscotti","biscotti_gf","cereali_misti","fiocchi_mais","fiocchi_mais_gf","fiocchi_riso","fiocchi_riso_gf","riso","quinoa","grano_saraceno","polenta","patate","patate_dolci"],"Carne e pesce":["pollo","tacchino","manzo_magro","hamburger_manzo","vitello","coniglio","lonza_maiale","prosciutto_cotto","prosciutto_crudo","bresaola","speck","tonno","salmone","merluzzo","orata","sgombro","sardine","gamberi","calamari"],"Uova e latticini":["uova","albume","skyr","yogurt_greco","yogurt_bianco","fiocchi_latte","ricotta","mozzarella","grana","pecorino","feta","scamorza","stracchino","formaggio_spalm","latte_scremato","latte_intero","bevanda_soia","whey"],"Legumi e vegetali":["lenticchie_secche","ceci_secchi","fagioli_secchi","legumi_scatola","piselli","edamame","hummus","tofu","tempeh","seitan"],"Verdura":["verdure","pomodori","broccoli","spinaci","carote","zucchine","insalata"],"Frutta":["banana","mela","pera","arancia","kiwi","fragole","frutti_bosco","uva","ananas","avocado"],"Grassi e frutta secca":["olio_evo","mandorle","noci","burro_arachidi"],"Dolci e extra":["miele","marmellata","cioccolato_fond","cacao_amaro","birra","vino_rosso"]},"share":{"colazione":0.22,"spuntino_m":0.1,"pranzo":0.3,"spuntino_p":0.1,"cena":0.28},"bounds":{"olio_evo":[3,20],"mandorle":[10,40],"noci":[10,30],"burro_arachidi":[10,30],"grana":[5,40],"pecorino":[5,40],"miele":[5,25],"marmellata":[10,40],"cacao_amaro":[3,15],"cioccolato_fond":[10,40],"whey":[15,50],"uova":[50,200],"albume":[30,250],"bresaola":[30,100],"prosciutto_cotto":[30,130],"prosciutto_crudo":[30,110],"speck":[25,90],"insalata":[50,250],"verdure":[100,350],"pomodori":[50,350],"spinaci":[100,350],"broccoli":[100,350],"zucchine":[100,350],"carote":[50,300],"patate":[80,400],"patate_dolci":[80,400],"riso":[30,160],"pasta":[30,140],"pasta_gf":[30,140],"avena":[25,120],"avena_gf":[25,120],"quinoa":[30,140],"grano_saraceno":[30,140],"polenta":[30,130],"couscous":[30,140],"pane":[25,150],"pane_integrale":[25,150],"pane_gf":[25,150],"fette_biscottate":[15,70],"fette_gf":[15,70],"gallette_riso":[10,50],"crackers":[15,70],"biscotti":[20,100],"biscotti_gf":[20,100],"cereali_misti":[25,90],"fiocchi_mais":[20,80],"fiocchi_riso":[20,80],"fiocchi_mais_gf":[20,80],"fiocchi_riso_gf":[20,80],"latte_scremato":[150,350],"latte_intero":[150,350],"bevanda_soia":[150,350],"skyr":[100,300],"yogurt_greco":[100,300],"yogurt_bianco":[100,300],"fiocchi_latte":[80,250],"ricotta":[50,200],"mozzarella":[50,150],"scamorza":[30,100],"feta":[30,100],"stracchino":[30,120],"formaggio_spalm":[20,80],"lenticchie_secche":[40,130],"ceci_secchi":[40,130],"fagioli_secchi":[40,130],"legumi_scatola":[80,300],"hummus":[30,120],"banana":[80,250],"mela":[80,300],"pera":[80,300],"arancia":[100,350],"kiwi":[60,250],"fragole":[80,300],"frutti_bosco":[60,250],"uva":[80,250],"ananas":[80,300],"avocado":[50,150],"birra":[200,500],"vino_rosso":[100,250]},"defBounds":[25,300],"defaultG":{"latte_scremato":250,"latte_intero":250,"bevanda_soia":250,"verdure":200,"insalata":100,"pomodori":150,"spinaci":200,"broccoli":200,"zucchine":200,"carote":150,"olio_evo":10,"grana":15,"pecorino":15,"miele":10,"marmellata":20,"cacao_amaro":8,"cioccolato_fond":20,"mela":150,"pera":150,"arancia":200,"kiwi":120,"fragole":150,"frutti_bosco":150,"uva":150,"ananas":200,"banana":120,"avocado":80,"skyr":170,"yogurt_greco":170,"yogurt_bianco":170,"uova":110,"whey":30,"gallette_riso":25,"birra":330,"vino_rosso":150},"step1":["olio_evo"],"step25":["verdure","pomodori","spinaci","broccoli","zucchine","carote","insalata","latte_scremato","latte_intero","bevanda_soia","mela","pera","arancia","kiwi","fragole","frutti_bosco","uva","ananas","birra"]};
   var FOODS = D.foods, MEALS = D.meals, TARGET = D.target;
   var GF_SWAP = D.gfSwap, CAT = D.cat, SHARE = D.share;
+  var BOUNDS = D.bounds, DEF_BOUNDS = D.defBounds, DEFAULT_G = D.defaultG;
+  var STEP_1 = D.step1, STEP_25 = D.step25;
   var NAMES = { j: "Jacopo", e: "Elisa" };
   var DEFAULT_URL = "https://fit-login.vercel.app/api/log";
 
@@ -447,14 +489,14 @@
   function dayKey() { return "fit.dieta.v3." + person; }
   function defaults() {
     var o = {};
-    MEALS.forEach(function (m) { o[m.id] = { opt: null, items: [] }; });
+    MEALS.forEach(function (m) { o[m.id] = { opt: null, items: [], balanced: false }; });
     return o;
   }
   function loadDay() {
     var raw = jparse(lget(dayKey()), null);
     if (!raw || raw.d !== today()) return defaults();
     var v = raw.v || defaults();
-    MEALS.forEach(function (m) { if (!v[m.id]) v[m.id] = { opt: null, items: [] }; });
+    MEALS.forEach(function (m) { if (!v[m.id]) v[m.id] = { opt: null, items: [], balanced: false }; });
     return v;
   }
   function saveDay() { lset(dayKey(), JSON.stringify({ d: today(), v: day })); }
@@ -497,6 +539,152 @@
       t.kcal += x.kcal; t.p += x.p; t.f += x.f; t.c += x.c;
     });
     return t;
+  }
+
+  /* ---- bilanciatore di porzioni --------------------------------------
+     Dati gli alimenti scelti e i target del pasto, trova i grammi.
+     Gli alimenti si raggruppano per macro dominante; verdura, frutta e
+     latte finiscono in un gruppo "fisso" che non fa da leva. Si cerca un
+     fattore di scala per gruppo: con 3 gruppi e 3 macro (proteine,
+     carboidrati, grassi) il sistema e' 3x3 e si risolve esattamente, e le
+     calorie vengono da se'. Con 2 gruppi si centrano proteine e calorie.
+     Cio' che non si chiude viene dichiarato, non nascosto.
+  --------------------------------------------------------------------- */
+
+  function bnd(k) { return BOUNDS[k] || DEF_BOUNDS; }
+  function defG(k) {
+    var b = bnd(k);
+    return Math.min(b[1], Math.max(b[0], DEFAULT_G[k] || 100));
+  }
+  function stepOf(k) {
+    if (STEP_1.indexOf(k) >= 0) return 1;
+    if (STEP_25.indexOf(k) >= 0) return 25;
+    return 5;
+  }
+
+  function groupOf(k) {
+    var f = FOODS[k];
+    if (f.kcal < 60) return "fisso";           // verdura, latte, frutta acquosa
+    var kp = f.p * 4, kc = f.c * 4, kf = f.f * 9;
+    var tot = kp + kc + kf;
+    if (tot <= 0) return "fisso";
+    if (kp / tot >= 0.40) return "prot";
+    if (kf / tot >= 0.45) return "gras";
+    return "carb";
+  }
+
+  /** Gauss con pivot parziale. Ritorna null se singolare. */
+  function solveLin(mat, rhs) {
+    var n = rhs.length, i, r, c, m = [];
+    for (i = 0; i < n; i++) m.push(mat[i].slice().concat([rhs[i]]));
+    for (c = 0; c < n; c++) {
+      var piv = c;
+      for (r = c + 1; r < n; r++) if (Math.abs(m[r][c]) > Math.abs(m[piv][c])) piv = r;
+      if (Math.abs(m[piv][c]) < 1e-9) return null;
+      var t = m[c]; m[c] = m[piv]; m[piv] = t;
+      for (r = 0; r < n; r++) {
+        if (r === c) continue;
+        var fct = m[r][c] / m[c][c];
+        for (var cc = c; cc <= n; cc++) m[r][cc] -= fct * m[c][cc];
+      }
+    }
+    var out = [];
+    for (i = 0; i < n; i++) out.push(m[i][n] / m[i][i]);
+    return out;
+  }
+
+  function sumMacros(pairs) {
+    var t = { kcal: 0, p: 0, f: 0, c: 0 };
+    pairs.forEach(function (pr) {
+      var f = FOODS[pr[0]], g = pr[1];
+      t.kcal += f.kcal * g / 100; t.p += f.p * g / 100;
+      t.f += f.f * g / 100; t.c += f.c * g / 100;
+    });
+    return t;
+  }
+
+  /** items: [{food,g}] del pasto. Modifica i grammi e ritorna il resoconto. */
+  function balanceMeal(mealId) {
+    var st = day[mealId];
+    if (!st || !st.items.length) return null;
+    var tg = TARGET[person], sh = SHARE[mealId] || 0.2;
+    var want = { kcal: tg.kcal * sh, p: tg.p * sh, c: tg.c * sh, f: tg.f * sh };
+
+    var g = {}, groups = {};
+    st.items.forEach(function (it, i) {
+      g[i] = defG(it.food);
+      var gr = groupOf(it.food);
+      (groups[gr] = groups[gr] || []).push(i);
+    });
+
+    var fixedIdx = groups["fisso"] || [];
+    var movable = ["prot", "carb", "gras"].filter(function (gr) { return groups[gr]; });
+
+    for (var pass = 0; pass < 5 && movable.length; pass++) {
+      var fx = sumMacros(fixedIdx.map(function (i) { return [st.items[i].food, g[i]]; }));
+      var contrib = {};
+      movable.forEach(function (gr) {
+        contrib[gr] = sumMacros(groups[gr].map(function (i) { return [st.items[i].food, g[i]]; }));
+      });
+
+      var rows, rhs;
+      if (movable.length >= 3) {
+        rows = [movable.map(function (gr) { return contrib[gr].p; }),
+                movable.map(function (gr) { return contrib[gr].c; }),
+                movable.map(function (gr) { return contrib[gr].f; })];
+        rhs = [want.p - fx.p, want.c - fx.c, want.f - fx.f];
+      } else if (movable.length === 2) {
+        rows = [movable.map(function (gr) { return contrib[gr].p; }),
+                movable.map(function (gr) { return contrib[gr].kcal; })];
+        rhs = [want.p - fx.p, want.kcal - fx.kcal];
+      } else {
+        var only = movable[0], key = (only === "prot") ? "p" : "kcal";
+        rows = [[contrib[only][key]]];
+        rhs = [want[key] - fx[key]];
+      }
+
+      var sol = solveLin(rows, rhs);
+      if (!sol) {                                  // gruppi collineari
+        var tot = 0;
+        movable.forEach(function (gr) { tot += contrib[gr].kcal; });
+        var fct0 = tot > 0 ? (want.kcal - fx.kcal) / tot : 1;
+        sol = movable.map(function () { return fct0; });
+      }
+
+      var clamped = false;
+      movable.forEach(function (gr, gi) {
+        var fct = Math.max(0.25, Math.min(4, sol[gi]));
+        groups[gr].forEach(function (i) {
+          var b = bnd(st.items[i].food);
+          var nv = g[i] * fct;
+          var cl = Math.max(b[0], Math.min(b[1], nv));
+          if (Math.abs(cl - nv) > 0.5) clamped = true;
+          g[i] = cl;
+        });
+      });
+      if (!clamped) break;
+    }
+
+    // arrotondamento e scrittura
+    st.items.forEach(function (it, i) {
+      var b = bnd(it.food), sp = stepOf(it.food);
+      var v = Math.round(g[i] / sp) * sp;
+      it.g = Math.max(b[0], Math.min(b[1], v));
+    });
+    st.opt = null;
+    st.balanced = true;
+
+    var got = sumMacros(st.items.map(function (it) { return [it.food, it.g]; }));
+    var note = [];
+    if (!groups["prot"]) note.push("manca una fonte proteica");
+    if (!groups["gras"] && got.f - want.f < -8) note.push("manca una fonte di grassi");
+    if (!groups["carb"] && got.c - want.c < -20) note.push("manca una fonte di carboidrati");
+
+    return {
+      got: got, want: want, note: note,
+      resid: { kcal: got.kcal - want.kcal, p: got.p - want.p,
+               c: got.c - want.c, f: got.f - want.f }
+    };
   }
 
   /* ---- suggeritore: cosa chiude le proteine di QUESTO pasto ---- */
@@ -592,6 +780,7 @@
     var m = MEALS.filter(function (x) { return x.id === mealId; })[0];
     day[mealId] = {
       opt: oi,
+      balanced: false,     // le porzioni dell'opzione sono gia' tarate a monte
       items: m.opzioni[oi].items.map(function (it) {
         return { food: (person === "e" && it.foodE) ? it.foodE : it.food, g: it[person] };
       })
@@ -654,6 +843,7 @@
             var v = parseInt(inp.value.replace(/[^0-9]/g, ""), 10);
             it.g = isNaN(v) ? 0 : v;
             day[m.id].opt = null;
+            day[m.id].balanced = false;   // da qui le porzioni sono tue
             saveDay(); render();
           });
           row.appendChild(inp);
@@ -694,12 +884,51 @@
       var ab = document.createElement("button");
       ab.type = "button"; ab.textContent = "Aggiungi";
       ab.addEventListener("click", function () {
-        day[m.id].items.push({ food: sel.value, g: 100 });
+        day[m.id].items.push({ food: sel.value, g: defG(sel.value) });
         day[m.id].opt = null;
+        balanceMeal(m.id);          // ricalcola subito tutte le porzioni
         saveDay(); render();
       });
       add.appendChild(sel); add.appendChild(ab);
       sec.appendChild(add);
+
+      // bilanciatore
+      if (st.items.length) {
+        var act = document.createElement("div");
+        act.className = "mact";
+
+        var bal = document.createElement("button");
+        bal.type = "button";
+        bal.textContent = "Calcola le porzioni";
+        bal.addEventListener("click", function () {
+          balanceMeal(m.id); saveDay(); render();
+        });
+        act.appendChild(bal);
+
+        var clr = document.createElement("button");
+        clr.type = "button"; clr.className = "ghost";
+        clr.textContent = "Svuota";
+        clr.setAttribute("aria-label", "Svuota " + m.nome);
+        clr.addEventListener("click", function () {
+          day[m.id] = { opt: null, items: [] };
+          saveDay(); render();
+        });
+        act.appendChild(clr);
+        sec.appendChild(act);
+
+        // resoconto, solo dopo un bilanciamento
+        if (st.balanced) {
+          var rep = reportFor(m.id);
+          var bx = document.createElement("div");
+          bx.className = "balance" + (rep.ok ? "" : " warn");
+          bx.innerHTML =
+            '<span class="lab">' + (rep.ok ? "Porzioni calcolate" : "Calcolate, ma non si chiude") +
+              "</span><br>" + rep.testo +
+            '<div class="grid">' + rep.celle + "</div>" +
+            (rep.fix ? '<div class="fix">' + rep.fix + "</div>" : "");
+          sec.appendChild(bx);
+        }
+      }
 
       // cosa manca
       var gap = document.createElement("div");
@@ -729,6 +958,7 @@
             b2.addEventListener("click", function () {
               day[m.id].items.push({ food: sg.k, g: sg.g });
               day[m.id].opt = null;
+              balanceMeal(m.id);
               saveDay(); render();
             });
             chips.appendChild(b2);
@@ -740,6 +970,55 @@
 
       host.appendChild(sec);
     });
+  }
+
+  /** Resoconto del bilanciamento: quanto si e' centrato e cosa manca. */
+  function reportFor(mealId) {
+    var st = day[mealId];
+    var tg = TARGET[person], sh = SHARE[mealId] || 0.2;
+    var want = { kcal: tg.kcal * sh, p: tg.p * sh, c: tg.c * sh, f: tg.f * sh };
+    var got = sumMacros(st.items.map(function (it) { return [it.food, it.g]; }));
+
+    var groups = {};
+    st.items.forEach(function (it) { groups[groupOf(it.food)] = true; });
+
+    var TOL = { kcal: 0.08, p: 0.08, c: 0.25, f: 0.30 };
+    var LAB = { kcal: "kcal", p: "prot", c: "carb", f: "gras" };
+    var celle = "", ok = true;
+    ["kcal", "p", "c", "f"].forEach(function (k) {
+      var d = got[k] - want[k];
+      var good = Math.abs(d) <= want[k] * TOL[k];
+      if ((k === "kcal" || k === "p") && !good) ok = false;
+      celle += '<div class="' + (good ? "on" : "off") + '"><span>' + LAB[k] +
+        "</span><b>" + Math.round(got[k]) + "</b>" +
+        (Math.abs(d) < 1 ? "" : (d > 0 ? "+" : "") + Math.round(d)) + "</div>";
+    });
+
+    var mancanze = [];
+    if (!groups["prot"]) mancanze.push("una fonte proteica");
+    if (!groups["gras"] && got.f - want.f < -8) mancanze.push("una fonte di grassi");
+    if (!groups["carb"] && got.c - want.c < -20) mancanze.push("una fonte di carboidrati");
+
+    var testo, fix = "";
+    if (ok && !mancanze.length) {
+      testo = "Calorie e proteine centrate. I numeri sotto sono grammi e scostamento dal target del pasto.";
+    } else if (mancanze.length) {
+      testo = "Al pasto <strong>manca " + mancanze.join(" e ") + "</strong>: con questi alimenti non si arriva al target.";
+      if (mancanze.indexOf("una fonte di grassi") >= 0) {
+        fix = "Un cucchiaio di olio EVO (10 g) aggiunge 10 g di grassi e 88 kcal.";
+      }
+      if (mancanze.indexOf("una fonte proteica") >= 0) {
+        fix = "Guarda i suggerimenti qui sotto: chiudono il buco proteico.";
+      }
+    } else {
+      var d1 = Math.round(got.kcal - want.kcal), d2 = Math.round(got.p - want.p);
+      testo = "Le porzioni hanno toccato i limiti: " +
+        (Math.abs(d2) > 3 ? "restano " + Math.abs(d2) + " g di proteine " + (d2 < 0 ? "sotto" : "sopra") + " il target" : "") +
+        (Math.abs(d2) > 3 && Math.abs(d1) > 40 ? " e " : "") +
+        (Math.abs(d1) > 40 ? Math.abs(d1) + " kcal " + (d1 < 0 ? "in meno" : "in piu'") : "") + ".";
+      fix = "Aggiungi o togli un alimento e ricalcola.";
+    }
+    return { ok: ok && !mancanze.length, testo: testo, celle: celle, fix: fix };
   }
 
   function render() { renderMeals(); renderTotals(); }

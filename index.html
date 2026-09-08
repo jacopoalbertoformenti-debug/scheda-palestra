@@ -445,7 +445,7 @@
   <header>
     <p class="eyebrow">Blocco 1 <span>12 settimane</span> <span>dal 02.09.2026</span></p>
     <h1>Scheda Jacopo &amp; Elisa</h1>
-    <p class="lede">Tre sedute a settimana in rotazione A → B → C, costruite sui macchinari. Stesso numero di serie per entrambi, così si alterna e nessuno aspetta.</p>
+    <p class="lede">Tre sedute a settimana in rotazione A → B → C. Squat e panca con bilanciere, il resto sui macchinari. Stesso numero di serie per entrambi, così si alterna e nessuno aspetta.</p>
 
     <div class="phases" id="phases"></div>
     <div class="now" id="now"></div>
@@ -579,10 +579,10 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       </details>
 
       <details>
-        <summary>Perché tutto a macchine</summary>
+        <summary>Perché quasi tutto a macchine</summary>
         <div class="body">
-          <p><strong>Fuori dal blocco: stacco da terra, squat con bilanciere, stacco rumeno con bilanciere.</strong> Sono i tre movimenti in cui una tecnica imperfetta sotto carico si paga sulla schiena, e nessuno dei due ha bisogno di correre quel rischio adesso.</p>
-          <p>Unica eccezione: la <strong>panca piana per Jacopo</strong>. Quindici anni di pratica e un massimale storico di 130 kg la rendono un movimento noto, non un rischio tecnico, ed è l'esercizio a cui è agganciato l'obiettivo di forza del blocco.</p>
+          <p><strong>Fuori dal blocco: stacco da terra e stacco rumeno con bilanciere.</strong> Sono i movimenti in cui una tecnica imperfetta sotto carico si paga sulla schiena.</p>
+          <p>Con i bilancieri restano <strong>panca piana</strong> e, dalla settimana 2, <strong>squat</strong>. Sullo squat le condizioni sono tre e non si negoziano: fermi di sicurezza sempre, serie di avvicinamento sempre, e il tecnico di sala che guarda le prime due sedute. Se la schiena si arrotonda in risalita il carico &egrave; troppo alto: si scende.</p>
           <p><strong>Cosa si guadagna:</strong> il carico si spinge in sicurezza senza che la tecnica sia il fattore limitante, e il rischio di infortunio nelle prime 12 settimane crolla.</p>
           <p><strong>Cosa si perde, detto onestamente:</strong> le macchine guidano il movimento, quindi non allenano stabilizzazione e coordinazione. È un prezzo accettabile per un primo blocco, non per sempre: <strong>dal Blocco 2 rientrano i pesi liberi</strong>, con una base di forza che adesso non c'è.</p>
         </div>
@@ -609,6 +609,21 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
             <dt>Pec deck</dt><dd>croci ai cavi</dd>
             <dt>Shoulder press</dt><dd>military press con manubri, seduta con schienale</dd>
           </dl>
+        </div>
+      </details>
+
+      <details>
+        <summary>Aerobica: a fine seduta o in giorni separati?</summary>
+        <div class="body">
+          <p><strong>In giorni separati &egrave; meglio</strong> &mdash; nel piano c&rsquo;&egrave; la sessione del sabato. Il motivo si chiama effetto di interferenza: cardio e pesi vicini nel tempo riducono l&rsquo;adattamento ai pesi, e colpisce soprattutto gambe e glutei.</p>
+          <p><strong>Ma 10-15 minuti a fine seduta, a ritmo conversazionale, vanno benissimo.</strong> A quella durata non &egrave; cardio, &egrave; defaticamento: l&rsquo;interferenza &egrave; trascurabile. Se l&rsquo;alternativa &egrave; non farli mai, fateli l&igrave;.</p>
+          <p>Tre regole:</p>
+          <ol>
+            <li><strong>Mai prima dei pesi.</strong> Arrivi allo squat con le gambe stanche e alleni la fatica invece della forza. I 5 minuti di riscaldamento sono un&rsquo;altra cosa e restano.</li>
+            <li><strong>Non a fine seduta B</strong>, la pi&ugrave; esigente sul recupero. Mettilo dopo A o C.</li>
+            <li><strong>Ritmo conversazionale.</strong> Se non riesci a parlare, stai sottraendo recupero alla seduta successiva.</li>
+          </ol>
+          <p><strong>Pi&ugrave; importante di entrambe: i passi.</strong> 3.000 passi in pi&ugrave; valgono 120-150 kcal, pi&ugrave; di quindici minuti di cyclette, e non costano nulla al recupero. In ordine di resa: passi, poi la sessione del sabato, poi i minuti a fine seduta.</p>
         </div>
       </details>
 
@@ -670,17 +685,21 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   ];
 
   var SESSIONS = {
-    A: { title: "Spinta + quadricipiti", sub: "macchine + panca", ex: [
-      { id: "a1", slot: "A1", name: "Leg press",
-        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150,
-        note: "Corsa completa. Mezza corsa con tanto peso vale meno di una corsa piena con poco." },
+    A: { title: "Spinta + quadricipiti", sub: "squat, panca, macchine", ex: [
+      { id: "a0", slot: "A1", name: "Squat", alt: { j: "bilanciere", e: "goblet, con manubrio" },
+        sets: { j: 3, e: 3 }, reps: { j: "6-8", e: "10-12" }, rest: 150,
+        note: { j: "Rientrato in scheda. Fermi di sicurezza sempre, serie di avvicinamento sempre, e per le prime due sedute fatti guardare dal tecnico di sala: 15 anni in casa non hanno costruito questo pattern.",
+                e: "Manubrio al petto, schiena neutra, scendi fin dove riesci senza arrotondare. Il carico conta zero, il movimento tutto." } },
       { id: "a2", slot: "A2", name: { j: "Panca piana", e: "Chest press" }, alt: { j: "bilanciere", e: "macchina" },
         sets: { j: 3, e: 3 }, reps: { j: "6-8", e: "12-15" }, rest: 150,
-        note: { j: "L'unico esercizio con bilanciere del blocco. Serie di avvicinamento obbligatorie.", e: "Maniglie all'altezza del petto, non delle spalle." } },
+        note: { j: "Serie di avvicinamento obbligatorie.", e: "Maniglie all'altezza del petto, non delle spalle." } },
       { id: "a3", slot: "A3", name: "Pulley basso", alt: "o rematore con appoggio al petto",
         sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
-      { id: "a4", slot: "A4", name: "Leg extension", sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 90 },
-      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri", sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
+      { id: "a1", slot: "A4", name: "Leg press",
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120,
+        note: "Corsa completa. Dopo lo squat serve meno carico: non inseguire il numero della volta scorsa." },
+      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri",
+        sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
       { id: "a6", slot: "A6", name: "Plank", sets: { j: 3, e: 3 }, reps: { j: "40-60\u2033", e: "20-30\u2033" }, rest: 60, timed: true }
     ]},
     B: { title: "Tirata + catena posteriore", sub: "macchine", ex: [

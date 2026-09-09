@@ -443,9 +443,9 @@
 <nav class="xnav"><a href="index.html" aria-current="page">Allenamento</a><a href="dieta.html">Dieta</a></nav>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Blocco 1 <span>12 settimane</span> <span>dal 02.09.2026</span></p>
+    <p class="eyebrow">Blocco 1 <span>24 sedute</span> <span>2 a settimana</span></p>
     <h1>Scheda Jacopo &amp; Elisa</h1>
-    <p class="lede">Tre sedute a settimana in rotazione A → B → C. Squat e panca con bilanciere, il resto sui macchinari. Stesso numero di serie per entrambi, così si alterna e nessuno aspetta.</p>
+    <p class="lede">Due sedute full body che si alternano, A e B. Schede identiche: cambiano solo i carichi, che la pagina tiene separati. Si alterna sulla stessa macchina, nessuno aspetta.</p>
 
     <div class="phases" id="phases"></div>
     <div class="now" id="now"></div>
@@ -461,9 +461,8 @@
 
   <div class="tabbar">
     <div class="tabs" role="group" aria-label="Scegli seduta">
-      <button type="button" data-session="A" aria-pressed="true"><span class="t-let">A</span><span class="t-sub">Spinta</span></button>
-      <button type="button" data-session="B" aria-pressed="false"><span class="t-let">B</span><span class="t-sub">Tirata</span></button>
-      <button type="button" data-session="C" aria-pressed="false"><span class="t-let">C</span><span class="t-sub">Mista</span></button>
+      <button type="button" data-session="A" aria-pressed="true"><span class="t-let">A</span><span class="t-sub">Squat</span></button>
+      <button type="button" data-session="B" aria-pressed="false"><span class="t-let">B</span><span class="t-sub">Leg press</span></button>
       <span class="badge" id="badge">Jacopo</span>
     </div>
   </div>
@@ -471,8 +470,8 @@
   <main>
     <div class="shead">
       <div>
-        <h2 id="s-title">Spinta + quadricipiti</h2>
-        <p id="s-sub">macchine + panca</p>
+        <h2 id="s-title">Full body A</h2>
+        <p id="s-sub">squat · panca piana</p>
       </div>
       <span class="sync" id="sync">solo su questo telefono</span>
     </div>
@@ -671,60 +670,79 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
 
   var START = new Date(2026, 8, 2); // 02/09/2026
 
+  // Le fasi si contano in SEDUTE, non in settimane: con una frequenza
+  // irregolare il calendario non dice niente sullo stato di adattamento.
   var PHASES = [
-    { n: "1", w: "1-4",   name: "Adattamento",     lo: 1,  hi: 4,
-      note: "Carichi volutamente bassi, RPE 6-7, mai a cedimento. Si impara il movimento e si costruisce il tendine, non si inseguono i chili." },
-    { n: "2", w: "5-8",   name: "Progressione",    lo: 5,  hi: 8,
-      note: "Si applica la doppia progressione, RPE 7-8. È qui che salgono i carichi." },
-    { n: "3", w: "9",     name: "Scarico",         lo: 9,  hi: 9,
-      note: "Stessi esercizi, metà delle serie, carico −30%. Non è una settimana persa: è quando il corpo incassa il lavoro delle 8 precedenti." },
-    { n: "4", w: "10-12", name: "Intensificazione",lo: 10, hi: 12,
-      note: "RPE 8, serie principali nel range basso di ripetizioni." },
-    { n: "5", w: "13",    name: "Retest",          lo: 13, hi: 13,
-      note: "Batteria di test completa, poi si scrive il Blocco 2." }
+    { n: "1", w: "1-8",   name: "Adattamento",     lo: 1,  hi: 8,
+      note: "Carichi bassi, movimento completo, discesa lenta. Si impara lo squat al multipower e la regolazione delle macchine, non si inseguono i chili." },
+    { n: "2", w: "9-16",  name: "Progressione",    lo: 9,  hi: 16,
+      note: "Doppia progressione: si sale di carico quando si arriva in cima al range su tutte le serie." },
+    { n: "3", w: "17",    name: "Scarico",         lo: 17, hi: 17,
+      note: "Stessi esercizi, met\u00e0 delle serie, carico \u221230%. \u00c8 quando il corpo incassa il lavoro precedente." },
+    { n: "4", w: "18-24", name: "Intensificazione",lo: 18, hi: 24,
+      note: "Range basso di ripetizioni sui primi tre esercizi, ultima serie vicina al limite." },
+    { n: "5", w: "25",    name: "Retest",          lo: 25, hi: 999,
+      note: "Batteria di test completa, poi si riscrive il blocco sui dati veri." }
   ];
 
   var SESSIONS = {
-    A: { title: "Spinta + quadricipiti", sub: "squat, panca, macchine", ex: [
-      { id: "a0", slot: "A1", name: "Squat", alt: { j: "bilanciere", e: "goblet, con manubrio" },
-        sets: { j: 3, e: 3 }, reps: { j: "6-8", e: "10-12" }, rest: 150,
-        note: { j: "Rientrato in scheda. Fermi di sicurezza sempre, serie di avvicinamento sempre, e per le prime due sedute fatti guardare dal tecnico di sala: 15 anni in casa non hanno costruito questo pattern.",
-                e: "Manubrio al petto, schiena neutra, scendi fin dove riesci senza arrotondare. Il carico conta zero, il movimento tutto." } },
-      { id: "a2", slot: "A2", name: { j: "Panca piana", e: "Chest press" }, alt: { j: "bilanciere", e: "macchina" },
-        sets: { j: 3, e: 3 }, reps: { j: "6-8", e: "12-15" }, rest: 150,
-        note: { j: "Serie di avvicinamento obbligatorie.", e: "Maniglie all'altezza del petto, non delle spalle." } },
-      { id: "a3", slot: "A3", name: "Pulley basso", alt: "o rematore con appoggio al petto",
-        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
-      { id: "a1", slot: "A4", name: "Leg press",
-        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120,
-        note: "Corsa completa. Dopo lo squat serve meno carico: non inseguire il numero della volta scorsa." },
-      { id: "a5", slot: "A5", name: "Alzate laterali", alt: "manubri",
+    A: { title: "Full body A", sub: "squat \u00b7 panca piana", ex: [
+      { id: "ris", slot: "RIS", name: "Riscaldamento", alt: "5-10 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "5-10 min", e: "5-10 min" }, rest: 0, timed: true,
+        note: "5 min di cyclette o tapis a ritmo conversazionale, poi 10 circonduzioni spalle, 10 cat-camel, 15 squat a corpo libero. Sul primo esercizio due serie di avvicinamento, che non contano come serie di lavoro." },
+      { id: "a1", slot: "A1", name: "Squat al multipower",
+        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 150,
+        note: { j: "Prima volta: parti leggerissimo, bilanciere pi\u00f9 20-30 kg totali. La tentazione sar\u00e0 di caricare perch\u00e9 alla leg press fai 120: resisti. Fermi di sicurezza posizionati, sempre.",
+                e: "Se il solo bilanciere \u00e8 troppo, per le prime due sedute fai squat a corpo libero scendendo a toccare una panca. Il movimento prima del carico." } },
+      { id: "a2", slot: "A2", name: "Panca piana con manubri",
+        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120,
+        note: "Con i manubri non serve nessuno a fare da spotter, e gli stessi attrezzi vanno da 4 a 30+ kg: \u00e8 il motivo per cui la scheda pu\u00f2 essere identica per entrambi." },
+      { id: "a3", slot: "A3", name: "Lat machine", alt: "presa prona",
+        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120 },
+      { id: "a4", slot: "A4", name: "Leg curl", alt: "macchina",
+        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 90 },
+      { id: "a5", slot: "A5", name: "Abduttori", alt: "macchina",
+        sets: { j: 2, e: 2 }, reps: { j: "15-20", e: "15-20" }, rest: 60,
+        note: "Accessorio, non protagonista. Ma per il gluteo medio e la stabilit\u00e0 dell'anca serve, ed \u00e8 un esercizio dove si pu\u00f2 spingere in sicurezza." },
+      { id: "a6", slot: "A6", name: "Alzate laterali", alt: "manubri",
         sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
-      { id: "a6", slot: "A6", name: "Plank", sets: { j: 3, e: 3 }, reps: { j: "40-60\u2033", e: "20-30\u2033" }, rest: 60, timed: true }
+      { id: "a7", slot: "A7", name: "Crunch alla macchina",
+        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 60,
+        note: "Discesa lenta, 3 secondi. \u00c8 l'esercizio in cui il lavoro si sente subito." },
+      { id: "a8", slot: "A8", name: "Curl + pushdown", alt: "superserie, senza pausa tra i due",
+        sets: { j: 2, e: 2 }, reps: { j: "10-12", e: "10-12" }, rest: 90,
+        note: "Due serie di curl bicipiti seguite subito da due di pushdown tricipiti. Scrivi il carico del curl: il pushdown lo tari a occhio." },
+      { id: "aer", slot: "AER", name: "Aerobica", alt: "opzionale, 10-15 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "10-15 min", e: "10-15 min" }, rest: 0, timed: true,
+        note: "Ritmo conversazionale, mai prima dei pesi. \u00c8 la prima cosa che si taglia quando il tempo manca: i passi della giornata rendono di pi\u00f9." },
     ]},
-    B: { title: "Tirata + catena posteriore", sub: "macchine", ex: [
-      { id: "b1", slot: "B1", name: "Leg curl", alt: "macchina",
-        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 120 },
-      { id: "b2", slot: "B2", name: "Lat machine", alt: { j: "presa prona", e: "assistita, presa prona" },
-        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 150 },
-      { id: "b3", slot: "B3", name: "Iperestensioni", alt: { j: "panca 45\u00b0", e: "panca 45\u00b0, corpo libero" },
-        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "10-12" }, rest: 90,
-        note: "Sostituisce lo stacco: stessa catena posteriore, zero carico sulla colonna. Si sale fino all'allineamento del busto, non oltre." },
-      { id: "b4", slot: "B4", name: "Shoulder press", alt: "macchina", sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
-      { id: "b5", slot: "B5", name: "Curl bicipiti", alt: "manubri o cavi", sets: { j: 2, e: 2 }, reps: { j: "10-12", e: "12-15" }, rest: 60 },
-      { id: "b6", slot: "B6", name: "Dead bug", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "8 / lato" }, rest: 45 }
-    ]},
-    C: { title: "Mista", sub: "glutei + parte alta", ex: [
-      { id: "c1", slot: "C1", name: "Hip thrust", alt: "macchina o glute drive",
-        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 150 },
-      { id: "c2", slot: "C2", name: { j: "Panca inclinata manubri", e: "Pec deck" }, alt: { j: "", e: "macchina" },
-        sets: { j: 3, e: 3 }, reps: { j: "8-10", e: "12-15" }, rest: 120 },
-      { id: "c3", slot: "C3", name: "Rematore alla macchina", alt: "presa neutra",
-        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "12-15" }, rest: 90 },
-      { id: "c4", slot: "C4", name: "Leg press unilaterale", alt: "una gamba per volta",
-        sets: { j: 3, e: 3 }, reps: { j: "10 / gamba", e: "12 / gamba" }, rest: 90 },
-      { id: "c5", slot: "C5", name: "Pushdown tricipiti", alt: "ai cavi", sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
-      { id: "c6", slot: "C6", name: "Pallof press", alt: "ai cavi", sets: { j: 3, e: 3 }, reps: { j: "10 / lato", e: "10 / lato" }, rest: 45 }
+
+    B: { title: "Full body B", sub: "leg press \u00b7 panca inclinata", ex: [
+      { id: "ris", slot: "RIS", name: "Riscaldamento", alt: "5-10 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "5-10 min", e: "5-10 min" }, rest: 0, timed: true,
+        note: "5 min di cyclette o tapis a ritmo conversazionale, poi 10 circonduzioni spalle, 10 cat-camel, 15 squat a corpo libero. Sul primo esercizio due serie di avvicinamento, che non contano come serie di lavoro." },
+      { id: "b1", slot: "B1", name: "Leg press",
+        sets: { j: 3, e: 3 }, reps: { j: "10-15", e: "10-15" }, rest: 150,
+        note: { j: "Corsa completa.",
+                e: "Qui hai margine: con una gamba sola fai 15 kg, con due 20. Il carico giusto \u00e8 pi\u00f9 alto di quello che stai usando." } },
+      { id: "b2", slot: "B2", name: "Panca inclinata con manubri",
+        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120 },
+      { id: "b3", slot: "B3", name: "Rematore alla macchina", alt: "o pulley basso",
+        sets: { j: 3, e: 3 }, reps: { j: "10-12", e: "10-12" }, rest: 120 },
+      { id: "b4", slot: "B4", name: "Hip thrust", alt: "macchina o glute drive",
+        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 120 },
+      { id: "b5", slot: "B5", name: "Adduttori", alt: "macchina",
+        sets: { j: 2, e: 2 }, reps: { j: "15-20", e: "15-20" }, rest: 60 },
+      { id: "b6", slot: "B6", name: "Shoulder press", alt: "manubri, seduto con schienale",
+        sets: { j: 2, e: 2 }, reps: { j: "10-12", e: "10-12" }, rest: 90 },
+      { id: "b7", slot: "B7", name: "Crunch alla macchina",
+        sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 60,
+        note: "Discesa lenta, 3 secondi." },
+      { id: "b8", slot: "B8", name: "Curl + pushdown", alt: "superserie, senza pausa tra i due",
+        sets: { j: 2, e: 2 }, reps: { j: "10-12", e: "10-12" }, rest: 90 },
+      { id: "aer", slot: "AER", name: "Aerobica", alt: "opzionale, 10-15 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "10-15 min", e: "10-15 min" }, rest: 0, timed: true,
+        note: "Ritmo conversazionale, mai prima dei pesi. \u00c8 la prima cosa che si taglia quando il tempo manca: i passi della giornata rendono di pi\u00f9." },
     ]}
   };
 
@@ -772,11 +790,16 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     lset("fit.loads." + person, JSON.stringify(loads[person]));
   }
 
-  /* ---- fase corrente ---- */
-  function currentWeek() {
-    var days = Math.floor((new Date() - START) / 86400000);
-    return days < 0 ? 1 : Math.floor(days / 7) + 1;
+  /* ---- fase corrente: si contano le sedute salvate ---- */
+  function countKey() { return "fit.count." + person; }
+  function sessionCount() {
+    var n = parseInt(lget(countKey()), 10);
+    return isNaN(n) || n < 0 ? 0 : n;
   }
+  function bumpCount() { lset(countKey(), String(sessionCount() + 1)); }
+
+  /** La seduta che si sta facendo adesso: la prossima da salvare. */
+  function currentWeek() { return sessionCount() + 1; }
   function currentPhase() {
     var wk = currentWeek();
     for (var i = 0; i < PHASES.length; i++) {
@@ -795,19 +818,23 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     PHASES.forEach(function (ph) {
       var el = document.createElement("div");
       el.className = "ph";
-      el.innerHTML = "<b>" + ph.name.slice(0, 3).toUpperCase() + "</b>sett " + ph.w;
+      el.innerHTML = "<b>" + ph.name.slice(0, 3).toUpperCase() + "</b>sed " + ph.w;
       el.title = ph.name;
       if (ph === active) el.classList.add("on");
       strip.appendChild(el);
     });
 
+    var done = sessionCount();
+    var etichetta = done === 0
+      ? "Prima seduta"
+      : "Seduta " + wk + " di 24";
     if (active) {
-      now.innerHTML = "<strong>Settimana " + wk + " \u00b7 " + active.name + "</strong>";
+      now.innerHTML = "<strong>" + etichetta + " \u00b7 " + active.name + "</strong>";
       now.appendChild(document.createTextNode(active.note));
     } else {
-      now.innerHTML = "<strong>Settimana " + wk + "</strong>";
+      now.innerHTML = "<strong>" + etichetta + "</strong>";
       now.appendChild(document.createTextNode(
-        "Il Blocco 1 \u00e8 chiuso. Rifai la batteria di test e riscrivi la scheda sui dati reali."));
+        "Le 24 sedute sono fatte. Rifai la batteria di test e riscrivi il blocco sui dati reali."));
     }
   }
 
@@ -961,7 +988,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       personaId: person,
       data: today(),
       seduta: session,
-      settimana: currentWeek(),
+      seduta_n: currentWeek(),
       fase: ph ? ph.name : "fuori blocco",
       esercizi: SESSIONS[session].ex.map(function (ex) {
         return {
@@ -1042,6 +1069,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           info.innerHTML = "<b>Inviata.</b> Seduta del " + today() +
             " nel repo <code>fit-log</code>. I carichi di oggi diventano il riferimento della prossima volta.";
           snapshotPrev();
+          bumpCount();
+          renderPhases();
           render();
           btn.classList.add("ok");
           btn.textContent = "Inviata";
@@ -1082,6 +1111,8 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       }
     } catch (e) {}
     snapshotPrev();
+    bumpCount();
+    renderPhases();
     btn.classList.add("ok");
     btn.textContent = copied ? "Copiato" : "Copia sotto";
     info.innerHTML = copied
@@ -1143,6 +1174,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         o.setAttribute("aria-pressed", String(o === b));
       });
       loads[person] = localLoads(person);
+      renderPhases();
       render();
     });
   });
@@ -1169,6 +1201,12 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   });
 
   loads.j = localLoads("j"); loads.e = localLoads("e");
+
+  // Le tre sedute del vecchio schema A/B/C sono state fatte: il contatore
+  // parte da l\u00ec, una volta sola, senza sovrascrivere un valore esistente.
+  ["j", "e"].forEach(function (pp) {
+    if (lget("fit.count." + pp) === null) lset("fit.count." + pp, "3");
+  });
 
   renderPhases();
   render();

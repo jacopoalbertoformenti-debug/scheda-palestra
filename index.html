@@ -389,6 +389,49 @@
     background: var(--ink); color: var(--ground); border-color: var(--ink);
   }
 
+
+  /* ---- mappa muscolare ---- */
+  .map { margin: 10px 0 2px; text-align: center; }
+  .map svg { width: 100%; max-width: 260px; height: auto; }
+  .map .silh { fill: var(--line-2); }
+  .map .reg { fill: var(--line); opacity: .55; }
+  .map .reg.on { fill: var(--accent); opacity: 1; }
+  .map .cap {
+    fill: var(--ink-3); font-family: "IBM Plex Mono", monospace;
+    font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .info-btn {
+    flex: none; height: 46px; padding: 0 12px;
+    background: var(--surface-2); color: var(--ink-3);
+    border: 1px solid var(--line); border-radius: 7px; cursor: pointer;
+    font-family: "IBM Plex Mono", monospace; font-size: 15px; line-height: 1;
+  }
+  .info-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+  :root[data-theme="dark"] .info-btn[aria-pressed="true"] { color: #0E1A24; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .info-btn[aria-pressed="true"] { color: #0E1A24; }
+  }
+  .why .vid {
+    display: inline-block; margin-top: 9px;
+    font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
+
+  .why .shot {
+    display: block; width: 100%; max-width: 300px; margin: 0 auto 10px;
+    border-radius: 8px; border: 1px solid var(--line-2);
+  }
+  .why .links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+  .why .links a {
+    font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
   /* ---- rest timer bar ---- */
   .rest {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
@@ -840,55 +883,119 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   var RESA_LAB = { 3: "fondamentale", 2: "complementare", 1: "accessorio" };
 
   var INFO = {
-    ris: { resa: 0, mus: "tutto il corpo, a bassa intensità",
+    ris: { resa: 0, reg: [], mus: "tutto il corpo, a bassa intensità",
       why: "Non allena: prepara. Alza la temperatura dei muscoli e la lubrificazione delle articolazioni, e riduce il rischio di stirare qualcosa nella prima serie pesante. Le due serie di avvicinamento sul primo esercizio contano più dei cinque minuti di cyclette." },
 
-    a1: { resa: 3, mus: "quadricipiti · glutei · femorali · core · lombari",
+    a1: { resa: 3, reg: ["quadricipiti", "glutei", "femorali", "addominali", "lombari"], mus: "quadricipiti · glutei · femorali · core · lombari",
       why: "Muove più massa muscolare di qualunque altro esercizio della scheda, e per questo è primo: più muscolo coinvolto significa più calorie nella serie, più muscolo costruito nel tempo e più cambiamento visibile su gambe e glutei. Nota anche che il core c'è nell'elenco: per tenere il busto rigido sotto un bilanciere gli addominali lavorano più che in molti esercizi fatti per loro. Se devi tagliare qualcosa dalla seduta, non è questo." },
-    a2: { resa: 3, mus: "pettorali · deltoide anteriore · tricipiti",
+    a2: { resa: 3, reg: ["pettorali", "deltoidi", "tricipiti"], mus: "pettorali · deltoide anteriore · tricipiti",
       why: "Il fondamentale della parte alta. Muove meno massa dello squat, quindi consuma meno, ma è l'esercizio che dà forma a petto e spalle. Con i manubri ogni braccio lavora per conto suo: nessuno dei due può barare aiutando l'altro." },
-    a3: { resa: 3, mus: "gran dorsale · bicipiti · romboidi · trapezio inferiore",
+    a3: { resa: 3, reg: ["dorsali", "bicipiti", "trapezio"], mus: "gran dorsale · bicipiti · romboidi · trapezio inferiore",
       why: "Il dorso è il gruppo muscolare più grande della parte alta, quindi conta sia per la forma sia per il consumo. In più è l'esercizio che più contrasta le spalle chiuse da otto ore di scrivania: tira indietro quello che il computer tira avanti." },
-    a4: { resa: 2, mus: "femorali · gemelli",
+    a4: { resa: 2, reg: ["femorali", "gemelli"], mus: "femorali · gemelli",
       why: "Completa lo squat, che carica soprattutto la parte anteriore della coscia. L'equilibrio tra davanti e dietro conta per la salute del ginocchio, e i femorali sono il muscolo che più spesso resta indietro in chi si allena da autodidatta." },
-    a5: { resa: 1, mus: "gluteo medio · gluteo piccolo · tensore della fascia lata",
+    a5: { resa: 1, reg: ["abduttori", "glutei"], mus: "gluteo medio · gluteo piccolo · tensore della fascia lata",
       why: "Accessorio: sono muscoli piccoli e il contributo al consumo è vicino a zero. Ha però due utilità reali, la stabilità di anca e ginocchio e la forma laterale del gluteo, su cui squat e hip thrust lavorano poco. Ed è un esercizio dove si può spingere in sicurezza sentendo chiaramente il muscolo lavorare." },
-    a6: { resa: 1, mus: "deltoide laterale",
+    a6: { resa: 1, reg: ["deltoidi"], mus: "deltoide laterale",
       why: "Muscolo piccolo, calorie trascurabili. Serve alla forma: allargando la spalla, la vita sembra più stretta a parità di centimetri. È estetica, e va bene che sia così — non tutto in una scheda deve avere una funzione metabolica." },
-    a7: { resa: 1, mus: "retto addominale",
+    a7: { resa: 1, reg: ["addominali"], mus: "retto addominale",
       why: "Qui serve la frase scomoda: per gli addominali lo squat rende più di questo esercizio. Nello squat il core lavora tantissimo per tenere il busto rigido, e insieme allena gambe e glutei consumando cinque volte tanto. Il crunch allena un solo muscolo e consuma quasi nulla. E soprattutto: non fa perdere il grasso della pancia — quello va via col deficit calorico, e da dove va via prima lo decide la genetica. Questo allena il muscolo che sta sotto, e che si vedrà quando il grasso scende. È in scheda perché il lavoro si sente subito, e sentirlo aiuta a restare motivati: non perché sia importante." },
-    a8: { resa: 1, mus: "bicipiti · tricipiti",
+    a8: { resa: 1, reg: ["bicipiti", "tricipiti"], mus: "bicipiti · tricipiti",
       why: "Muscoli piccoli, effetto metabolico quasi nullo, e già allenati in parte da panca e lat machine. Sono in scheda per completezza estetica e perché in superserie costano sette minuti. Sono la prima cosa da togliere se il tempo manca." },
 
-    b1: { resa: 3, mus: "quadricipiti · glutei · femorali",
+    b1: { resa: 3, reg: ["quadricipiti", "glutei", "femorali"], mus: "quadricipiti · glutei · femorali",
       why: "Vale quanto lo squat sul fronte del consumo, con meno richiesta tecnica e un carico più facile da gestire. È il posto dove si può spingere davvero senza pensare all'equilibrio: per Elisa in particolare è qui che il carico può salire prima che altrove." },
-    b2: { resa: 2, mus: "pettorale alto · deltoide anteriore · tricipiti",
+    b2: { resa: 2, reg: ["pettorali", "deltoidi", "tricipiti"], mus: "pettorale alto · deltoide anteriore · tricipiti",
       why: "Stessa famiglia della panca piana, ma l'inclinazione sposta il lavoro sulla parte alta del pettorale. Averle entrambe nella settimana copre il petto meglio che fare due volte lo stesso angolo." },
-    b3: { resa: 3, mus: "gran dorsale · romboidi · trapezio medio · bicipiti",
+    b3: { resa: 3, reg: ["dorsali", "trapezio", "bicipiti"], mus: "gran dorsale · romboidi · trapezio medio · bicipiti",
       why: "La tirata orizzontale: la lat machine tira dall'alto, questa tira in avanti, e insieme coprono il dorso da due direzioni. L'altro esercizio che lavora contro la postura da scrivania." },
-    b4: { resa: 3, mus: "grande gluteo · femorali",
+    b4: { resa: 3, reg: ["glutei", "femorali"], mus: "grande gluteo · femorali",
       why: "L'esercizio più diretto sul grande gluteo, che è il muscolo più grande del corpo umano. Per la forma dei glutei rende più di qualunque esercizio 'per i glutei' visto sui social, perché permette di caricare tanto in una posizione sicura." },
-    b5: { resa: 1, mus: "adduttori della coscia",
+    b5: { resa: 1, reg: ["adduttori"], mus: "adduttori della coscia",
       why: "Accessorio come gli abduttori: consumo trascurabile, ma utile all'equilibrio dell'anca e a una zona che squat e leg press toccano poco. Si sente lavorare, e all'inizio questo ha un valore." },
-    b6: { resa: 2, mus: "deltoide anteriore e laterale · tricipiti · trapezio superiore",
+    b6: { resa: 2, reg: ["deltoidi", "tricipiti", "trapezio"], mus: "deltoide anteriore e laterale · tricipiti · trapezio superiore",
       why: "La spinta verticale, che la panca non copre. Coinvolge più massa delle alzate laterali e allena la stabilità della spalla sopra la testa, che serve ogni volta che si mette qualcosa in alto." },
-    b7: { resa: 1, mus: "retto addominale",
+    b7: { resa: 1, reg: ["addominali"], mus: "retto addominale",
       why: "Come in seduta A: allena il muscolo, non brucia il grasso che ci sta sopra, e per il core lo squat rende di più. Discesa lenta, tre secondi." },
-    b8: { resa: 1, mus: "bicipiti · tricipiti",
+    b8: { resa: 1, reg: ["bicipiti", "tricipiti"], mus: "bicipiti · tricipiti",
       why: "Come in seduta A: piccoli, poco metabolici, in scheda per completezza. Primi a uscire se il tempo stringe." },
 
-    aer: { resa: 1, mus: "cuore e circolazione",
+    aer: { resa: 1, reg: ["quadricipiti", "gemelli"], mus: "cuore e circolazione",
       why: "Consuma durante, poco dopo. Quindici minuti valgono 100-150 kcal: meno di tremila passi in più nella giornata, e a differenza dei passi costano recupero. Utile per la salute cardiovascolare, non decisivo per il dimagrimento. Per questo è opzionale ed è la prima cosa che si taglia." },
 
-    w2: { resa: 2, mus: "gambe · cuore",
+    w2: { resa: 2, reg: ["quadricipiti", "gemelli"], mus: "gambe · cuore",
       why: "Il senso della seduta del weekend è muoversi recuperando. La bici ha impatto nullo sulle articolazioni e non aggiunge danno muscolare, quindi non compete col recupero delle due sedute con i pesi." },
-    w3: { resa: 2, mus: "gambe · cuore",
+    w3: { resa: 2, reg: ["quadricipiti", "gemelli", "glutei"], mus: "gambe · cuore",
       why: "La più sottovalutata delle tre. Col dislivello il consumo sale sensibilmente, e a differenza di tutto il resto si può fare ogni giorno senza costi di recupero. È anche il modo più semplice di chiudere i diecimila passi." },
-    w4: { resa: 2, mus: "dorso · spalle · gambe · cuore",
+    w4: { resa: 2, reg: ["dorsali", "deltoidi", "quadricipiti"], mus: "dorso · spalle · gambe · cuore",
       why: "Ottimo cardio a impatto zero, e coinvolge la parte alta più di bici e camminata. Un limite però va detto: l'acqua scarica il peso dallo scheletro, quindi non fa niente per la densità ossea. Non sostituisce i pesi, li accompagna." },
-    w1: { resa: 1, mus: "quadricipiti · glutei · petto · core",
+    w1: { resa: 1, reg: ["quadricipiti", "glutei", "pettorali", "addominali"], mus: "quadricipiti · glutei · petto · core",
       why: "Da usare con criterio. Squat, affondi e ponti ripassano schemi che le due sedute in palestra hanno già allenato: dopo una settimana piena è in gran parte volume in più sulle gambe, e compete col recupero invece di aggiungere stimolo. Ha senso quando la settimana è stata leggera o una seduta è saltata." }
   };
+
+
+  /* ---- Mappa muscolare: una sagoma, regioni accendibili -----------------
+     Disegnata a mano invece di usare immagini di database commerciali
+     (copyright) o remote (bloccate dalla CSP degli artifact).
+     Volutamente schematica: a 260 px su un telefono conta la leggibilità,
+     non la precisione anatomica.
+  ---------------------------------------------------------------------- */
+  function fig(cx) {
+    return '<circle class="silh" cx="' + cx + '" cy="20" r="11"/>' +
+      '<rect class="silh" x="' + (cx - 5) + '" y="28" width="10" height="8"/>' +
+      '<path class="silh" d="M' + (cx - 23) + ',36 L' + (cx + 23) + ',36 L' + (cx + 17) + ',74 L' + (cx + 14) + ',100 L' + (cx - 14) + ',100 L' + (cx - 17) + ',74 Z"/>' +
+      '<rect class="silh" x="' + (cx - 34) + '" y="40" width="11" height="34" rx="5"/>' +
+      '<rect class="silh" x="' + (cx + 23) + '" y="40" width="11" height="34" rx="5"/>' +
+      '<rect class="silh" x="' + (cx - 35) + '" y="72" width="9" height="30" rx="4"/>' +
+      '<rect class="silh" x="' + (cx + 26) + '" y="72" width="9" height="30" rx="4"/>' +
+      '<rect class="silh" x="' + (cx - 16) + '" y="98" width="14" height="48" rx="6"/>' +
+      '<rect class="silh" x="' + (cx + 2) + '" y="98" width="14" height="48" rx="6"/>' +
+      '<rect class="silh" x="' + (cx - 14) + '" y="144" width="11" height="38" rx="5"/>' +
+      '<rect class="silh" x="' + (cx + 3) + '" y="144" width="11" height="38" rx="5"/>';
+  }
+
+  var FR = 62, BK = 186;   // centri delle due sagome
+
+  /* regione -> forme, sul fronte (FR) o sul retro (BK) */
+  var REG = {
+    pettorali:  '<rect class="reg REGCLS" x="' + (FR - 20) + '" y="41" width="18" height="17" rx="4"/>' +
+                '<rect class="reg REGCLS" x="' + (FR + 2) + '" y="41" width="18" height="17" rx="4"/>',
+    addominali: '<rect class="reg REGCLS" x="' + (FR - 9) + '" y="60" width="18" height="36" rx="4"/>',
+    deltoidi:   '<circle class="reg REGCLS" cx="' + (FR - 26) + '" cy="43" r="8"/>' +
+                '<circle class="reg REGCLS" cx="' + (FR + 26) + '" cy="43" r="8"/>',
+    bicipiti:   '<rect class="reg REGCLS" x="' + (FR - 33) + '" y="48" width="9" height="22" rx="4"/>' +
+                '<rect class="reg REGCLS" x="' + (FR + 24) + '" y="48" width="9" height="22" rx="4"/>',
+    quadricipiti: '<rect class="reg REGCLS" x="' + (FR - 15) + '" y="101" width="12" height="42" rx="5"/>' +
+                '<rect class="reg REGCLS" x="' + (FR + 3) + '" y="101" width="12" height="42" rx="5"/>',
+    adduttori:  '<rect class="reg REGCLS" x="' + (FR - 6) + '" y="103" width="5" height="34" rx="2"/>' +
+                '<rect class="reg REGCLS" x="' + (FR + 1) + '" y="103" width="5" height="34" rx="2"/>',
+
+    trapezio:   '<path class="reg REGCLS" d="M' + (BK - 15) + ',37 L' + (BK + 15) + ',37 L' + (BK + 8) + ',53 L' + (BK - 8) + ',53 Z"/>',
+    dorsali:    '<path class="reg REGCLS" d="M' + (BK - 20) + ',50 L' + (BK + 20) + ',50 L' + (BK + 10) + ',82 L' + (BK - 10) + ',82 Z"/>',
+    lombari:    '<rect class="reg REGCLS" x="' + (BK - 10) + '" y="82" width="20" height="15" rx="4"/>',
+    glutei:     '<rect class="reg REGCLS" x="' + (BK - 16) + '" y="97" width="32" height="22" rx="9"/>',
+    femorali:   '<rect class="reg REGCLS" x="' + (BK - 15) + '" y="120" width="12" height="26" rx="5"/>' +
+                '<rect class="reg REGCLS" x="' + (BK + 3) + '" y="120" width="12" height="26" rx="5"/>',
+    gemelli:    '<rect class="reg REGCLS" x="' + (BK - 13) + '" y="147" width="10" height="30" rx="5"/>' +
+                '<rect class="reg REGCLS" x="' + (BK + 4) + '" y="147" width="10" height="30" rx="5"/>',
+    tricipiti:  '<rect class="reg REGCLS" x="' + (BK - 33) + '" y="48" width="9" height="22" rx="4"/>' +
+                '<rect class="reg REGCLS" x="' + (BK + 24) + '" y="48" width="9" height="22" rx="4"/>',
+    abduttori:  '<rect class="reg REGCLS" x="' + (BK - 23) + '" y="96" width="7" height="20" rx="3"/>' +
+                '<rect class="reg REGCLS" x="' + (BK + 16) + '" y="96" width="7" height="20" rx="3"/>'
+  };
+
+  /** SVG della mappa con le regioni di `attive` accese. */
+  function mappa(attive) {
+    var body = fig(FR) + fig(BK);
+    Object.keys(REG).forEach(function (k) {
+      var on = attive.indexOf(k) >= 0;
+      body += REG[k].replace(/REGCLS/g, on ? "on" : "");
+    });
+    body += '<text class="cap" x="' + FR + '" y="196" text-anchor="middle">fronte</text>';
+    body += '<text class="cap" x="' + BK + '" y="196" text-anchor="middle">retro</text>';
+    return '<div class="map"><svg viewBox="0 0 248 204" role="img" aria-label="Muscoli sollecitati: ' +
+      attive.join(", ") + '">' + body + '</svg></div>';
+  }
 
   var NAMES = { j: "Jacopo", e: "Elisa" };
   var person = "j";
@@ -1046,8 +1153,27 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         var w = document.createElement("div");
         w.className = "why";
         w.hidden = !showWhy;
-        w.innerHTML = '<div class="mus">' + info.mus + "</div><p>" + info.why + "</p>";
+        // La foto e' opzionale: se img/<id>.jpg non esiste si rimuove da
+        // sola, senza riquadri rotti. Basta metterla nella cartella.
+        var q = encodeURIComponent(exName(ex) + " esecuzione corretta");
+        w.innerHTML =
+          '<img class="shot" alt="' + exName(ex) + '" src="img/' + ex.id + '.jpg" ' +
+            'onerror="this.remove()">' +
+          ((info.reg && info.reg.length) ? mappa(info.reg) : "") +
+          '<div class="mus">' + info.mus + "</div><p>" + info.why + "</p>" +
+          '<div class="links">' +
+            '<a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=' + q + '">Video \u2192</a>' +
+            '<a target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=' + q + '">Immagini \u2192</a>' +
+          "</div>";
         card.appendChild(w);
+
+        if (ex._btn) {
+          ex._btn.addEventListener("click", function () {
+            w.hidden = !w.hidden;
+            ex._btn.setAttribute("aria-pressed", String(!w.hidden));
+            if (!w.hidden) w.scrollIntoView({ block: "nearest", behavior: "smooth" });
+          });
+        }
       }
 
       var bot = document.createElement("div");
@@ -1095,6 +1221,17 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           updateSaveInfo();
         });
         bot.appendChild(inp);
+      }
+
+      if (info) {
+        var ib = document.createElement("button");
+        ib.type = "button";
+        ib.className = "info-btn";
+        ib.innerHTML = "&#9432;";
+        ib.setAttribute("aria-label", "Muscoli e spiegazione \u2014 " + exName(ex));
+        ib.setAttribute("aria-pressed", String(showWhy));
+        bot.appendChild(ib);
+        ex._btn = ib;
       }
 
       var t = document.createElement("button");

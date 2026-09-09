@@ -463,6 +463,7 @@
     <div class="tabs" role="group" aria-label="Scegli seduta">
       <button type="button" data-session="A" aria-pressed="true"><span class="t-let">A</span><span class="t-sub">Squat</span></button>
       <button type="button" data-session="B" aria-pressed="false"><span class="t-let">B</span><span class="t-sub">Leg press</span></button>
+      <button type="button" data-session="W" aria-pressed="false"><span class="t-let">W</span><span class="t-sub">Weekend</span></button>
       <span class="badge" id="badge">Jacopo</span>
     </div>
   </div>
@@ -743,6 +744,23 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       { id: "aer", slot: "AER", name: "Aerobica", alt: "opzionale, 10-15 minuti",
         sets: { j: 1, e: 1 }, reps: { j: "10-15 min", e: "10-15 min" }, rest: 0, timed: true,
         note: "Ritmo conversazionale, mai prima dei pesi. \u00c8 la prima cosa che si taglia quando il tempo manca: i passi della giornata rendono di pi\u00f9." },
+    ]},
+
+    // Non conta nelle 24 sedute del blocco: quelle sono le sedute in palestra.
+    // Si puo' salvare comunque, cos\u00ec resta traccia di averla fatta.
+    W: { title: "Weekend", sub: "scegline una", noCount: true, ex: [
+      { id: "w1", slot: "1", name: "Circuito a corpo libero", alt: "3 giri, ~25 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "3 giri", e: "3 giri" }, rest: 120, timed: true,
+        note: "Un giro di fila: 15 squat \u00b7 8-12 push-up (sulle ginocchia se serve) \u00b7 10 affondi per gamba \u00b7 15 ponti per i glutei \u00b7 30\u2033 plank \u00b7 10 superman. Poi due minuti di pausa e si ricomincia. Non serve niente, si fa in salotto." },
+      { id: "w2", slot: "2", name: "Bici", alt: "45-60 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "45-60 min", e: "45-60 min" }, rest: 0, timed: true,
+        note: "Ritmo conversazionale. Se diventa fatica hai sbagliato intensit\u00e0: questa seduta serve a recuperare, non ad aggiungere stanchezza a quella della settimana." },
+      { id: "w3", slot: "3", name: "Camminata", alt: "60 minuti, meglio in salita",
+        sets: { j: 1, e: 1 }, reps: { j: "60 min", e: "60 min" }, rest: 0, timed: true,
+        note: "Il dislivello vale pi\u00f9 della velocit\u00e0. \u00c8 anche il modo pi\u00f9 semplice di chiudere i 10.000 passi, che sulla composizione rendono pi\u00f9 di qualunque cardio in palestra." },
+      { id: "w4", slot: "4", name: "Nuoto", alt: "30-45 minuti",
+        sets: { j: 1, e: 1 }, reps: { j: "30-45 min", e: "30-45 min" }, rest: 0, timed: true,
+        note: "Ottimo cardio e zero impatto. Non sostituisce i pesi \u2014 l'acqua scarica il peso dallo scheletro \u2014 ma come seduta del weekend vale quanto le altre." }
     ]}
   };
 
@@ -999,7 +1017,10 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           ripetizioni: String(ex.reps[person]),
           carico_kg: loads[person][ex.id] || null
         };
-      }).filter(function (e) { return e.carico_kg !== null; }),
+      }).filter(function (e) {
+        // una seduta senza carichi (il weekend) tiene tutte le righe
+        return e.carico_kg !== null || !SESSIONS[session].ex.some(function (x) { return !x.timed; });
+      }),
       note: nota || null,
       salvato: new Date().toISOString()
     };
@@ -1024,6 +1045,17 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       return !ex.timed && v !== undefined && v !== null && v !== "";
     }).length;
     var tot = SESSIONS[session].ex.filter(function (ex) { return !ex.timed; }).length;
+
+    // una seduta senza carichi da inserire (il weekend) si salva comunque:
+    // il pulsante vale "l'ho fatta"
+    if (tot === 0) {
+      info.innerHTML = "Seduta libera di <b>" + NAMES[person] +
+        "</b>. Salva per segnare che l&rsquo;hai fatta, e scrivi nella nota quale hai scelto.";
+      btn.disabled = false;
+      btn.classList.remove("ok");
+      btn.textContent = "Salva seduta";
+      return;
+    }
 
     if (n === 0) {
       info.textContent = "Scrivi i carichi, poi salva.";
@@ -1069,7 +1101,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           info.innerHTML = "<b>Inviata.</b> Seduta del " + today() +
             " nel repo <code>fit-log</code>. I carichi di oggi diventano il riferimento della prossima volta.";
           snapshotPrev();
-          bumpCount();
+          if (!SESSIONS[session].noCount) bumpCount();
           renderPhases();
           render();
           btn.classList.add("ok");
@@ -1111,7 +1143,7 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
       }
     } catch (e) {}
     snapshotPrev();
-    bumpCount();
+    if (!SESSIONS[session].noCount) bumpCount();
     renderPhases();
     btn.classList.add("ok");
     btn.textContent = copied ? "Copiato" : "Copia sotto";

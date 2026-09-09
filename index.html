@@ -343,6 +343,52 @@
     font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
   }
 
+
+  /* ---- resa e spiegazione dell'esercizio ---- */
+  .resa {
+    display: flex; align-items: center; gap: 7px; margin: 7px 0 0 41px;
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .resa i {
+    font-style: normal; font-size: 12px; letter-spacing: .1em;
+    color: var(--line); line-height: 1; flex: none;
+  }
+  .resa i b { font-weight: 400; }
+  .resa.r3 i b, .resa.r3 .w { color: var(--accent); }
+  .resa.r2 i b, .resa.r2 .w { color: var(--ink-2); }
+  .resa.r1 i b, .resa.r1 .w { color: var(--ink-3); }
+
+  .why {
+    margin: 9px 0 0 41px; padding: 11px 13px;
+    background: var(--surface-2); border-radius: 8px;
+  }
+  .why[hidden] { display: none !important; }
+  .why .mus {
+    font-family: "IBM Plex Mono", monospace; font-size: 9.5px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .why p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+  .expl {
+    display: flex; align-items: center; gap: 10px; margin: 14px 0 0;
+    padding: 11px 13px; background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+  }
+  .expl .lab { flex: 1; font-size: 13px; color: var(--ink-2); }
+  .expl .lab b { color: var(--ink); }
+  .expl button {
+    flex: none; min-height: 40px; padding: 0 14px;
+    background: var(--surface-2); color: var(--ink-2);
+    border: 1px solid var(--line); border-radius: 8px; cursor: pointer;
+    font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+  }
+  .expl button[aria-pressed="true"] {
+    background: var(--ink); color: var(--ground); border-color: var(--ink);
+  }
+
   /* ---- rest timer bar ---- */
   .rest {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
@@ -476,6 +522,11 @@
       </div>
       <span class="sync" id="sync">solo su questo telefono</span>
     </div>
+    <div class="expl">
+      <span class="lab"><b>Spiegazioni</b> &mdash; quali muscoli lavora e perch&eacute; &egrave; in scheda</span>
+      <button type="button" id="expl-toggle" aria-pressed="false">Mostra</button>
+    </div>
+
     <div class="ex-list" id="list"></div>
 
     <input type="text" class="note-in" id="note" maxlength="200"
@@ -514,6 +565,21 @@
             <li><strong>Serie di avvicinamento</strong> sul primo esercizio: due serie leggere, 50% ×8 e 70% ×5. Sulla panca Jacopo aggiunge bilanciere vuoto ×10 prima.</li>
           </ol>
           <p>Le serie di avvicinamento non si contano come serie di lavoro, e non sono opzionali: sono la differenza tra progredire per 12 settimane e fermarsi alla quarta per una spalla infiammata.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Come si legge la resa</summary>
+        <div class="body">
+          <p>Sotto ogni esercizio c&rsquo;&egrave; un punteggio da uno a tre pallini. Misura <strong>quanto rende quell&rsquo;esercizio per il tempo che ci metti</strong>, e dipende quasi tutto da una cosa: <strong>quanta massa muscolare mette in movimento</strong>.</p>
+          <ul>
+            <li><strong>&#9679;&#9679;&#9679; fondamentale</strong> &mdash; muove molta massa. Squat, leg press, panca, lat machine, rematore, hip thrust. Se la seduta va accorciata, questi restano.</li>
+            <li><strong>&#9679;&#9679;&#9675; complementare</strong> &mdash; completa qualcosa che i fondamentali coprono solo in parte.</li>
+            <li><strong>&#9679;&#9675;&#9675; accessorio</strong> &mdash; muscoli piccoli, consumo trascurabile. Ci sono per la forma o perch&eacute; si sentono lavorare. Sono i primi a uscire quando il tempo manca.</li>
+          </ul>
+          <p><strong>Un esempio che spiega tutto:</strong> per gli addominali lo <strong>squat rende pi&ugrave; del crunch</strong>. Nello squat il core lavora tantissimo per tenere il busto rigido sotto carico, e nello stesso tempo alleni gambe e glutei consumando molte volte tanto. Il crunch allena un muscolo solo e consuma quasi niente. Non &egrave; inutile &mdash; ma sta nella fascia bassa, e sapere perch&eacute; cambia come si organizza una seduta corta.</p>
+          <p><strong>E la cosa pi&ugrave; importante, detta chiara:</strong> nessun esercizio fa perdere grasso. Il grasso si perde col deficit calorico, e da dove va via prima lo decide la genetica &mdash; non esistono esercizi che lo togliono da una zona. L&rsquo;allenamento serve a decidere <em>cosa</em> perdi (grasso invece che muscolo) e <em>che forma</em> avrai quando sarai pi&ugrave; leggera.</p>
+          <p>Per dare la scala: un chilo di muscolo in pi&ugrave; vale circa <strong>13 kcal al giorno</strong> a riposo. Reale, ma piccolo. Il consumo vero sta nel cibo e nei passi: per questo i passi vengono prima di qualunque esercizio di questa lista.</p>
         </div>
       </details>
 
@@ -696,15 +762,13 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
         note: { j: "Prima volta: parti leggerissimo, bilanciere pi\u00f9 20-30 kg totali. La tentazione sar\u00e0 di caricare perch\u00e9 alla leg press fai 120: resisti. Fermi di sicurezza posizionati, sempre.",
                 e: "Se il solo bilanciere \u00e8 troppo, per le prime due sedute fai squat a corpo libero scendendo a toccare una panca. Il movimento prima del carico." } },
       { id: "a2", slot: "A2", name: "Panca piana con manubri",
-        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120,
-        note: "Con i manubri non serve nessuno a fare da spotter, e gli stessi attrezzi vanno da 4 a 30+ kg: \u00e8 il motivo per cui la scheda pu\u00f2 essere identica per entrambi." },
+        sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120 },
       { id: "a3", slot: "A3", name: "Lat machine", alt: "presa prona",
         sets: { j: 3, e: 3 }, reps: { j: "8-12", e: "8-12" }, rest: 120 },
       { id: "a4", slot: "A4", name: "Leg curl", alt: "macchina",
         sets: { j: 3, e: 3 }, reps: { j: "12-15", e: "12-15" }, rest: 90 },
       { id: "a5", slot: "A5", name: "Abduttori", alt: "macchina",
-        sets: { j: 2, e: 2 }, reps: { j: "15-20", e: "15-20" }, rest: 60,
-        note: "Accessorio, non protagonista. Ma per il gluteo medio e la stabilit\u00e0 dell'anca serve, ed \u00e8 un esercizio dove si pu\u00f2 spingere in sicurezza." },
+        sets: { j: 2, e: 2 }, reps: { j: "15-20", e: "15-20" }, rest: 60 },
       { id: "a6", slot: "A6", name: "Alzate laterali", alt: "manubri",
         sets: { j: 2, e: 2 }, reps: { j: "12-15", e: "12-15" }, rest: 60 },
       { id: "a7", slot: "A7", name: "Crunch alla macchina",
@@ -765,9 +829,71 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
     ]}
   };
 
+
+  /* ---- Resa, muscoli e perche' ------------------------------------------
+     resa: 3 fondamentale, 2 complementare, 1 accessorio.
+     Misura quanto rende l'esercizio per il tempo speso, e dipende quasi
+     tutta da una cosa: quanta massa muscolare mette in movimento.
+     NON e' un punteggio "brucia grassi": nessun esercizio brucia grassi.
+     Vedi l'accordion "Come leggere la resa".
+  ----------------------------------------------------------------------- */
+  var RESA_LAB = { 3: "fondamentale", 2: "complementare", 1: "accessorio" };
+
+  var INFO = {
+    ris: { resa: 0, mus: "tutto il corpo, a bassa intensità",
+      why: "Non allena: prepara. Alza la temperatura dei muscoli e la lubrificazione delle articolazioni, e riduce il rischio di stirare qualcosa nella prima serie pesante. Le due serie di avvicinamento sul primo esercizio contano più dei cinque minuti di cyclette." },
+
+    a1: { resa: 3, mus: "quadricipiti · glutei · femorali · core · lombari",
+      why: "Muove più massa muscolare di qualunque altro esercizio della scheda, e per questo è primo: più muscolo coinvolto significa più calorie nella serie, più muscolo costruito nel tempo e più cambiamento visibile su gambe e glutei. Nota anche che il core c'è nell'elenco: per tenere il busto rigido sotto un bilanciere gli addominali lavorano più che in molti esercizi fatti per loro. Se devi tagliare qualcosa dalla seduta, non è questo." },
+    a2: { resa: 3, mus: "pettorali · deltoide anteriore · tricipiti",
+      why: "Il fondamentale della parte alta. Muove meno massa dello squat, quindi consuma meno, ma è l'esercizio che dà forma a petto e spalle. Con i manubri ogni braccio lavora per conto suo: nessuno dei due può barare aiutando l'altro." },
+    a3: { resa: 3, mus: "gran dorsale · bicipiti · romboidi · trapezio inferiore",
+      why: "Il dorso è il gruppo muscolare più grande della parte alta, quindi conta sia per la forma sia per il consumo. In più è l'esercizio che più contrasta le spalle chiuse da otto ore di scrivania: tira indietro quello che il computer tira avanti." },
+    a4: { resa: 2, mus: "femorali · gemelli",
+      why: "Completa lo squat, che carica soprattutto la parte anteriore della coscia. L'equilibrio tra davanti e dietro conta per la salute del ginocchio, e i femorali sono il muscolo che più spesso resta indietro in chi si allena da autodidatta." },
+    a5: { resa: 1, mus: "gluteo medio · gluteo piccolo · tensore della fascia lata",
+      why: "Accessorio: sono muscoli piccoli e il contributo al consumo è vicino a zero. Ha però due utilità reali, la stabilità di anca e ginocchio e la forma laterale del gluteo, su cui squat e hip thrust lavorano poco. Ed è un esercizio dove si può spingere in sicurezza sentendo chiaramente il muscolo lavorare." },
+    a6: { resa: 1, mus: "deltoide laterale",
+      why: "Muscolo piccolo, calorie trascurabili. Serve alla forma: allargando la spalla, la vita sembra più stretta a parità di centimetri. È estetica, e va bene che sia così — non tutto in una scheda deve avere una funzione metabolica." },
+    a7: { resa: 1, mus: "retto addominale",
+      why: "Qui serve la frase scomoda: per gli addominali lo squat rende più di questo esercizio. Nello squat il core lavora tantissimo per tenere il busto rigido, e insieme allena gambe e glutei consumando cinque volte tanto. Il crunch allena un solo muscolo e consuma quasi nulla. E soprattutto: non fa perdere il grasso della pancia — quello va via col deficit calorico, e da dove va via prima lo decide la genetica. Questo allena il muscolo che sta sotto, e che si vedrà quando il grasso scende. È in scheda perché il lavoro si sente subito, e sentirlo aiuta a restare motivati: non perché sia importante." },
+    a8: { resa: 1, mus: "bicipiti · tricipiti",
+      why: "Muscoli piccoli, effetto metabolico quasi nullo, e già allenati in parte da panca e lat machine. Sono in scheda per completezza estetica e perché in superserie costano sette minuti. Sono la prima cosa da togliere se il tempo manca." },
+
+    b1: { resa: 3, mus: "quadricipiti · glutei · femorali",
+      why: "Vale quanto lo squat sul fronte del consumo, con meno richiesta tecnica e un carico più facile da gestire. È il posto dove si può spingere davvero senza pensare all'equilibrio: per Elisa in particolare è qui che il carico può salire prima che altrove." },
+    b2: { resa: 2, mus: "pettorale alto · deltoide anteriore · tricipiti",
+      why: "Stessa famiglia della panca piana, ma l'inclinazione sposta il lavoro sulla parte alta del pettorale. Averle entrambe nella settimana copre il petto meglio che fare due volte lo stesso angolo." },
+    b3: { resa: 3, mus: "gran dorsale · romboidi · trapezio medio · bicipiti",
+      why: "La tirata orizzontale: la lat machine tira dall'alto, questa tira in avanti, e insieme coprono il dorso da due direzioni. L'altro esercizio che lavora contro la postura da scrivania." },
+    b4: { resa: 3, mus: "grande gluteo · femorali",
+      why: "L'esercizio più diretto sul grande gluteo, che è il muscolo più grande del corpo umano. Per la forma dei glutei rende più di qualunque esercizio 'per i glutei' visto sui social, perché permette di caricare tanto in una posizione sicura." },
+    b5: { resa: 1, mus: "adduttori della coscia",
+      why: "Accessorio come gli abduttori: consumo trascurabile, ma utile all'equilibrio dell'anca e a una zona che squat e leg press toccano poco. Si sente lavorare, e all'inizio questo ha un valore." },
+    b6: { resa: 2, mus: "deltoide anteriore e laterale · tricipiti · trapezio superiore",
+      why: "La spinta verticale, che la panca non copre. Coinvolge più massa delle alzate laterali e allena la stabilità della spalla sopra la testa, che serve ogni volta che si mette qualcosa in alto." },
+    b7: { resa: 1, mus: "retto addominale",
+      why: "Come in seduta A: allena il muscolo, non brucia il grasso che ci sta sopra, e per il core lo squat rende di più. Discesa lenta, tre secondi." },
+    b8: { resa: 1, mus: "bicipiti · tricipiti",
+      why: "Come in seduta A: piccoli, poco metabolici, in scheda per completezza. Primi a uscire se il tempo stringe." },
+
+    aer: { resa: 1, mus: "cuore e circolazione",
+      why: "Consuma durante, poco dopo. Quindici minuti valgono 100-150 kcal: meno di tremila passi in più nella giornata, e a differenza dei passi costano recupero. Utile per la salute cardiovascolare, non decisivo per il dimagrimento. Per questo è opzionale ed è la prima cosa che si taglia." },
+
+    w2: { resa: 2, mus: "gambe · cuore",
+      why: "Il senso della seduta del weekend è muoversi recuperando. La bici ha impatto nullo sulle articolazioni e non aggiunge danno muscolare, quindi non compete col recupero delle due sedute con i pesi." },
+    w3: { resa: 2, mus: "gambe · cuore",
+      why: "La più sottovalutata delle tre. Col dislivello il consumo sale sensibilmente, e a differenza di tutto il resto si può fare ogni giorno senza costi di recupero. È anche il modo più semplice di chiudere i diecimila passi." },
+    w4: { resa: 2, mus: "dorso · spalle · gambe · cuore",
+      why: "Ottimo cardio a impatto zero, e coinvolge la parte alta più di bici e camminata. Un limite però va detto: l'acqua scarica il peso dallo scheletro, quindi non fa niente per la densità ossea. Non sostituisce i pesi, li accompagna." },
+    w1: { resa: 1, mus: "quadricipiti · glutei · petto · core",
+      why: "Da usare con criterio. Squat, affondi e ponti ripassano schemi che le due sedute in palestra hanno già allenato: dopo una settimana piena è in gran parte volume in più sulle gambe, e compete col recupero invece di aggiungere stimolo. Ha senso quando la settimana è stata leggera o una seduta è saltata." }
+  };
+
   var NAMES = { j: "Jacopo", e: "Elisa" };
   var person = "j";
   var session = "A";
+  var showWhy = false;
 
   var loads = { j: {}, e: {} };
   var flushTimer = null;
@@ -895,11 +1021,33 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
           "<small>" + (ex.timed ? "serie \u00d7 tempo" : "serie \u00d7 rip") + "</small></div>";
       card.appendChild(top);
 
+      var info = INFO[ex.id];
+      if (info && info.resa > 0) {
+        // la resa sta sempre a vista: e' il segnale che dice cosa conta
+        var r = document.createElement("div");
+        r.className = "resa r" + info.resa;
+        var pieni = "\u25CF".repeat(info.resa);
+        var vuoti = "\u25CB".repeat(3 - info.resa);
+        r.innerHTML = "resa <i><b>" + pieni + "</b>" + vuoti + "</i>" +
+          '<span class="w">' + RESA_LAB[info.resa] + "</span>";
+        card.appendChild(r);
+
+      }
+
+      // nota = cosa fare adesso; spiegazione = perche' e' in scheda
       if (note) {
         var n = document.createElement("p");
         n.className = "ex-note";
         n.textContent = note;
         card.appendChild(n);
+      }
+
+      if (info) {
+        var w = document.createElement("div");
+        w.className = "why";
+        w.hidden = !showWhy;
+        w.innerHTML = '<div class="mus">' + info.mus + "</div><p>" + info.why + "</p>";
+        card.appendChild(w);
       }
 
       var bot = document.createElement("div");
@@ -1225,6 +1373,22 @@ sett. 4   110 kg ×  8,  8,  8   → riparti</div>
   });
 
   document.getElementById("save").addEventListener("click", onSave);
+
+  (function () {
+    var t = document.getElementById("expl-toggle");
+    showWhy = lget("fit.showWhy") === "1";
+    function paint() {
+      t.setAttribute("aria-pressed", String(showWhy));
+      t.textContent = showWhy ? "Nascondi" : "Mostra";
+    }
+    paint();
+    t.addEventListener("click", function () {
+      showWhy = !showWhy;
+      lset("fit.showWhy", showWhy ? "1" : "0");
+      paint();
+      render();
+    });
+  })();
 
   /* ---- avvio ---- */
   var saved = lget("fit.person");
